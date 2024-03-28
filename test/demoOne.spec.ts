@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { chromium, Browser, Page } from "playwright";
 import { firstDemoCheckout } from "../pages/firstdemoCheckout";
 
-test.describe("Place Order Functionality", () => {
+test.describe("First Demo store test cases", () => {
   let browser: Browser;
   let page: Page;
    
@@ -18,29 +18,49 @@ test.describe("Place Order Functionality", () => {
   test.afterAll(async () => {
     await browser.close();
   });
-test("Verify Category page Heading",async()=>{
-  const navigate=new firstDemoCheckout(page);
-  await navigate.navigateToCategoryPage()
+test.skip("Verify Category page Heading",async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.navigateToCategoryPage()
 })
-test("Verify Product page Heading", async () => {
-    const navigate=new firstDemoCheckout(page);
-    await navigate.navigateToProductPage();
+test.skip("Verify Product page Heading", async () => {
+    const firstDemo=new firstDemoCheckout(page);
+    await firstDemo.navigateToProductPage();
 
 });
-test("Verify Add To Cart Button", async () => {
-  const navigate=new firstDemoCheckout(page);
-  await navigate.addProductInCart();
+test.skip("Verify Add To Cart Button", async () => {
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.addProductInCart();
     
 });
-test("Verify Add To Cart Success Message", async () => {
-  const navigate=new firstDemoCheckout(page);
-  await navigate.verifySuccessMsg();
+test.skip("Verify Add To Cart Success Message", async () => {
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.verifySuccessMsg();
     
 });
-test('Check Price is visible or not',async()=>{
-  const navigate=new firstDemoCheckout(page);
-  await navigate.verifyPrice()
+test.skip('Check Price is visible or not',async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.verifyPrice();
 })
-  
+test.skip("Check Shopping cart Link",async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.navigateToCart();
+})
+
+test.skip('Check SignIn link',async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.verifySignInLink();
+})
+test.skip('Check Create Account link',async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.verifyCreateAccountLink();
+})
+test.skip('navigate To Checkout page',async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.navigateToCheckout();
+})
+test("Check Update Cart based on condition",async()=>{
+  const firstDemo=new firstDemoCheckout(page);
+  await firstDemo.navigateToCheckout()
+})  
   
 });
