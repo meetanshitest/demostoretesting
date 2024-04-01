@@ -81,7 +81,7 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 
 ## Tech Stack
 
-# Core Technologies:
+Core Technologies:
 
 1. Node.js: Playwright requires Node.js (version 14.18.0 or later) as its runtime environment. Node.js provides the foundation for running Playwright scripts and interacting with various libraries.
 
@@ -102,7 +102,7 @@ Page Object Model (POM): POM is a design pattern for structuring your test code 
 Axe Builder (Accessibility Testing): The @axe-core/playwright library (Axe Builder) integrates with Playwright for automated accessibility testing. It helps you analyze web pages for WCAG (Web Content Accessibility Guidelines) compliance.
 Overall, the tech stack for Playwright TypeScript consists of Node.js (runtime), TypeScript (language), Playwright (core library), and optionally, testing frameworks, POM patterns, and Axe Builder for accessibility testing.
 
-# Additional Considerations:
+## Additional Considerations:
 
 You may need additional Node.js packages depending on your specific testing needs, such as assertion libraries (e.g., chai) or mocking libraries (e.g., sinon).
 Consider using a test runner like Playwright Test (official test runner) or other test runners with Playwright support for managing test execution and reporting.
