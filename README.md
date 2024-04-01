@@ -88,18 +88,18 @@ Core Technologies:
 2. TypeScript: While Playwright supports JavaScript, using TypeScript offers strong typing and improved code maintainability. TypeScript enhances developer experience with features like type checking and code completion.
 Playwright Library:
 
-3. Playwright: The core library of Playwright provides a unified API for interacting with Chromium, Firefox, and WebKit browsers. It allows you to:
+3.Playwright: The core library of Playwright provides a unified API for interacting with Chromium, Firefox, and WebKit browsers. It allows you to:
 
-3.1. Launch browsers
-3.2. Navigate to web pages
-3.3. Interact with web page elements
-3.4. Capture screenshots
-3.5. Run tests in a headless or headed mode
-3.6. Additional Tools (Optional):
+1. Launch browsers
+2. Navigate to web pages
+3. Interact with web page elements
+4. Capture screenshots
+5. Run tests in a headless or headed mode
+6. Additional Tools (Optional):
 
-3.7. Testing Frameworks: Playwright works well with various testing frameworks like Jest, Mocha, or Jasmine for organizing your tests and providing assertions.
+    1. Testing Frameworks: Playwright works well with various testing frameworks like Jest, Mocha, or Jasmine for organizing your tests and providing assertions.
 
-3.8 . Page Object Model (POM): POM is a design pattern for structuring your test code to represent web page components and their interactions. This improves code readability and reusability when testing web applications.
+    2. Page Object Model (POM): POM is a design pattern for structuring your test code to represent web page components and their interactions. This improves code readability and reusability when testing web applications.
 
 <!--- 3. Axe Builder (Accessibility Testing): The @axe-core/playwright library (Axe Builder) integrates with Playwright for automated accessibility testing. It helps you analyze web pages for WCAG (Web Content Accessibility Guidelines) compliance.
 -->
