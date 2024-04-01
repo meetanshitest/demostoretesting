@@ -105,7 +105,7 @@ Playwright Library:
 -->
 Overall, the tech stack for Playwright TypeScript consists of Node.js (runtime), TypeScript (language), Playwright (core library), and optionally, testing frameworks, POM patterns<!---, and Axe Builder for accessibility testing-->.
 
-## Additional Considerations:
+## Additional Considerations
 
 - You may need additional Node.js packages depending on your specific testing needs, such as assertion libraries (e.g. Jest) 
 
