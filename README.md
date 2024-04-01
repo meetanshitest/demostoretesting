@@ -97,9 +97,9 @@ Playwright Library:
 5. Run tests in a headless or headed mode
 6. Additional Tools (Optional):
 
-    1. Testing Frameworks: Playwright works well with various testing frameworks like Jest, Mocha, or Jasmine for organizing your tests and providing assertions.
+6.1. Testing Frameworks: Playwright works well with various testing frameworks like Jest, Mocha, or Jasmine for organizing your tests and providing assertions.
 
-    2. Page Object Model (POM): POM is a design pattern for structuring your test code to represent web page components and their interactions. This improves code readability and reusability when testing web applications.
+6.2. Page Object Model (POM): POM is a design pattern for structuring your test code to represent web page components and their interactions. This improves code readability and reusability when testing web applications.
 
 <!--- 3. Axe Builder (Accessibility Testing): The @axe-core/playwright library (Axe Builder) integrates with Playwright for automated accessibility testing. It helps you analyze web pages for WCAG (Web Content Accessibility Guidelines) compliance.
 -->
