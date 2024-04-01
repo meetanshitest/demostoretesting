@@ -107,7 +107,7 @@ Overall, the tech stack for Playwright TypeScript consists of Node.js (runtime),
 
 ## Additional Considerations:
 
-- You may need additional Node.js packages depending on your specific testing needs, such as assertion libraries (e.g., chai) or mocking libraries (e.g., sinon).
+- You may need additional Node.js packages depending on your specific testing needs, such as assertion libraries (e.g. Jest) 
 
 - Consider using a test runner like Playwright Test (official test runner) or other test runners with Playwright support for managing test execution and reporting.
 
