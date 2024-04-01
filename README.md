@@ -1,5 +1,3 @@
-![Logo](https://eadn-wc04-1926448.nxedge.io/cdn/media/logo/stores/1/logo.png)
-
 
 # Automate Test cases using Page Object Model (POM) Strategy with Playwright TypeScript
 

@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { chromium, Browser, Page } from "playwright";
 import {thirdDemoCheckout} from "../pages/thirdDemoCheckout";
 
-test.describe("First Demo store test cases", () => {
+test.describe("Third Demo store test cases", () => {
   let browser: Browser;
   let page: Page;
    
@@ -21,7 +21,7 @@ test.describe("First Demo store test cases", () => {
 
   test.beforeEach(async () => {
     page = await browser.newPage();
-    await page.goto("https://meetanshi.in/m2d2/");
+    await page.goto("https://meetanshi.in/m2d3/");
   });
 
   test.afterAll(async () => {
