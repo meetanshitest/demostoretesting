@@ -77,3 +77,33 @@ The project structure follows the Page Object Model (POM) design pattern:
 
 Contributing
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+
+
+## Tech Stack
+
+# Core Technologies:
+
+1. Node.js: Playwright requires Node.js (version 14.18.0 or later) as its runtime environment. Node.js provides the foundation for running Playwright scripts and interacting with various libraries.
+
+2. TypeScript: While Playwright supports JavaScript, using TypeScript offers strong typing and improved code maintainability. TypeScript enhances developer experience with features like type checking and code completion.
+Playwright Library:
+
+Playwright: The core library of Playwright provides a unified API for interacting with Chromium, Firefox, and WebKit browsers. It allows you to:
+
+1. Launch browsers
+2. Navigate to web pages
+3. Interact with web page elements
+4. Capture screenshots
+5. Run tests in a headless or headed mode
+6. Additional Tools (Optional):
+
+Testing Frameworks: Playwright works well with various testing frameworks like Jest, Mocha, or Jasmine for organizing your tests and providing assertions.
+Page Object Model (POM): POM is a design pattern for structuring your test code to represent web page components and their interactions. This improves code readability and reusability when testing web applications.
+Axe Builder (Accessibility Testing): The @axe-core/playwright library (Axe Builder) integrates with Playwright for automated accessibility testing. It helps you analyze web pages for WCAG (Web Content Accessibility Guidelines) compliance.
+Overall, the tech stack for Playwright TypeScript consists of Node.js (runtime), TypeScript (language), Playwright (core library), and optionally, testing frameworks, POM patterns, and Axe Builder for accessibility testing.
+
+# Additional Considerations:
+
+You may need additional Node.js packages depending on your specific testing needs, such as assertion libraries (e.g., chai) or mocking libraries (e.g., sinon).
+Consider using a test runner like Playwright Test (official test runner) or other test runners with Playwright support for managing test execution and reporting.
+Explore browser-specific tools (e.g., Chrome DevTools) for debugging during test development.
