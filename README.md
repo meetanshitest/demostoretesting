@@ -101,7 +101,7 @@ Playwright: The core library of Playwright provides a unified API for interactin
 
 2. Page Object Model (POM): POM is a design pattern for structuring your test code to represent web page components and their interactions. This improves code readability and reusability when testing web applications.
 
-3. Axe Builder (Accessibility Testing): The @axe-core/playwright library (Axe Builder) integrates with Playwright for automated accessibility testing. It helps you analyze web pages for WCAG (Web Content Accessibility Guidelines) compliance.
+[//]: <>  (3. Axe Builder (Accessibility Testing): The @axe-core/playwright library (Axe Builder) integrates with Playwright for automated accessibility testing. It helps you analyze web pages for WCAG (Web Content Accessibility Guidelines) compliance.)
 
 Overall, the tech stack for Playwright TypeScript consists of Node.js (runtime), TypeScript (language), Playwright (core library), and optionally, testing frameworks, POM patterns, and Axe Builder for accessibility testing.
 
