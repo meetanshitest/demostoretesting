@@ -1,5 +1,4 @@
-import { test, expect,Locator } from '@playwright/test';
-import { count } from 'console';
+import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
@@ -17,16 +16,3 @@ test('get started link', async ({ page }) => {
   // Expects page to have a heading with the name of Installation.
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
 });
-
-test('Iterate Images',async({page})=>{
-     await page.goto('https://meetanshi.com/shopify-apps.html')
-    const imgLocators=await page.$$('img.product-image-photo')
-    for(const imgLocator of imgLocators ){
-       const imgAltText=await imgLocator.getAttribute('alt') 
-       console.log(imgAltText);
-    }
-    await expect(imgLocators).toHaveLength(6)
-    await page.close()
-    
-    
-})

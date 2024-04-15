@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { chromium, Browser, Page } from "playwright";
-import { firstDemoCheckout } from "../pages/firstdemoCheckout";
+import { firstDemoCheckout } from "../pages/firstDemoCheckout";
 
 test.describe("First Demo store test cases", () => {
   let browser: Browser;
