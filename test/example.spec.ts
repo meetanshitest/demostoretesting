@@ -34,4 +34,5 @@ test('check logo',async({page})=>{
   const imgLocator= page.locator('img[src=\'https://eadn-wc04-1926448.nxedge.io/cdn/media/logo/stores/1/logo.png\']')
   await expect(imgLocator).toBeVisible()
   await page.close()
+  console.log("Hello")
 })
