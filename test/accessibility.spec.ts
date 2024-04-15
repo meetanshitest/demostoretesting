@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
+import AxeBuilder from '@axe-core/playwright';
 
 test('Check for WCAG A and AA violations on BBC website', async ({ page }) => {
   // Navigate to the BBC website
@@ -9,6 +9,7 @@ test('Check for WCAG A and AA violations on BBC website', async ({ page }) => {
   await page.waitForTimeout(5000); // Optional: Adjust wait time based on website complexity
 
   // Create a new AxeBuilder instance
+  // @ts-ignore
   const axe = new AxeBuilder({ page });
 
   // Analyze the page for WCAG A and AA violations
