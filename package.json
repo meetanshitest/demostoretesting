@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@axe-core/playwright": "^4.8.5",
+    "@axe-core/playwright": "^4.9.0",
     "dotenv": "^16.4.5",
     "jest": "^29.7.0",
     "playwright": "^1.43.1"
@@ -8,12 +8,8 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@playwright/test": "^1.43.1",
-<<<<<<< HEAD
-    "@types/node": "^20.11.30"
-=======
     "@types/node": "^20.11.30",
     "axe-core": "^4.9.0"
->>>>>>> origin/devtest
   },
   "scripts": {}
 }
