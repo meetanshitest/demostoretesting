@@ -35,7 +35,7 @@ export class firstDemoCheckout {
 
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator('//a[@id="ui-id-3"]//span[contains(text(),"Minimum Order Amount For Customer Group")]');
+    this.getMenuLink = page.locator('//span[normalize-space()="Minimum Order Amount For Customer Group"]');
     this.addToCart = page.locator("#product-addtocart-button");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(

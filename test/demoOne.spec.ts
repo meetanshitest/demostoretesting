@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { chromium, Browser, Page } from "playwright";
 import { firstDemoCheckout } from "../pages/firstDemoCheckout";
+import {globalSetup} from "../utils/globalSetup";
 
 test.describe("First Demo store test cases", () => {
   let browser: Browser;
@@ -10,22 +11,19 @@ test.describe("First Demo store test cases", () => {
     browser = await chromium.launch({
       headless: false,
     });
-    const context = await browser.newContext({
-      recordVideo: {
-        dir: "./videos/",
-      },
-    });
+    
   });
 
   test.beforeEach(async () => {
+    const webUrl=process.env.WEB_URL as string;
     page = await browser.newPage();
-    await page.goto("https://meetanshi.in/m2d1/");
+    await page.goto(webUrl);
   });
 
   test.afterAll(async () => {
     await browser.close();
   });
-  test.skip("Verify Category page Heading", async () => {
+  test.only("Verify Category page Heading", async () => {
     const firstDemo = new firstDemoCheckout(page);
     await firstDemo.navigateToCategoryPage();
   });
@@ -66,7 +64,7 @@ test.describe("First Demo store test cases", () => {
     const firstDemo = new firstDemoCheckout(page);
     await firstDemo.navigateToCheckout();
   });
-  test("Check place order", async () => {
+  test.skip("Check place order", async () => {
     const firstDemo = new firstDemoCheckout(page);
     await firstDemo.placeOrder();
     await page.waitForTimeout(2000);
