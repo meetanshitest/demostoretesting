@@ -15,9 +15,9 @@ test.describe("First Demo store test cases", () => {
   });
 
   test.beforeEach(async () => {
-    const webUrl=process.env.WEB_URL as string;
+    const webUrl=process.env.WEB_URL?.split(",") as unknown as string;
     page = await browser.newPage();
-    await page.goto(webUrl);
+    await page.goto(webUrl[1]);
   });
 
   test.afterAll(async () => {
