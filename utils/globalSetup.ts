@@ -1,5 +1,5 @@
 //globalSetup.ts
-const { FullConfig } = require("@playwright/test");
+import { FullConfig } from "@playwright/test";
 import dotenv from 'dotenv';
 
 export async function globalSetup(config: any) {
