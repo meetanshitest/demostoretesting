@@ -35,7 +35,9 @@ export class eighteenDemoCheckout {
 
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator('//a[@id="ui-id-3"]//span[contains(text(),"Minimum Order Amount For Customer Group")]');
+    this.getMenuLink = page.locator(
+      '//a[@id="ui-id-3"]//span[contains(text(),"Minimum Order Amount For Customer Group")]'
+    );
     this.addToCart = page.locator("#product-addtocart-button");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(
@@ -69,13 +71,16 @@ export class eighteenDemoCheckout {
     this.phone = page.getByLabel("Phone Number");
     this.nextBtn = page.getByRole("button", { name: "Next" });
     this.paymentMethod = page.locator("#checkmo");
-    this.placeOrderBtn = page.getByRole('button',{name:'Place Order'})
-   
+    this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
   }
   async navigateToCategoryPage() {
     await this.getMenuLink.click();
-    expect(await this.headingText.textContent()).toBe("Minimum Order Amount For Customer Group");
-    await expect(this.page).toHaveTitle(/Minimum Order Amount For Customer Group/);
+    expect(await this.headingText.textContent()).toBe(
+      "Minimum Order Amount For Customer Group"
+    );
+    await expect(this.page).toHaveTitle(
+      /Minimum Order Amount For Customer Group/
+    );
     await expect(this.page).toHaveURL(/.*min-order-amount/);
   }
 
@@ -158,7 +163,6 @@ export class eighteenDemoCheckout {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await expect(this.page).toHaveTitle('Success Page')
+    await expect(this.page).toHaveTitle("Success Page");
   }
-  
 }

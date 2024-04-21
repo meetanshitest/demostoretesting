@@ -1,7 +1,6 @@
-import { test, expect } from "@playwright/test";
-import { chromium, Browser, Page } from "playwright";
+import { test, expect,chromium,Browser,Page } from "@playwright/test";
 import { firstDemoCheckout } from "../pages/firstDemoCheckout";
-import {globalSetup} from "../utils/globalSetup";
+import {globalSetup} from "../config/globalSetup"
 
 test.describe("First Demo store test cases", () => {
   let browser: Browser;
