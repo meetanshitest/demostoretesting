@@ -1,5 +1,5 @@
 import { test, expect,chromium,Browser,Page } from "@playwright/test";
-import { firstDemoCheckout } from "../pages/firstDemo_Assertions.ts";
+import { firstDemoCheckout } from "../pages/m2d1_Assertions.ts";
 import {globalSetup} from "../config/globalSetup.ts"
 
 test.describe("First Demo store test cases", () => {  
