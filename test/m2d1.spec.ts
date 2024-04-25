@@ -1,8 +1,8 @@
 import { test, expect,chromium,Browser,Page } from "@playwright/test";
-import { firstDemoCheckout } from "../pages/firstDemoCheckout";
-import {globalSetup} from "../config/globalSetup"
+import { firstDemoCheckout } from "../pages/firstDemo_Assertions.ts";
+import {globalSetup} from "../config/globalSetup.ts"
 
-test.describe("First Demo store test cases", () => {
+test.describe("First Demo store test cases", () => {  
   let browser: Browser;
   let page: Page;
 
@@ -16,15 +16,17 @@ test.describe("First Demo store test cases", () => {
   test.beforeEach(async () => {
     const webUrl=process.env.WEB_URL?.split(",") as unknown as string;
     page = await browser.newPage();
-    await page.goto(webUrl[1]);
+    await page.goto(webUrl[0]);
   });
 
   test.afterAll(async () => {
+    await page.waitForTimeout(1000);
     await browser.close();
   });
   test.only("Verify Category page Heading", async () => {
     const firstDemo = new firstDemoCheckout(page);
     await firstDemo.navigateToCategoryPage();
+    
   });
   test.skip("Verify Product page Heading", async () => {
     const firstDemo = new firstDemoCheckout(page);
