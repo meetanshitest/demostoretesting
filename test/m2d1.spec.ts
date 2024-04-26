@@ -1,5 +1,5 @@
 import { test, expect,chromium,Browser,Page } from "@playwright/test";
-import { firstDemoCheckout } from "../pages/m2d1_Assertions.ts";
+import { m2d1_Assertions } from "../pages/Assertions/m2d1_Assertions.ts";
 import {globalSetup} from "../config/globalSetup.ts"
 
 test.describe("First Demo store test cases", () => {  
@@ -8,7 +8,7 @@ test.describe("First Demo store test cases", () => {
 
   test.beforeAll(async () => {
     browser = await chromium.launch({
-      headless: false,
+      headless: false,  
     });
     
   });
@@ -24,50 +24,50 @@ test.describe("First Demo store test cases", () => {
     await browser.close();
   });
   test.only("Verify Category page Heading", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.navigateToCategoryPage();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.navigateToCategoryPage();
     
   });
   test.skip("Verify Product page Heading", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.navigateToProductPage();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.navigateToProductPage();
   });
   test.skip("Verify Add To Cart Button", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.addProductInCart();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.addProductInCart();
   });
   test.skip("Verify Add To Cart Success Message", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.verifySuccessMsg();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.verifySuccessMsg();
   });
   test.skip("Check Price is visible or not", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.verifyPrice();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.verifyPrice();
   });
   test.skip("Check Shopping cart Link", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.navigateToCart();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.navigateToCart();
   });
 
   test.skip("Check SignIn link", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.verifySignInLink();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.verifySignInLink();
   });
   test.skip("Check Create Account link", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.verifyCreateAccountLink();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.verifyCreateAccountLink();
   });
   test.skip("navigate To Checkout page", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.navigateToCheckout();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.navigateToCheckout();
   });
   test.skip("Check Update Cart based on condition", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.navigateToCheckout();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.navigateToCheckout();
   });
   test.skip("Check place order", async () => {
-    const firstDemo = new firstDemoCheckout(page);
-    await firstDemo.placeOrder();
+    const m2d1 = new m2d1_Assertions(page);
+    await m2d1.placeOrder();
     await page.waitForTimeout(2000);
   });
 });
