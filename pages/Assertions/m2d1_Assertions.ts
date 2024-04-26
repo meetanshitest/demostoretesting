@@ -93,9 +93,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       `${faker.location.streetAddress({ useFullAddress: true })}`
     );
     await this.country.selectOption("IN");
-    //await this.page.waitForTimeout(2000);
     await this.state.selectOption("544");
-    //await this.page.waitForTimeout(2000);
     await this.city.fill("Bhavnagar");
     await this.zip.fill("364003");
     await this.phone.fill("123456789");
