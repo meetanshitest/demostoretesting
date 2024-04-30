@@ -3,13 +3,11 @@ import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
-  
-  constructor(page: Page){
+  constructor(page: Page) {
     super(page);
-   
   }
 
-  async navigateToCategoryPage() {
+  public async navigateToCategoryPage() {
     await this.getMenuLink.click();
     expect(await this.headingText.textContent()).toBe(
       "Minimum Order Amount For Customer Group"
@@ -20,50 +18,53 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveURL(/.*min-order-amount/);
   }
 
-  async navigateToProductPage() {
+  public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    await expect(this.page).toHaveTitle(/Apple iPhone X/);
-    await expect(this.page).toHaveURL(/.*apple-iphone-x/);
+    expect(this.page).toHaveTitle(/Apple iPhone X/);
+    expect(this.page).toHaveURL(/.*apple-iphone-x/);
   }
-  async addProductInCart() {
-    this.navigateToProductPage();
+  public async addProductInCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
     await this.addToCart.click();
   }
-  async verifySuccessMsg() {
-    this.navigateToProductPage();
-    this.addProductInCart();
-    await this.page.waitForTimeout(2000);
-    expect(this.sucessMessageText).toBeVisible();
+  public async verifySuccessMsg() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
+    expect(await this.sucessMessageText.textContent()).toContain(
+      "You added Apple iPhone X to your shopping cart."
+    );
   }
-  async verifyPrice() {
+  public async verifyPrice() {
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.page.waitForTimeout(2000);
     expect(await this.price.textContent()).toBe("$999.00");
   }
-  async verifySignInLink() {
+  public async verifySignInLink() {
     await this.signInLink.click();
-    await this.page.waitForTimeout(2000);
-    expect(this.headingText.textContent()).toBe("Customer Login");
+    expect(await this.headingText.textContent()).toBe("Customer Login");
   }
-  async verifyCreateAccountLink() {
+  public async verifyCreateAccountLink() {
     await this.createAccountLink.click();
-    await this.page.waitForTimeout(2000);
-    expect(this.headingText.textContent()).toBe("Create New Customer Account");
+    expect(await this.headingText.textContent()).toBe(
+      "Create New Customer Account"
+    );
   }
-  async navigateToCart() {
-    this.verifySuccessMsg();
-    await this.page.waitForTimeout(2000);
+  public async navigateToCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  async navigateToCheckout() {
+  public async navigateToCheckout() {
     this.navigateToCart();
-    await this.page.waitForTimeout(2000);
     await this.proceedToCheckOut.click();
-    const message = await this.page.locator(
+    const message = this.page.locator(
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
     );
     if (message) {
@@ -82,7 +83,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   locator(arg0: string) {
     throw new Error("Method not implemented.");
   }
-  async placeOrder() {
+  public async placeOrder() {
     this.navigateToCheckout();
     await this.page.waitForTimeout(1000);
     await this.email.fill("bhushan.trivedi@meetanshi.com");

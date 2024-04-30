@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { chromium, Browser, Page } from "playwright";
-import {thirdDemoCheckout} from "../pages/thirdDemoCheckout";
+import { m2d3_Assertions } from "../pages/Assertions/m2d3_Assertions.ts";
+
 
 test.describe("Third Demo store test cases", () => {
   let browser: Browser;

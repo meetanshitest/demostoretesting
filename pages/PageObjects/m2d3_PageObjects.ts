@@ -2,7 +2,7 @@ import { type Page, type Locator } from "@playwright/test";
 import { log } from "console";
 import { faker } from "@faker-js/faker";
 
-export class m2d1_PageObjects {
+export class m2d3_PageObjects {
   protected page: Page;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;

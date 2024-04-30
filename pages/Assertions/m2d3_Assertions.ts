@@ -1,76 +1,11 @@
 import { expect, Selectors, type Locator, type Page } from "@playwright/test";
 import { log } from "console";
 import { faker } from "@faker-js/faker";
+import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects";
 
-export class fifthDemoCheckout {
-  page: Page;
-  getMenuLink: Locator;
-  productLink: Locator;
-  addToCart: Locator;
-  sucessMessageText: Locator;
-  headingText: Locator;
-  price: Locator;
-  menuItem: Locator;
-  ItemLocators: Locator;
-  signInLink: Locator;
-  createAccountLink: Locator;
-  shoppingCartLink: Locator;
-  proceedToCheckOut: Locator;
-  qtyUpdateTextBox: Locator;
-  updateCartButton: Locator;
-  errorMsg: Locator;
-  email: Locator;
-  fname: Locator;
-  lname: Locator;
-  company: Locator;
-  streetAddress: Locator;
-  country: Locator;
-  state: Locator;
-  city: Locator;
-  zip: Locator;
-  phone: Locator;
-  nextBtn: Locator;
-  paymentMethod: Locator;
-  placeOrderBtn: Locator;
-
+export class m2d3_Assertions extends m2d3_PageObjects{
   constructor(page: Page) {
-    this.page = page;
-    this.getMenuLink = page.locator('//a[@id="ui-id-3"]//span[contains(text(),"Minimum Order Amount For Customer Group")]');
-    this.addToCart = page.locator("#product-addtocart-button");
-    this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
-    this.sucessMessageText = page.locator(
-      "//a[normalize-space()='shopping cart']"
-    );
-    this.headingText = page.locator("//span[@class='base']");
-    this.price = page.locator("//span[@class='price']");
-    this.ItemLocators = page.locator("li>a>span");
-    this.signInLink = page.getByText("Sign In");
-    this.createAccountLink = page.getByText("Create an Account");
-    this.shoppingCartLink = page.getByRole("link", { name: "Shopping Cart" });
-    this.proceedToCheckOut = page.getByRole("button", {
-      name: "Proceed to Checkout",
-    });
-    this.qtyUpdateTextBox = page.getByRole("spinbutton", { name: "Qty" });
-    this.updateCartButton = page.locator(
-      "//span[normalize-space()='Update Shopping Cart']"
-    );
-    this.errorMsg = page.locator(
-      "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
-    );
-    this.email = page.locator("#customer-email");
-    this.fname = page.locator('input[name="firstname"]');
-    this.lname = page.locator('input[name="lastname"]');
-    this.company = page.locator('input[name="company"]');
-    this.streetAddress = page.locator('input[name="street[0]"]');
-    this.country = page.getByLabel("Country");
-    this.state = page.locator('select[name="region_id"]');
-    this.city = page.getByLabel("City");
-    this.zip = page.locator('input[name="postcode"]');
-    this.phone = page.getByLabel("Phone Number");
-    this.nextBtn = page.getByRole("button", { name: "Next" });
-    this.paymentMethod = page.locator("#checkmo");
-    this.placeOrderBtn = page.getByRole('button',{name:'Place Order'})
-   
+    super(page);
   }
   async navigateToCategoryPage() {
     await this.getMenuLink.click();
