@@ -30,6 +30,3 @@
 /blob-report/
 /playwright/.cache/
 /allure-results
-test/khastooContact.spec.ts
-test/locatorHandler.spec.ts
-test/prestashopDemoLoad.spec.ts
