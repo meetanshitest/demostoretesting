@@ -73,8 +73,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       await this.updateCartButton.click();
       await this.page.waitForTimeout(4000);
       await this.proceedToCheckOut.click();
-      await this.page.waitForTimeout(2000);
-      await expect(this.page).toHaveTitle(/Checkout/);
+      //await this.page.waitForTimeout(2000);
+      await expect(this.page).toHaveTitle("Checkout");
     } else {
       console.log("No error...");
       await this.proceedToCheckOut.click();
@@ -84,7 +84,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     throw new Error("Method not implemented.");
   }
   public async placeOrder() {
-    this.navigateToCheckout();
+    await this.navigateToCart();
+    await this.proceedToCheckOut.click()
     await this.page.waitForTimeout(1000);
     await this.email.fill("bhushan.trivedi@meetanshi.com");
     await this.fname.fill("bhushan");

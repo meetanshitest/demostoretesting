@@ -15,15 +15,13 @@ test.describe("m2d1 test cases", () => {
     page = await browser.newPage();
     await page.goto(webUrl[0]);
   });
-
   test.afterAll(async () => {
-    await page.waitForTimeout(1000);
     await browser.close();
   });
+
   test("Verify Category page Heading", async () => {
     const m2d1 = new m2d1_Assertions(page);
     await m2d1.navigateToCategoryPage();
-    
   });
   test("Verify Product page Heading", async () => {
     const m2d1 = new m2d1_Assertions(page);
@@ -66,7 +64,7 @@ test.describe("m2d1 test cases", () => {
     const m2d1 = new m2d1_Assertions(page);
     await m2d1.navigateToCheckout();
   });
-  test.skip("Check place order", async () => {
+  test("Check place order", async () => {
     const m2d1 = new m2d1_Assertions(page);
     await m2d1.placeOrder();
     await page.waitForTimeout(2000);

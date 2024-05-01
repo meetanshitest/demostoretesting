@@ -1,74 +1,68 @@
-import { test, expect } from "@playwright/test";
-import { chromium, Browser, Page } from "playwright";
+import { test,expect,chromium, Browser, Page } from "@playwright/test";
 import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
+import { globalSetup } from "../config/globalSetup.ts";
 
 test.describe("Second Demo store test cases", () => {
   let browser: Browser;
   let page: Page;
 
   test.beforeAll(async () => {
-    browser = await chromium.launch({
-      headless: false,
-    });
-    const context = await browser.newContext({
-      recordVideo: {
-        dir: "./videos/",
-      },
-    });
+    browser = await chromium.launch();
   });
-
   test.beforeEach(async () => {
+    const webUrl=process.env.WEB_URL?.split(",") as unknown as string;
     page = await browser.newPage();
-    await page.goto("https://meetanshi.in/m2d2/");
+    await page.goto(webUrl[1]);
   });
 
   test.afterAll(async () => {
     await browser.close();
   });
-  test.skip("Verify Category page Heading", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.navigateToCategoryPage();
+
+  test("Verify Category page Heading", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.navigateToCategoryPage();
   });
-  test.skip("Verify Product page Heading", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.navigateToProductPage();
+  test("Verify Product page Heading", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.navigateToProductPage();
   });
-  test.skip("Verify Add To Cart Button", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.addProductInCart();
+  test("Verify Add To Cart Button", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.addProductInCart();
   });
-  test.skip("Verify Add To Cart Success Message", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.verifySuccessMsg();
+  test("Verify Add To Cart Success Message", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.verifySuccessMsg();
   });
-  test.skip("Check Price is visible or not", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.verifyPrice();
+  test("Check Price is visible or not", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.verifyPrice();
   });
-  test.skip("Check Shopping cart Link", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.navigateToCart();
+  test("Check Shopping cart Link", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.navigateToCart();
   });
 
-  test.skip("Check SignIn link", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.verifySignInLink();
+  test("Check SignIn link", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.verifySignInLink();
   });
-  test.skip("Check Create Account link", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.verifyCreateAccountLink();
+  test("Check Create Account link", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.verifyCreateAccountLink();
   });
-  test.skip("navigate To Checkout page", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.navigateToCheckout();
+  test("navigate To Checkout page", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.navigateToCheckout();
   });
-  test.skip("Check Update Cart based on condition", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.navigateToCheckout();
+  test("Check Update Cart based on condition", async () => {
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.navigateToCheckout();
   });
   test("Check place order", async () => {
-    const firstDemo = new secondDemoCheckout(page);
-    await firstDemo.placeOrder();
+    const m2d2 = new m2d2_Assertions(page);
+    await m2d2.placeOrder();
     await page.waitForTimeout(2000);
   });
 });
