@@ -68,10 +68,9 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
     );
     if (message) {
-      await this.page.waitForTimeout(4000);
+      //await this.page.waitForTimeout(4000);
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
-      await this.page.waitForTimeout(4000);
       await this.proceedToCheckOut.click();
       //await this.page.waitForTimeout(2000);
       await expect(this.page).toHaveTitle("Checkout");
@@ -79,18 +78,15 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       console.log("No error...");
       await this.proceedToCheckOut.click();
     }
-  }
-  locator(arg0: string) {
-    throw new Error("Method not implemented.");
-  }
+  }  
   public async placeOrder() {
     await this.navigateToCart();
     await this.proceedToCheckOut.click()
     await this.page.waitForTimeout(1000);
-    await this.email.fill("bhushan.trivedi@meetanshi.com");
+    await this.email.fill("bhushan@yopmail.com");
     await this.fname.fill("bhushan");
-    await this.lname.fill("trivedi");
-    await this.company.fill("Meetanshi");
+    await this.lname.fill("yopmail");
+    await this.company.fill("yopmail");
     await this.streetAddress.fill(
       `${faker.location.streetAddress({ useFullAddress: true })}`
     );

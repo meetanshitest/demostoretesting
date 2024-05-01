@@ -56,11 +56,11 @@ test.describe("m2d1 test cases", () => {
     const m2d1 = new m2d1_Assertions(page);
     await m2d1.navigateToCart();
   })
-  test("navigate To Checkout page", async () => {
+  test("Check Update Cart based on condition", async () => {
     const m2d1 = new m2d1_Assertions(page);
     await m2d1.navigateToCheckout();
   });
-  test("Check Update Cart based on condition", async () => {
+  test("navigate To Checkout page", async () => {
     const m2d1 = new m2d1_Assertions(page);
     await m2d1.navigateToCheckout();
   });
