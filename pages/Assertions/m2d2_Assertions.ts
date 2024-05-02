@@ -1,5 +1,4 @@
 import { expect, Selectors, type Locator, type Page } from "@playwright/test";
-import { log } from "console";
 import { faker } from "@faker-js/faker";
 import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects";
 

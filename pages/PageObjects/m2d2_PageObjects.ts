@@ -1,6 +1,5 @@
 import { type Page, type Locator } from "@playwright/test";
-import { log } from "console";
-import { faker } from "@faker-js/faker";
+
 
 export class m2d2_PageObjects {
   protected page: Page;
