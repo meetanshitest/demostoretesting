@@ -3,6 +3,7 @@ import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
+  [x: string]: any;
   constructor(page: Page) {
     super(page);
   }
