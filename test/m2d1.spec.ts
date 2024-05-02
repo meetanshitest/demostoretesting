@@ -1,5 +1,5 @@
 import {test as base,Page} from "@playwright/test";
-import {m2d1_Assertions} from "../pages/Assertions/m2d1_Assertions";
+import { m2d1_Assertions } from "../pages/Assertions/m2d1_Assertions.ts";
 import { globalSetup } from "../config/globalSetup.ts";
 
 const test = base.extend<{ page: Page }>({

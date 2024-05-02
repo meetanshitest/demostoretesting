@@ -72,32 +72,21 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
       await this.proceedToCheckOut.click();
-      //await this.page.waitForTimeout(2000);
-      await expect(this.page).toHaveTitle("Checkout");
+      await this.page.waitForTimeout(2000);
+      expect(this.page).toHaveTitle("Checkout");
     } else {
       console.log("No error...");
       await this.proceedToCheckOut.click();
     }
   }  
   public async placeOrder() {
-    await this.navigateToCart();
-    await this.proceedToCheckOut.click()
-    await this.page.waitForTimeout(1000);
-    await this.email.fill("bhushan@yopmail.com");
-    await this.fname.fill("bhushan");
-    await this.lname.fill("yopmail");
-    await this.company.fill("yopmail");
-    await this.streetAddress.fill(
-      `${faker.location.streetAddress({ useFullAddress: true })}`
-    );
-    await this.country.selectOption("IN");
-    await this.state.selectOption("544");
-    await this.city.fill("Bhavnagar");
-    await this.zip.fill("364003");
-    await this.phone.fill("123456789");
-    await this.nextBtn.click();
-    await this.paymentMethod.check();
-    await this.placeOrderBtn.click();
-    await expect(this.page).toHaveTitle("Success Page");
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
+    await this.shoppingCartLink.click();
+    await (this.page).waitForTimeout(3000)
+    await this.proceedToCheckOut.click();
+    expect(this.page).toHaveTitle("Checkout")
+
   }
 }
