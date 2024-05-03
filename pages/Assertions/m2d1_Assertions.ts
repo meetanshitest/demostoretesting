@@ -81,13 +81,22 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     }
   }  
   public async placeOrder() {
+    const firstName=faker.person.firstName.toString()
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.addToCart.click();
     await this.shoppingCartLink.click();
     await (this.page).waitForTimeout(3000)
     await this.proceedToCheckOut.click();
-    expect(this.page).toHaveTitle("Checkout")
-
+    await this.email.fill(`${faker.internet.email()}`)
+    await this.fname.fill(`${firstName}`)
+    await this.lname.fill(`${faker.person.lastName}`)
+    await this.company.fill(`${faker.company.buzzPhrase}`)
+    await this.streetAddress.fill(`${faker.location.streetAddress}`)
+    await this.country.selectOption('India')
+    await this.state.selectOption('Gujarat')
+    await this.city.fill(`${faker.location.city}`)
+    console.log(firstName)
+   
   }
-}
+} 

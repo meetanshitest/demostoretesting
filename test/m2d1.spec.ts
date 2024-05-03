@@ -12,13 +12,13 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-let m2d1: m2d1_Assertions;
-
-test.beforeAll(async ({ page }) => {
-  m2d1 = new m2d1_Assertions(page);
-});
 
 test.describe("m2d1 test cases", () => {
+  let m2d1: m2d1_Assertions;
+
+  test.beforeEach(async ({ page }) => {
+    m2d1 = new m2d1_Assertions(page);
+  });
   test("Verify Category page Heading", async () => {
     await m2d1.navigateToCategoryPage();
   });
@@ -55,6 +55,5 @@ test.describe("m2d1 test cases", () => {
   });
   test.only("Check place order", async () => {
     await m2d1.placeOrder();
-    await m2d1.waitForTimeout(2000);
   });
 });

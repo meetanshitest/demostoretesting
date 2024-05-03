@@ -58,7 +58,7 @@ export class m2d1_PageObjects {
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
-    this.email = page.locator("input[type='text']",{hasText:'username'});
+    this.email = page.locator("//input[@id='customer-email']");
     this.fname = page.locator('input[name="firstname"]');
     this.lname = page.locator('input[name="lastname"]');
     this.company = page.locator('input[name="company"]');
