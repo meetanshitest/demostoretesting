@@ -1,6 +1,5 @@
 import { type Page, type Locator } from "@playwright/test";
 
-
 export class m2d1_PageObjects {
   protected page: Page;
   readonly getMenuLink: Locator;
@@ -31,6 +30,8 @@ export class m2d1_PageObjects {
   readonly nextBtn: Locator;
   readonly paymentMethod: Locator;
   readonly placeOrderBtn: Locator;
+  readonly sucessOrder: Locator;
+  readonly sucessOrderMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -45,8 +46,10 @@ export class m2d1_PageObjects {
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
     this.ItemLocators = page.locator("li>a>span");
-    this.signInLink = page.getByRole("link",{name:"Sign In"});
-    this.createAccountLink = page.getByRole("link",{name:"Create an Account"});
+    this.signInLink = page.getByRole("link", { name: "Sign In" });
+    this.createAccountLink = page.getByRole("link", {
+      name: "Create an Account",
+    });
     this.shoppingCartLink = page.getByRole("link", { name: "Shopping Cart" });
     this.proceedToCheckOut = page.getByRole("button", {
       name: "Proceed to Checkout",
@@ -71,5 +74,8 @@ export class m2d1_PageObjects {
     this.nextBtn = page.getByRole("button", { name: "Next" });
     this.paymentMethod = page.locator("#checkmo");
     this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
+    this.sucessOrderMessage = page
+      .locator('[data-ui-id="page-title-wrapper"]')
+      .filter({ hasText: "Thank you for your purchase!" });
   }
 }

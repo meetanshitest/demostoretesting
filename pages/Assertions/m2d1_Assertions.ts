@@ -79,24 +79,32 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       console.log("No error...");
       await this.proceedToCheckOut.click();
     }
-  }  
+  }
   public async placeOrder() {
-    const firstName=faker.person.firstName.toString()
+    const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.addToCart.click();
     await this.shoppingCartLink.click();
-    await (this.page).waitForTimeout(3000)
+    await this.page.waitForTimeout(3000);
     await this.proceedToCheckOut.click();
-    await this.email.fill(`${faker.internet.email()}`)
-    await this.fname.fill(`${firstName}`)
-    await this.lname.fill(`${faker.person.lastName}`)
-    await this.company.fill(`${faker.company.buzzPhrase}`)
-    await this.streetAddress.fill(`${faker.location.streetAddress}`)
-    await this.country.selectOption('India')
-    await this.state.selectOption('Gujarat')
-    await this.city.fill(`${faker.location.city}`)
-    console.log(firstName)
-   
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city()}`);
+    await this.zip.fill(`${faker.location.zipCode()}`);
+    await this.phone.fill(`${faker.phone.number()}`);
+    await this.nextBtn.click();
+    await this.paymentMethod.check();
+    await this.placeOrderBtn.click();
+    await expect(this.page).toHaveURL(/.*checkout/);
+    expect(await this.sucessOrderMessage.textContent()).toBe(
+      `${successMessage}`
+    );
+    await expect(this.page).toHaveTitle("Success Page");
   }
-} 
+}
