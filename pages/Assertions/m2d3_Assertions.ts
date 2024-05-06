@@ -1,99 +1,166 @@
-import { expect, Selectors, type Locator, type Page } from "@playwright/test";
-import { log } from "console";
 import { faker } from "@faker-js/faker";
-import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects";
+import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects.ts";
+import { Page, expect } from "@playwright/test";
 
-export class m2d3_Assertions extends m2d3_PageObjects{
+
+export class m2d3_Assertions extends m2d3_PageObjects {
+  [x: string]: any;
   constructor(page: Page) {
     super(page);
   }
-  async navigateToCategoryPage() {
+
+  public async navigateToCategoryPage() {
     await this.getMenuLink.click();
-    expect(await this.headingText.textContent()).toBe("Minimum Order Amount For Customer Group");
-    await expect(this.page).toHaveTitle(/Minimum Order Amount For Customer Group/);
+    expect(await this.headingText.textContent()).toBe(
+      "Minimum Order Amount For Customer Group"
+    );
+    await expect(this.page).toHaveTitle(
+      /Minimum Order Amount For Customer Group/
+    );
     await expect(this.page).toHaveURL(/.*min-order-amount/);
   }
 
-  async navigateToProductPage() {
+  public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    await expect(this.page).toHaveTitle(/Apple iPhone X/);
-    await expect(this.page).toHaveURL(/.*apple-iphone-x/);
+    expect(this.page).toHaveTitle(/Apple iPhone X/);
+    expect(this.page).toHaveURL(/.*apple-iphone-x/);
   }
-  async addProductInCart() {
-    this.navigateToProductPage();
+  public async addProductInCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
     await this.addToCart.click();
   }
-  async verifySuccessMsg() {
-    this.navigateToProductPage();
-    this.addProductInCart();
-    await this.page.waitForTimeout(2000);
-    expect(this.sucessMessageText).toBeVisible;
+  public async verifySuccessMsg() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
+    expect(await this.sucessMessageText.textContent()).toContain(
+      "You added Apple iPhone X to your shopping cart."
+    );
   }
-  async verifyPrice() {
+  public async verifyPrice() {
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.page.waitForTimeout(2000);
     expect(await this.price.textContent()).toBe("$999.00");
   }
-  async verifySignInLink() {
+  public async verifySignInLink() {
     await this.signInLink.click();
-    await this.page.waitForTimeout(2000);
-    expect(this.headingText.textContent()).toBe("Customer Login");
+    expect(await this.headingText.textContent()).toBe("Customer Login");
   }
-  async verifyCreateAccountLink() {
+  public async verifyCreateAccountLink() {
     await this.createAccountLink.click();
-    await this.page.waitForTimeout(2000);
-    expect(this.headingText.textContent()).toBe("Create New Customer Account");
+    expect(await this.headingText.textContent()).toBe(
+      "Create New Customer Account"
+    );
   }
-  async navigateToCart() {
-    this.verifySuccessMsg();
-    await this.page.waitForTimeout(2000);
+  public async navigateToCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  async navigateToCheckout() {
+  public async navigateToCheckout() {
     this.navigateToCart();
-    await this.page.waitForTimeout(2000);
     await this.proceedToCheckOut.click();
-    const message = await this.page.locator(
+    const message = this.page.locator(
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
     );
     if (message) {
-      await this.page.waitForTimeout(4000);
+      //await this.page.waitForTimeout(4000);
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
-      await this.page.waitForTimeout(4000);
       await this.proceedToCheckOut.click();
       await this.page.waitForTimeout(2000);
-      await expect(this.page).toHaveTitle(/Checkout/);
+      expect(this.page).toHaveTitle("Checkout");
     } else {
       console.log("No error...");
       await this.proceedToCheckOut.click();
     }
   }
-  async placeOrder() {
-    this.navigateToCheckout();
-    await this.page.waitForTimeout(1000);
-    await this.email.fill("bhushan.trivedi@meetanshi.com");
-    await this.fname.fill("bhushan");
-    await this.lname.fill("trivedi");
-    await this.company.fill("Meetanshi");
-    await this.streetAddress.fill(
-      `${faker.location.streetAddress({ useFullAddress: true })}`
-    );
-    await this.country.selectOption("IN");
-    //await this.page.waitForTimeout(2000);
-    await this.state.selectOption("544");
-    //await this.page.waitForTimeout(2000);
-    await this.city.fill("Bhavnagar");
-    await this.zip.fill("364003");
-    await this.phone.fill("123456789");
+  public async placeOrder() {
+    const successMessage = "Thank you for your purchase!";
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
+    await this.shoppingCartLink.click();
+    await this.page.waitForTimeout(3000);
+    await this.proceedToCheckOut.click();
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city()}`);
+    await this.zip.fill(`${faker.location.zipCode()}`);
+    await this.phone.fill(`${faker.phone.number()}`);
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await expect(this.page).toHaveTitle('Success Page')
+    await expect(this.page).toHaveURL(/.*checkout/);
+    expect(await this.sucessOrderMessage.textContent()).toBe(
+      `${successMessage}`
+    );
+    await expect(this.page).toHaveTitle("Success Page");
   }
-  
+  public async placeOrderByMiniCart() {
+    await this.getMenuLink.click();
+    await this.productItemInfo.hover();
+    await this.categoryAddtoCartBtn.click();
+    await this.miniCartItem.click();
+    await this.page.waitForTimeout(1000);
+    await this.miniCheckout.click();
+    await expect(this.page).toHaveTitle("Checkout");
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city()}`);
+    await this.zip.fill(`${faker.location.zipCode()}`);
+    await this.phone.fill(`${faker.phone.number()}`);
+    await this.nextBtn.click();
+    await this.paymentMethod.check();
+    await this.placeOrderBtn.click();
+    await expect(this.page).toHaveTitle("Success Page");
+  }
+  public async brokenImages() {
+    await this.page.waitForTimeout(5000);
+    let images = await this.page.$$("img");
+    const brokenImgs: string[] = [];
+    for (const image of images) {
+      const imageUrl = await image.getAttribute("src");
+
+      // Check if the image URL exists and is not empty
+      if (!imageUrl) {
+        console.warn("Image with no src attribute found:", image);
+        continue; // Skip images without src
+      }
+
+      // Use fetch to perform a HEAD request and check the response status code
+      const response = await this.page.evaluate(async (url) => {
+        const response = await fetch(url, { method: "HEAD" });
+        return response.status;
+      }, imageUrl);
+
+      if (response !== 200) {
+        brokenImgs.push(imageUrl);
+        console.error(`Broken image found: ${imageUrl}`);
+      }
+    }
+
+    if (brokenImgs.length === 0) {
+      console.log("All images loaded successfully!");
+    } else {
+      console.warn(`Found ${brokenImgs.length} broken images:`);
+      console.warn(brokenImgs.join("\n"));
+    }
+  }
 }

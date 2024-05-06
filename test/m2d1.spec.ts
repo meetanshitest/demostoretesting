@@ -1,14 +1,17 @@
-import { test as base, Page } from "@playwright/test";
+import { test as base, expect, Page } from "@playwright/test";
 import { m2d1_Assertions } from "../pages/Assertions/m2d1_Assertions.ts";
 import { globalSetup } from "../config/globalSetup.ts";
 
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
     const webUrl = process.env.WEB_URL?.split(",")[0];
+
     if (!webUrl) {
       throw new Error("Please provide the web url");
     }
     await page.goto(webUrl);
+    const title = page.title();
+    expect(title).not.toContain("error");
     await use(page);
   },
 });
@@ -18,6 +21,9 @@ test.describe("m2d1 test cases", () => {
 
   test.beforeEach(async ({ page }) => {
     m2d1 = new m2d1_Assertions(page);
+  });
+  test.afterEach(async ({ page }) => {
+    await page.close();
   });
   test("Verify Category page Heading", async () => {
     await m2d1.navigateToCategoryPage();
@@ -53,7 +59,13 @@ test.describe("m2d1 test cases", () => {
   test("navigate To Checkout page", async () => {
     await m2d1.navigateToCheckout();
   });
-  test.only("Check place order", async () => {
+  test("Check place order", async () => {
     await m2d1.placeOrder();
+  });
+  test.only("Check place Order By MiniCart", async () => {
+    await m2d1.placeOrderByMiniCart();
+  });
+  test("check broken images", async () => {
+    await m2d1.brokenImages();
   });
 });

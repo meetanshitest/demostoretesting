@@ -1,9 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
+import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
-  [x: string]: any;
+ 
   constructor(page: Page) {
     super(page);
   }
@@ -106,5 +107,60 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       `${successMessage}`
     );
     await expect(this.page).toHaveTitle("Success Page");
+  }
+  public async placeOrderByMiniCart() {
+    await this.getMenuLink.click();
+    await this.productItemInfo.hover();
+    await this.categoryAddtoCartBtn.click();
+    await this.miniCartItem.click();
+    await this.page.waitForTimeout(1000);
+    await this.miniCheckout.click();
+    await expect(this.page).toHaveTitle("Checkout");
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city()}`);
+    await this.zip.fill(`${faker.location.zipCode()}`);
+    await this.phone.fill(`${faker.phone.number()}`);
+    await this.nextBtn.click();
+    await this.paymentMethod.check();
+    await this.placeOrderBtn.click();
+    await expect(this.page).toHaveTitle("Success Page");
+  }
+  public async brokenImages() {
+    await this.page.waitForTimeout(5000);
+    let images = await this.page.$$("img");
+    const brokenImgs: string[] = [];
+    for (const image of images) {
+      const imageUrl = await image.getAttribute("src");
+
+      // Check if the image URL exists and is not empty
+      if (!imageUrl) {
+        console.warn("Image with no src attribute found:", image);
+        continue; // Skip images without src
+      }
+
+      // Use fetch to perform a HEAD request and check the response status code
+      const response = await this.page.evaluate(async (url) => {
+        const response = await fetch(url, { method: "HEAD" });
+        return response.status;
+      }, imageUrl);
+
+      if (response !== 200) {
+        brokenImgs.push(imageUrl);
+        console.error(`Broken image found: ${imageUrl}`);
+      }
+    }
+
+    if (brokenImgs.length === 0) {
+      console.log("All images loaded successfully!");
+    } else {
+      console.warn(`Found ${brokenImgs.length} broken images:`);
+      console.warn(brokenImgs.join("\n"));
+    }
   }
 }

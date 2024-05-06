@@ -1,6 +1,5 @@
 import { type Page, type Locator } from "@playwright/test";
 
-
 export class m2d2_PageObjects {
   protected page: Page;
   readonly getMenuLink: Locator;
@@ -31,11 +30,16 @@ export class m2d2_PageObjects {
   readonly nextBtn: Locator;
   readonly paymentMethod: Locator;
   readonly placeOrderBtn: Locator;
-
+  readonly sucessOrder: Locator;
+  readonly sucessOrderMessage: Locator;
+  readonly productItemInfo: Locator;
+  readonly categoryAddtoCartBtn: Locator;
+  readonly miniCartItem: Locator;
+  readonly miniCheckout: Locator;
   constructor(page: Page) {
     this.page = page;
     this.getMenuLink = page.locator(
-      '//span[normalize-space()="Minimum Order Amount For Customer Group"]'
+      '//span[normalize-space()="Email Attachments"]'
     );
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
@@ -45,8 +49,10 @@ export class m2d2_PageObjects {
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
     this.ItemLocators = page.locator("li>a>span");
-    this.signInLink = page.getByRole("link",{name:"Sign In"});
-    this.createAccountLink = page.getByRole("link",{name:"Create an Account"});
+    this.signInLink = page.getByRole("link", { name: "Sign In" });
+    this.createAccountLink = page.getByRole("link", {
+      name: "Create an Account",
+    });
     this.shoppingCartLink = page.getByRole("link", { name: "Shopping Cart" });
     this.proceedToCheckOut = page.getByRole("button", {
       name: "Proceed to Checkout",
@@ -58,7 +64,7 @@ export class m2d2_PageObjects {
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
-    this.email = page.locator("#customer-email");
+    this.email = page.locator("//input[@id='customer-email']");
     this.fname = page.locator('input[name="firstname"]');
     this.lname = page.locator('input[name="lastname"]');
     this.company = page.locator('input[name="company"]');
@@ -71,5 +77,16 @@ export class m2d2_PageObjects {
     this.nextBtn = page.getByRole("button", { name: "Next" });
     this.paymentMethod = page.locator("#checkmo");
     this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
+    this.sucessOrderMessage = page
+      .locator('[data-ui-id="page-title-wrapper"]')
+      .filter({ hasText: "Thank you for your purchase!" });
+    this.productItemInfo = page.locator("//img[@alt='Apple iPhone X']");
+    this.categoryAddtoCartBtn = page
+      .locator("#product-item-info_4")
+      .getByRole("button", { name: "Add to Cart" });
+    this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
+    this.miniCheckout = page.getByRole("button", {
+      name: "Proceed to Checkout",
+    });
   }
 }

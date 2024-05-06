@@ -32,7 +32,10 @@ export class m2d1_PageObjects {
   readonly placeOrderBtn: Locator;
   readonly sucessOrder: Locator;
   readonly sucessOrderMessage: Locator;
-
+  readonly productItemInfo: Locator;
+  readonly categoryAddtoCartBtn: Locator;
+  readonly miniCartItem: Locator;
+  readonly miniCheckout: Locator;
   constructor(page: Page) {
     this.page = page;
     this.getMenuLink = page.locator(
@@ -77,5 +80,13 @@ export class m2d1_PageObjects {
     this.sucessOrderMessage = page
       .locator('[data-ui-id="page-title-wrapper"]')
       .filter({ hasText: "Thank you for your purchase!" });
+    this.productItemInfo = page.locator("//img[@alt='Apple iPhone X']");
+    this.categoryAddtoCartBtn = page
+      .locator("#product-item-info_4")
+      .getByRole("button", { name: "Add to Cart" });
+    this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
+    this.miniCheckout = page.getByRole("button", {
+      name: "Proceed to Checkout",
+    });
   }
 }
