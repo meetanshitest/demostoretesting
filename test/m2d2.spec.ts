@@ -1,6 +1,9 @@
 import { test as base, expect, Page } from "@playwright/test";
 import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
 import { globalSetup } from "../config/globalSetup.ts";
+
+let m2d2: m2d2_Assertions;
+
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
     const webUrl = process.env.WEB_URL?.split(",")[1];
@@ -12,11 +15,12 @@ const test = base.extend<{ page: Page }>({
     const title = page.title();
     expect(title).not.toContain("error");
     await use(page);
+   
   },
 });
 
 test.describe("m2d2 test cases", () => {
-  let m2d2: m2d2_Assertions;
+  
   test.beforeEach(async ({ page }) => {
     m2d2 = new m2d2_Assertions(page);
     await m2d2.loginPage()
