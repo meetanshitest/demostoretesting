@@ -28,7 +28,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    expect(this.page).toHaveTitle(/Apple iPhone X/);
+    expect(this.page).toHaveTitle("Men's Aviators");
     expect(this.page).toHaveURL(/.*apple-iphone-x/);
   }
   public async addProductInCart() {

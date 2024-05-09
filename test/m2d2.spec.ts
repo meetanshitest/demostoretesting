@@ -30,7 +30,7 @@ test.describe("m2d2 test cases", () => {
   });
   test.only("Verify Category page Heading", async () => {
     await m2d2.navigateToCategoryPage();
-    console.log("hello");
+    
   });
   test("Verify Product page Heading", async () => {
     await m2d2.navigateToProductPage();

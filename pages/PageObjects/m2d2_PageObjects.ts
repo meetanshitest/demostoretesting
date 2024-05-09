@@ -38,11 +38,9 @@ export class m2d2_PageObjects {
   readonly miniCheckout: Locator;
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator(
-      '//span[normalize-space()="Email Attachments"]'
-    );
+    this.getMenuLink = page.getByText("Bulk SMS Marketing");
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
+    this.productLink = page.getByText("Men's Aviators");
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );

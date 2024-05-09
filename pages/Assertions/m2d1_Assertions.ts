@@ -4,7 +4,6 @@ import { Page, expect } from "@playwright/test";
 import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
- 
   constructor(page: Page) {
     super(page);
   }
@@ -24,8 +23,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    expect(this.page).toHaveTitle(/Apple iPhone X/);
-    expect(this.page).toHaveURL(/.*apple-iphone-x/);
+    await expect(this.page).toHaveTitle("Apple iPhone X");
+    await expect(this.page).toHaveURL(/.*apple-iphone-x/);
   }
   public async addProductInCart() {
     await this.getMenuLink.click();
@@ -64,7 +63,10 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
   public async navigateToCheckout() {
-    this.navigateToCart();
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
+    await this.shoppingCartLink.click();
     await this.proceedToCheckOut.click();
     const message = this.page.locator(
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
@@ -74,8 +76,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
       await this.proceedToCheckOut.click();
-      await this.page.waitForTimeout(2000);
-      expect(this.page).toHaveTitle("Checkout");
+      //await this.page.waitForTimeout(2000);
+      await expect(this.page).toHaveTitle("Checkout");
     } else {
       console.log("No error...");
       await this.proceedToCheckOut.click();
