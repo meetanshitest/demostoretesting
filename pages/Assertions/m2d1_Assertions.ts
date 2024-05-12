@@ -4,6 +4,7 @@ import { Page, expect } from "@playwright/test";
 import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
+ 
   constructor(page: Page) {
     super(page);
   }
@@ -14,11 +15,10 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       "Minimum Order Amount For Customer Group"
     );
     await expect(this.page).toHaveTitle(
-      /Minimum Order Amount For Customer Group/
+      "Minimum Order Amount For Customer Group"
     );
     await expect(this.page).toHaveURL(/.*min-order-amount/);
   }
-
   public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
@@ -32,9 +32,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.addToCart.click();
   }
   public async verifySuccessMsg() {
-    await this.getMenuLink.click();
-    await this.productLink.click();
-    await this.addToCart.click();
+    await this.addProductInCart();
     expect(await this.sucessMessageText.textContent()).toContain(
       "You added Apple iPhone X to your shopping cart."
     );
@@ -42,7 +40,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   public async verifyPrice() {
     await this.getMenuLink.click();
     await this.productLink.click();
-    await this.page.waitForTimeout(2000);
     expect(await this.price.textContent()).toBe("$999.00");
   }
   public async verifySignInLink() {
@@ -56,6 +53,11 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     );
   }
   public async navigateToCart() {
+    await this.addProductInCart();
+    await this.shoppingCartLink.click();
+    await expect(this.page).toHaveTitle("Shopping Cart");
+  }
+  public async navigateToCheckout() {
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.addToCart.click();
@@ -63,10 +65,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
   public async navigateToCheckout() {
-    await this.getMenuLink.click();
-    await this.productLink.click();
-    await this.addToCart.click();
-    await this.shoppingCartLink.click();
+    this.navigateToCart();
     await this.proceedToCheckOut.click();
     const message = this.page.locator(
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
@@ -76,8 +75,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
       await this.proceedToCheckOut.click();
-      //await this.page.waitForTimeout(2000);
-      await expect(this.page).toHaveTitle("Checkout");
+      await this.page.waitForTimeout(2000);
+      expect(this.page).toHaveTitle("Checkout");
     } else {
       console.log("No error...");
       await this.proceedToCheckOut.click();
@@ -165,4 +164,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       console.warn(brokenImgs.join("\n"));
     }
   }
+
+
+  
 }

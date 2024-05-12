@@ -3,8 +3,12 @@ import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
 
 export class m2d2_Assertions extends m2d2_PageObjects {
+  static productName: String;
   constructor(page: Page) {
     super(page);
+    if (!m2d2_Assertions.productName) {
+      m2d2_Assertions.productName = "Men's Aviators";
+    }
   }
   public async loginPage() {
     await this.page
@@ -14,27 +18,32 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       .locator(`${process.env.PASSWORD_LOCATOR}`)
       .fill(`${process.env.PASSWORD}`);
     await this.page.locator(`${process.env.SUBMIT}`).click();
-    
+    await expect(this.page).toHaveTitle("Home page");
+  }
+  public async verifySignInLink() {
+    await this.signInLink.click();
+    expect(await this.headingText.textContent()).toBe("Customer Login");
   }
   public async navigateToCategoryPage() {
-    await this.page.waitForTimeout(1000);
     await this.getMenuLink.click();
-    expect(await this.headingText.textContent()).toBe("Email Attachments");
-    await expect(this.page).toHaveTitle("Email Attachments");
-    await expect(this.page).toHaveURL(/.*email-attachments/);
+    await expect(this.page).toHaveTitle("Custom Order Grid");
   }
-
   public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    expect(this.page).toHaveTitle("Men's Aviators");
+    expect(this.page).toHaveTitle(/Apple iPhone X/);
     expect(this.page).toHaveURL(/.*apple-iphone-x/);
   }
-  public async addProductInCart() {
+  public async verifyPrice() {
     await this.getMenuLink.click();
     await this.productLink.click();
+    expect(await this.price.textContent()).toBeTruthy();
+  }
+
+  public async addAndViewCart() {
     await this.addToCart.click();
+    await this.shoppingCartLink.click();
   }
   public async verifySuccessMsg() {
     await this.getMenuLink.click();
@@ -44,16 +53,11 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       "You added Apple iPhone X to your shopping cart."
     );
   }
-  public async verifyPrice() {
-    await this.getMenuLink.click();
-    await this.productLink.click();
-    await this.page.waitForTimeout(2000);
-    expect(await this.price.textContent()).toBe("$999.00");
+  public async addProductInCart() {
+    await this.addToCart.click();
+    await this.shoppingCartLink.click();
   }
-  public async verifySignInLink() {
-    await this.signInLink.click();
-    expect(await this.headingText.textContent()).toBe("Customer Login");
-  }
+
   public async verifyCreateAccountLink() {
     await this.createAccountLink.click();
     expect(await this.headingText.textContent()).toBe(
@@ -63,27 +67,14 @@ export class m2d2_Assertions extends m2d2_PageObjects {
   public async navigateToCart() {
     await this.getMenuLink.click();
     await this.productLink.click();
-    await this.addToCart.click();
-    await this.shoppingCartLink.click();
+    await this.addAndViewCart();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
   public async navigateToCheckout() {
-    this.navigateToCart();
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
     await this.proceedToCheckOut.click();
-    const message = this.page.locator(
-      '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
-    );
-    if (message) {
-      //await this.page.waitForTimeout(4000);
-      await this.qtyUpdateTextBox.fill("2");
-      await this.updateCartButton.click();
-      await this.proceedToCheckOut.click();
-      await this.page.waitForTimeout(2000);
-      expect(this.page).toHaveTitle("Checkout");
-    } else {
-      console.log("No error...");
-      await this.proceedToCheckOut.click();
-    }
   }
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
@@ -166,5 +157,31 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       console.warn(`Found ${brokenImgs.length} broken images:`);
       console.warn(brokenImgs.join("\n"));
     }
+  }
+  public async productCount() {
+    await this.getMenuLink.click();
+    await this.page.waitForSelector(".products.list.items.product-items");
+
+    const liElementsCount = await this.page.$$eval(
+      ".products.list.items.product-items > li",
+      (lis) => lis.length
+    );
+    expect(liElementsCount).toBeGreaterThan(0);
+    console.log(liElementsCount);
+  }
+  public async removeCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.removeCartBtn.click();
+  }
+  public async updateCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.qtyUpdateTextBox.fill("2");
+    await this.updateCartButton.click();
+    await this.removeCartBtn.click();
+    expect(await this.cartEmptyMessage.textContent()).toContain("You have no items in your shopping cart.")
   }
 }

@@ -38,9 +38,7 @@ export class m2d1_PageObjects {
   readonly miniCheckout: Locator;
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator(
-      '//span[normalize-space()="Minimum Order Amount For Customer Group"]'
-    );
+    this.getMenuLink = page.getByText("Minimum Order Amount For Customer Group");
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(

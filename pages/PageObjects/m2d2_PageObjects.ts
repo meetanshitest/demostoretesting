@@ -36,17 +36,22 @@ export class m2d2_PageObjects {
   readonly categoryAddtoCartBtn: Locator;
   readonly miniCartItem: Locator;
   readonly miniCheckout: Locator;
+  readonly subtotal: Locator;
+  readonly removeCartBtn: Locator;
+  readonly cartEmptyMessage: Locator;
+
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.getByText("Bulk SMS Marketing");
+    this.getMenuLink = page.locator(
+      '//span[normalize-space()="Email Attachments"]'
+    );
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLink = page.getByText("Men's Aviators");
+    this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
-    this.ItemLocators = page.locator("li>a>span");
     this.signInLink = page.getByRole("link", { name: "Sign In" });
     this.createAccountLink = page.getByRole("link", {
       name: "Create an Account",
@@ -56,9 +61,7 @@ export class m2d2_PageObjects {
       name: "Proceed to Checkout",
     });
     this.qtyUpdateTextBox = page.getByRole("spinbutton", { name: "Qty" });
-    this.updateCartButton = page.locator(
-      "//span[normalize-space()='Update Shopping Cart']"
-    );
+    this.updateCartButton = page.locator("//span[normalize-space()='Update Shopping Cart']")
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
@@ -85,6 +88,11 @@ export class m2d2_PageObjects {
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
     this.miniCheckout = page.getByRole("button", {
       name: "Proceed to Checkout",
+    });
+    this.subtotal = page.locator("span .price");
+    this.removeCartBtn = page.locator("//a[@class='action action-delete']");
+    this.cartEmptyMessage = page.locator(".cart-empty", {
+      hasText: "You have no items in your shopping cart.",
     });
   }
 }
