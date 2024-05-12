@@ -64,24 +64,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  public async navigateToCheckout() {
-    this.navigateToCart();
-    await this.proceedToCheckOut.click();
-    const message = this.page.locator(
-      '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
-    );
-    if (message) {
-      //await this.page.waitForTimeout(4000);
-      await this.qtyUpdateTextBox.fill("2");
-      await this.updateCartButton.click();
-      await this.proceedToCheckOut.click();
-      await this.page.waitForTimeout(2000);
-      expect(this.page).toHaveTitle("Checkout");
-    } else {
-      console.log("No error...");
-      await this.proceedToCheckOut.click();
-    }
-  }
+  
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
