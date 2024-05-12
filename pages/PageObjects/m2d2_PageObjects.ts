@@ -42,11 +42,9 @@ export class m2d2_PageObjects {
 
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator(
-      '//span[normalize-space()="Email Attachments"]'
-    );
-    this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
+    this.getMenuLink = page.locator('#ui-id-6')
+    this.addToCart = page.locator("#product-addtocart-button")
+    this.productLink = page.locator(".product-item-link",{hasText:"Men's Aviators"});
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );

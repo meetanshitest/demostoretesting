@@ -182,6 +182,8 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.qtyUpdateTextBox.fill("2");
     await this.updateCartButton.click();
     await this.removeCartBtn.click();
-    expect(await this.cartEmptyMessage.textContent()).toContain("You have no items in your shopping cart.")
+    expect(await this.cartEmptyMessage.textContent()).toContain(
+       "You have no items in your shopping cart."
+    );
   }
 }
