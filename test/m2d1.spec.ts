@@ -53,9 +53,6 @@ test.describe("m2d1 test cases", () => {
   test("Verify Cart Page Title", async () => {
     await m2d1.navigateToCart();
   });
-  test("Check Update Cart based on condition", async () => {
-    await m2d1.navigateToCheckout();
-  });
   test("navigate To Checkout page", async () => {
     await m2d1.navigateToCheckout();
   });
