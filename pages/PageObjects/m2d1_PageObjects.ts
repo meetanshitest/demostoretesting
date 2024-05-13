@@ -36,9 +36,15 @@ export class m2d1_PageObjects {
   readonly categoryAddtoCartBtn: Locator;
   readonly miniCartItem: Locator;
   readonly miniCheckout: Locator;
+  readonly subtotal: Locator;
+  readonly removeCartBtn: Locator;
+  readonly cartEmptyMessage: Locator;
+
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.getByText("Minimum Order Amount For Customer Group");
+    this.getMenuLink = page.getByText(
+      "Minimum Order Amount For Customer Group"
+    );
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(
@@ -85,6 +91,11 @@ export class m2d1_PageObjects {
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
     this.miniCheckout = page.getByRole("button", {
       name: "Proceed to Checkout",
+    });
+    this.subtotal = page.locator("span .price");
+    this.removeCartBtn = page.locator("//a[@class='action action-delete']");
+    this.cartEmptyMessage = page.locator(".cart-empty", {
+      hasText: "You have no items in your shopping cart.",
     });
   }
 }

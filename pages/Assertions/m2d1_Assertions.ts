@@ -4,7 +4,6 @@ import { Page, expect } from "@playwright/test";
 import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
- 
   constructor(page: Page) {
     super(page);
   }
@@ -25,6 +24,10 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
     await expect(this.page).toHaveTitle("Apple iPhone X");
     await expect(this.page).toHaveURL(/.*apple-iphone-x/);
+  }
+  public async addAndViewCart() {
+    await this.addToCart.click();
+    await this.shoppingCartLink.click();
   }
   public async addProductInCart() {
     await this.getMenuLink.click();
@@ -64,7 +67,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  
+
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
@@ -147,7 +150,32 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       console.warn(brokenImgs.join("\n"));
     }
   }
+  public async productCount() {
+    await this.getMenuLink.click();
+    await this.page.waitForSelector(".products.list.items.product-items");
 
-
-  
+    const liElementsCount = await this.page.$$eval(
+      ".products.list.items.product-items > li",
+      (lis) => lis.length
+    );
+    expect(liElementsCount).toBeGreaterThan(0);
+    console.log(liElementsCount);
+  }
+  public async removeCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.removeCartBtn.click();
+  }
+  public async updateCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.qtyUpdateTextBox.fill("2");
+    await this.updateCartButton.click();
+    await this.removeCartBtn.click();
+    expect(await this.cartEmptyMessage.textContent()).toContain(
+      "You have no items in your shopping cart."
+    );
+  }
 }

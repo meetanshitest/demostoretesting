@@ -56,7 +56,7 @@ test.describe("m2d1 test cases", () => {
   test("Check Update Cart based on condition", async () => {
     await m2d1.navigateToCheckout();
   });
-  test.only("navigate To Checkout page", async () => {
+  test("navigate To Checkout page", async () => {
     await m2d1.navigateToCheckout();
   });
   test("Check place order", async () => {
@@ -68,5 +68,14 @@ test.describe("m2d1 test cases", () => {
   test("check broken images", async () => {
     await m2d1.brokenImages();
   });
+  test("Verify product visibility",async()=>{
+    await m2d1.productCount();
+  })
+  test("update cart",async()=>{
+    await m2d1.updateCart();
+  })
+  test("removeCart",async()=>{
+    await m2d1.removeCart();
+  })
  
 });
