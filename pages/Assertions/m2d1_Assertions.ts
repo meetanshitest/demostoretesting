@@ -152,8 +152,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    await this.page.waitForSelector(".products.list.items.product-items");
-
     const liElementsCount = await this.page.$$eval(
       ".products.list.items.product-items > li",
       (lis) => lis.length
