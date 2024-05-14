@@ -209,7 +209,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       const productDisplayElement = await this.page.$(
         `//*[contains(text(), '${textContent}')]`
       );
-
       if (productDisplayElement) {
         console.log("Product display found for:", textContent);
         // Click on the product display element
