@@ -176,4 +176,48 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       "You have no items in your shopping cart."
     );
   }
+  public async categoryCount() {
+    await this.page.waitForSelector("#ui-id-1 li");
+
+    // Get the length of the list items
+    const liElementsLength = await this.page.$$eval(
+      "#ui-id-1 li",
+      (lis) => lis.length
+    );
+
+    if (liElementsLength > 0) {
+      console.log(
+        "List items length is greater than zero.",
+        `${liElementsLength}`
+      );
+    } else {
+      console.log("List items length is not greater than zero.");
+    }
+    expect(liElementsLength).toBeGreaterThan(5);
+    const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
+      lis.map((li) => li.textContent?.trim()).filter(Boolean)
+    );
+    liTextContents.forEach((textContent) => console.log(textContent));
+  }
+  public async isProductVisibleForAllMenus() {
+    await this.page.waitForSelector("#ui-id-1 li");
+    const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
+      lis.map((li) => li.textContent?.trim()).filter(Boolean)
+    );
+    for (const textContent of liTextContents) {
+      console.log("Checking for:", textContent);
+      const productDisplayElement = await this.page.$(
+        `//*[contains(text(), '${textContent}')]`
+      );
+
+      if (productDisplayElement) {
+        console.log("Product display found for:", textContent);
+        // Click on the product display element
+        await productDisplayElement.click();
+        console.log("Clicked on product display for:", textContent);
+      } else {
+        console.log("Product display not found for:", textContent);
+      }
+    }
+  }
 }

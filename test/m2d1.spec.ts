@@ -25,6 +25,9 @@ test.describe("m2d1 test cases", () => {
   test.afterEach(async ({ page }) => {
     await page.close();
   });
+  test("category count",async()=>{
+    await m2d1.categoryCount()
+  })
   test("Verify Category page Heading", async () => {
     await m2d1.navigateToCategoryPage();
   });
@@ -74,5 +77,9 @@ test.describe("m2d1 test cases", () => {
   test("removeCart",async()=>{
     await m2d1.removeCart();
   })
+  test("check products are visible or not for all categories",async()=>{
+    await m2d1.isProductVisibleForAllMenus();
+  })
+  
  
 });
