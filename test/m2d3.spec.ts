@@ -62,7 +62,7 @@ test.describe("m2d3 test cases", () => {
   test("Check place order", async () => {
     await m2d3.placeOrder();
   });
-  test.only("Check place Order By MiniCart", async () => {
+  test("Check place Order By MiniCart", async () => {
     await m2d3.placeOrderByMiniCart();
   });
   test("check broken images", async () => {
