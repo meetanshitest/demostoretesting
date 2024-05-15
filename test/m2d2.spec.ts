@@ -26,7 +26,7 @@ test.describe("m2d2 test cases", () => {
   test.afterEach(async ({ page }) => {
     await page.close();
   });
-  test.only("Verify Category page Heading", async () => {
+  test("Verify Category page Heading", async () => {
     await m2d2.navigateToCategoryPage();
     console.log("hello");
   });
