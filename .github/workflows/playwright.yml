@@ -8,6 +8,13 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      WEB_URL: ${{ secrets.WEB_URL }}
+      EMAIL_LOCATOR: ${{ secrets.EMAIL_LOCATOR }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      PASSWORD_LOCATOR: ${{ secrets.PASSWORD_LOCATOR }}
+      SUBMIT: ${{ secrets.SUBMIT }}
+      EMAIL: ${{ secrets.EMAIL }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -23,15 +30,6 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     
-    - name: Set environment variables
-      run: |
-        echo "WEB_URL=${{ vars.WEB_URL }}" >> $GITHUB_ENV
-        echo "EMAIL_LOCATOR=${{ vars.EMAIL_LOCATOR }}" >> $GITHUB_ENV
-        echo "PASSWORD=${{ vars.PASSWORD }}" >> $GITHUB_ENV
-        echo "PASSWORD_LOCATOR=${{ vars.PASSWORD_LOCATOR }}" >> $GITHUB_ENV
-        echo "SUBMIT=${{ vars.SUBMIT }}" >> $GITHUB_ENV
-        echo "EMAIL=${{ vars.EMAIL }}" >> $GITHUB_ENV
-
     - name: Run Playwright tests
       run: npx playwright test
     
