@@ -1,4 +1,4 @@
-name: Example Workflow
+name: Secret and Variable Example Workflow
 
 on: [push]
 
@@ -9,8 +9,8 @@ jobs:
   example-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out the repository
         uses: actions/checkout@v2
 
-      - name: Use Variable
-        run: echo "Variable is ${{ env.MY_VARIABLE }}"
+      - name: Print Variable
+        run: echo "Variable is ${{ MY_VARIABLE }}"
