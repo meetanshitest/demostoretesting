@@ -9,12 +9,12 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
-      WEB_URL: ${{ env.WEB_URL }}
-      EMAIL_LOCATOR: ${{ env.EMAIL_LOCATOR }}
-      PASSWORD: ${{ env.PASSWORD }}
-      PASSWORD_LOCATOR: ${{ env.PASSWORD_LOCATOR }}
-      SUBMIT: ${{ env.SUBMIT }}
-      EMAIL: ${{ env.EMAIL }}
+      WEB_URL: ${{ secrets.WEB_URL }}
+      EMAIL_LOCATOR: ${{ secrets.EMAIL_LOCATOR }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      PASSWORD_LOCATOR: ${{ secrets.PASSWORD_LOCATOR }}
+      SUBMIT: ${{ secrets.SUBMIT }}
+      EMAIL: ${{ secrets.EMAIL }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
