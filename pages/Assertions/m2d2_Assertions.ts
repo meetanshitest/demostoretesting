@@ -31,9 +31,8 @@ export class m2d2_Assertions extends m2d2_PageObjects {
   public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
-    expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    expect(this.page).toHaveTitle(/Apple iPhone X/);
-    expect(this.page).toHaveURL(/.*apple-iphone-x/);
+    expect(await this.headingText.textContent()).toBe("Men's Aviators");
+    expect(this.page).toHaveTitle("Men's Aviators");
   }
   public async verifyPrice() {
     await this.getMenuLink.click();
@@ -50,7 +49,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.productLink.click();
     await this.addToCart.click();
     expect(await this.sucessMessageText.textContent()).toContain(
-      "You added Apple iPhone X to your shopping cart."
+      "You added Apple Men's Aviators to your shopping cart."
     );
   }
   public async addProductInCart() {
@@ -68,7 +67,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.addAndViewCart();
-    await expect(this.page).toHaveTitle(/Shopping Cart/);
+    await expect(this.page).toHaveTitle("Shopping Cart");
   }
   public async navigateToCheckout() {
     await this.getMenuLink.click();

@@ -43,8 +43,8 @@ export class m2d2_PageObjects {
   constructor(page: Page) {
     this.page = page;
     this.getMenuLink = page.locator('#ui-id-6')
-    this.addToCart = page.locator("#product-addtocart-button")
-    this.productLink = page.locator(".product-item-link",{hasText:"Men's Aviators"});
+    this.addToCart = page.getByRole("button",{name:'Add to Cart'}).nth(0)
+    this.productLink = page.getByRole("link",{name:"Men's Aviators"});
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
