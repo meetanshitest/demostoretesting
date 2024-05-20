@@ -10,7 +10,7 @@ export class m2d2_PageObjects {
   readonly price: Locator;
   readonly menuItem: Locator;
   readonly ItemLocators: Locator;
-  readonly signInLink: Locator;
+  readonly signOutLink: Locator;
   readonly createAccountLink: Locator;
   readonly shoppingCartLink: Locator;
   readonly proceedToCheckOut: Locator;
@@ -39,18 +39,20 @@ export class m2d2_PageObjects {
   readonly subtotal: Locator;
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
+  readonly switchLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator('#ui-id-6')
-    this.addToCart = page.getByRole("button",{name:'Add to Cart'}).nth(0)
-    this.productLink = page.getByRole("link",{name:"Men's Aviators"});
+    this.getMenuLink = page.getByText("Custom Order Grid").nth(0);
+    this.addToCart = page.getByRole("button", { name: "Add to Cart" });
+    this.productLink = page.getByText("Men's Aviators");
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
-    this.signInLink = page.getByRole("link", { name: "Sign In" });
+    this.switchLink = page.getByRole('banner').locator('button').filter({ hasText: 'Change' })
+    this.signOutLink = page.getByRole('link', { name: 'Sign Out' })
     this.createAccountLink = page.getByRole("link", {
       name: "Create an Account",
     });
@@ -59,7 +61,9 @@ export class m2d2_PageObjects {
       name: "Proceed to Checkout",
     });
     this.qtyUpdateTextBox = page.getByRole("spinbutton", { name: "Qty" });
-    this.updateCartButton = page.locator("//span[normalize-space()='Update Shopping Cart']")
+    this.updateCartButton = page.locator(
+      "//span[normalize-space()='Update Shopping Cart']"
+    );
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );

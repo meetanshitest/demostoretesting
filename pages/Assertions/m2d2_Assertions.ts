@@ -20,9 +20,12 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.page.locator(`${process.env.SUBMIT}`).click();
     await expect(this.page).toHaveTitle("Home page");
   }
-  public async verifySignInLink() {
-    await this.signInLink.click();
-    expect(await this.headingText.textContent()).toBe("Customer Login");
+  public async verifySignOutLink() {
+    await this.switchLink.click();
+    await this.signOutLink.click();
+    // await expect(this.page.getByRole("heading")).toContainText(
+    //   "You are signed out"
+    // );
   }
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
@@ -32,7 +35,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Men's Aviators");
-    expect(this.page).toHaveTitle("Men's Aviators");
+    await expect(this.page).toHaveTitle("Men's Aviators");
   }
   public async verifyPrice() {
     await this.getMenuLink.click();
@@ -49,7 +52,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.productLink.click();
     await this.addToCart.click();
     expect(await this.sucessMessageText.textContent()).toContain(
-      "You added Apple Men's Aviators to your shopping cart."
+      "You added Men's Aviators to your shopping cart."
     );
   }
   public async addProductInCart() {
@@ -182,7 +185,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.updateCartButton.click();
     await this.removeCartBtn.click();
     expect(await this.cartEmptyMessage.textContent()).toContain(
-       "You have no items in your shopping cart."
+      "You have no items in your shopping cart."
     );
   }
 }

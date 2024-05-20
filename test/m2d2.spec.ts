@@ -33,7 +33,7 @@ test.describe("m2d2 test cases", () => {
   test("Verify Product page Heading", async () => {
     await m2d2.navigateToProductPage();
   });
-  test("Verify Add To Cart Button", async () => {
+  test("Verify Success Message", async () => {
     await m2d2.verifySuccessMsg();
   });
   test("Check Price is visible or not", async () => {
@@ -43,8 +43,8 @@ test.describe("m2d2 test cases", () => {
     await m2d2.navigateToCart();
   });
 
-  test("Check SignIn link", async () => {
-    await m2d2.verifySignInLink();
+  test("Check Sign Out link", async () => {
+    await m2d2.verifySignOutLink();
   });
   test("Check Create Account link", async () => {
     await m2d2.verifyCreateAccountLink();
