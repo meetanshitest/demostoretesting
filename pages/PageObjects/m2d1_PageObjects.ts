@@ -39,6 +39,7 @@ export class m2d1_PageObjects {
   readonly subtotal: Locator;
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
+  readonly warnMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -68,6 +69,7 @@ export class m2d1_PageObjects {
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
+    this.warnMessage=page.locator(".message info empty");
     this.email = page.locator("//input[@id='customer-email']");
     this.fname = page.locator('input[name="firstname"]');
     this.lname = page.locator('input[name="lastname"]');

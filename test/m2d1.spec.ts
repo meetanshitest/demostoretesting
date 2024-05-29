@@ -4,7 +4,7 @@ import { globalSetup } from "../config/globalSetup.ts";
 
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
-    const webUrl = process.env.WEB_URL?.split(",")[0];
+    const webUrl = process.env.WEB_URL?.split(",")[5];
 
     if (!webUrl) {
       throw new Error("Please provide the web url");
@@ -79,7 +79,5 @@ test.describe("m2d1 test cases", () => {
   })
   test("check products are visible or not for all categories",async()=>{
     await m2d1.isProductVisibleForAllMenus();
-  })
-  
- 
+  }) 
 });

@@ -200,7 +200,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     liTextContents.forEach((textContent) => console.log(textContent));
   }
   public async isProductVisibleForAllMenus() {
-    await this.page.waitForSelector("#ui-id-1 li");
+    await this.page.locator("#ui-id-1 li").first().waitFor();
     const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
       lis.map((li) => li.textContent?.trim()).filter(Boolean)
     );
@@ -216,6 +216,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
         console.log("Clicked on product display for:", textContent);
       } else {
         console.log("Product display not found for:", textContent);
+        const msg="We can't find products matching the selection."
+        expect(await this.warnMessage.textContent()).toBe(msg)
       }
     }
   }
