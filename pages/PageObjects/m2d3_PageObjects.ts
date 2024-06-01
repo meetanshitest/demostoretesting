@@ -1,6 +1,5 @@
 import { type Page, type Locator } from "@playwright/test";
 
-
 export class m2d3_PageObjects {
   protected page: Page;
   readonly getMenuLink: Locator;
@@ -31,6 +30,9 @@ export class m2d3_PageObjects {
   readonly nextBtn: Locator;
   readonly paymentMethod: Locator;
   readonly placeOrderBtn: Locator;
+  readonly subtotal: Locator;
+  readonly removeCartBtn: Locator;
+  readonly cartEmptyMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -45,8 +47,10 @@ export class m2d3_PageObjects {
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
     this.ItemLocators = page.locator("li>a>span");
-    this.signInLink = page.getByRole("link",{name:"Sign In"});
-    this.createAccountLink = page.getByRole("link",{name:"Create an Account"});
+    this.signInLink = page.getByRole("link", { name: "Sign In" });
+    this.createAccountLink = page.getByRole("link", {
+      name: "Create an Account",
+    });
     this.shoppingCartLink = page.getByRole("link", { name: "Shopping Cart" });
     this.proceedToCheckOut = page.getByRole("button", {
       name: "Proceed to Checkout",
@@ -71,5 +75,10 @@ export class m2d3_PageObjects {
     this.nextBtn = page.getByRole("button", { name: "Next" });
     this.paymentMethod = page.locator("#checkmo");
     this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
+    this.subtotal = page.locator("span .price");
+    this.removeCartBtn = page.locator("//a[@class='action action-delete']");
+    this.cartEmptyMessage = page.locator(".cart-empty", {
+      hasText: "You have no items in your shopping cart.",
+    });
   }
 }

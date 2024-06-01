@@ -73,6 +73,8 @@ test.describe("m2d2 test cases", () => {
   test("removeCart",async()=>{
     await m2d2.removeCart();
   })
-  
+  test("check products should visible for all categories",async()=>{
+    await m2d2.isProductVisibleForAllMenus();
+  }) 
 });
   

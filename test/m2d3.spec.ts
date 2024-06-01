@@ -68,4 +68,16 @@ test.describe("m2d3 test cases", () => {
   test("check broken images", async () => {
     await m2d3.brokenImages();
   });
+  test("Verify product visibility",async()=>{
+    await m2d3.productCount();
+  })
+  test("update cart",async()=>{
+    await m2d3.updateCart();
+  })
+  test("removeCart",async()=>{
+    await m2d3.removeCart();
+  })
+  test("check products should visible for all categories",async()=>{
+    await m2d3.isProductVisibleForAllMenus();
+  }) 
 });

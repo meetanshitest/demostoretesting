@@ -188,4 +188,19 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       "You have no items in your shopping cart."
     );
   }
+  public async isProductVisibleForAllMenus() {
+    await this.page.locator("#ui-id-1 li").first().waitFor();
+    const categories = this.page.locator("#ui-id-1 li");
+    const count = await categories.count();
+    console.log(count);
+
+    for (let i = 0; i < count; i++) {
+      await categories.nth(i).click();
+      await this.page.locator("li.item.product.product-item").first().waitFor();
+      const products = this.page.locator(
+        "ol.products.list.items.product-items"
+      );
+      await expect(products).toBeVisible();
+    }
+  }
 }

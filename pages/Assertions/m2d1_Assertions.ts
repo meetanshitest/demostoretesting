@@ -201,24 +201,17 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async isProductVisibleForAllMenus() {
     await this.page.locator("#ui-id-1 li").first().waitFor();
-    const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
-      lis.map((li) => li.textContent?.trim()).filter(Boolean)
-    );
-    for (const textContent of liTextContents) {
-      console.log("Checking for:", textContent);
-      const productDisplayElement = await this.page.$(
-        `//*[contains(text(), '${textContent}')]`
+    const categories = this.page.locator("#ui-id-1 li");
+    const count = await categories.count();
+    console.log(count);
+
+    for (let i = 0; i < count; i++) {
+      await categories.nth(i).click();
+      await this.page.locator("li.item.product.product-item").first().waitFor();
+      const products = this.page.locator(
+        "ol.products.list.items.product-items"
       );
-      if (productDisplayElement) {
-        console.log("Product display found for:", textContent);
-        // Click on the product display element
-        await productDisplayElement.click();
-        console.log("Clicked on product display for:", textContent);
-      } else {
-        console.log("Product display not found for:", textContent);
-        const msg="We can't find products matching the selection."
-        expect(await this.warnMessage.textContent()).toBe(msg)
-      }
+      await expect(products).toBeVisible();
     }
   }
 }

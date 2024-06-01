@@ -2,7 +2,6 @@ import { faker } from "@faker-js/faker";
 import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
 
-
 export class m2d3_Assertions extends m2d3_PageObjects {
   [x: string]: any;
   constructor(page: Page) {
@@ -161,6 +160,49 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     } else {
       console.warn(`Found ${brokenImgs.length} broken images:`);
       console.warn(brokenImgs.join("\n"));
+    }
+  }
+  public async productCount() {
+    await this.getMenuLink.click();
+    await this.page.waitForSelector(".products.list.items.product-items");
+
+    const liElementsCount = await this.page.$$eval(
+      ".products.list.items.product-items > li",
+      (lis) => lis.length
+    );
+    expect(liElementsCount).toBeGreaterThan(0);
+    console.log(liElementsCount);
+  }
+  public async removeCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.removeCartBtn.click();
+  }
+  public async updateCart() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.qtyUpdateTextBox.fill("2");
+    await this.updateCartButton.click();
+    await this.removeCartBtn.click();
+    expect(await this.cartEmptyMessage.textContent()).toContain(
+      "You have no items in your shopping cart."
+    );
+  }
+  public async isProductVisibleForAllMenus() {
+    await this.page.locator("#ui-id-1 li").first().waitFor();
+    const categories = this.page.locator("#ui-id-1 li");
+    const count = await categories.count();
+    console.log(count);
+
+    for (let i = 0; i < count; i++) {
+      await categories.nth(i).click();
+      await this.page.locator("li.item.product.product-item").first().waitFor();
+      const products = this.page.locator(
+        "ol.products.list.items.product-items"
+      );
+      await expect(products).toBeVisible();
     }
   }
 }
