@@ -11,24 +11,9 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       m2d2_Assertions.productName = "Men's Aviators";
     }
   }
-  public async loginPage() {
-    await this.page
-      .locator(`${process.env.EMAIL_LOCATOR}`)
-      .fill(`${process.env.EMAIL}`);
-    await this.page
-      .locator(`${process.env.PASSWORD_LOCATOR}`)
-      .fill(`${process.env.PASSWORD}`);
-    await this.page.locator(`${process.env.SUBMIT}`).click();
-    await expect(this.page).toHaveTitle("Home page");
-    const storageState = await this.page.context().storageState();
-    await fs.writeFile('storageState.json', JSON.stringify(storageState));
-  }
   public async verifySignOutLink() {
     await this.switchLink.click();
     await this.signOutLink.click();
-    // await expect(this.page.getByRole("heading")).toContainText(
-    //   "You are signed out"
-    // );
   }
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
