@@ -1,4 +1,4 @@
-import { test,expect } from "../config/storageState.ts";
+import { test, expect } from "../config/storageState.ts";
 import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
 import { globalSetup } from "../config/globalSetup.ts";
 
@@ -60,5 +60,4 @@ test.describe("m2d2 test cases", () => {
   test("check products should visible for all categories", async () => {
     await m2d2.isProductVisibleForAllMenus();
   });
- 
 });
