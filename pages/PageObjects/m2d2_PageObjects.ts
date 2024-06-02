@@ -57,9 +57,7 @@ export class m2d2_PageObjects {
       name: "Create an Account",
     });
     this.shoppingCartLink = page.getByRole("link", { name: "Shopping Cart" });
-    this.proceedToCheckOut = page.getByRole("button", {
-      name: "Proceed to Checkout",
-    });
+    this.proceedToCheckOut = page.getByTitle("Proceed to Checkout")
     this.qtyUpdateTextBox = page.getByRole("spinbutton", { name: "Qty" });
     this.updateCartButton = page.locator(
       "//span[normalize-space()='Update Shopping Cart']"

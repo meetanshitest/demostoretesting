@@ -69,12 +69,12 @@ export class m2d1_PageObjects {
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
-    this.warnMessage=page.locator(".message info empty");
-    this.email = page.locator("//input[@id='customer-email']");
-    this.fname = page.locator('input[name="firstname"]');
-    this.lname = page.locator('input[name="lastname"]');
-    this.company = page.locator('input[name="company"]');
-    this.streetAddress = page.locator('input[name="street[0]"]');
+    this.warnMessage = page.locator(".message info empty");
+    this.email = page.getByRole("textbox", { name: "Email Address*" });
+    this.fname = page.getByLabel("First Name");
+    this.lname = page.getByLabel("Last Name");
+    this.company = page.getByLabel("Company");
+    this.streetAddress = page.getByLabel("Street Address: Line 1");
     this.country = page.getByLabel("Country");
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");

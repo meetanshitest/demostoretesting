@@ -36,11 +36,9 @@ export class m2d3_PageObjects {
 
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.locator(
-      '//span[normalize-space()="Minimum Order Amount For Customer Group"]'
-    );
-    this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
+    this.getMenuLink = page.getByRole("menuitem",{name:"Guest To Customer"})
+    this.addToCart = page.getByRole("button",{name:"Add to Cart"})
+    this.productLink = page.getByRole("link",{name:"Messanger Bag"});
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );

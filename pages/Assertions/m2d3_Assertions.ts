@@ -11,12 +11,12 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
     expect(await this.headingText.textContent()).toBe(
-      "Minimum Order Amount For Customer Group"
+      "Guest to Customer"
     );
     await expect(this.page).toHaveTitle(
-      /Minimum Order Amount For Customer Group/
+      /Guest to Customer/
     );
-    await expect(this.page).toHaveURL(/.*min-order-amount/);
+    await expect(this.page).toHaveURL(/.*Guest-to-Customer/);
   }
 
   public async navigateToProductPage() {
@@ -42,8 +42,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   public async verifyPrice() {
     await this.getMenuLink.click();
     await this.productLink.click();
-    await this.page.waitForTimeout(2000);
-    expect(await this.price.textContent()).toBe("$999.00");
+    expect(await this.price.textContent()).toBe("$49.00");
   }
   public async verifySignInLink() {
     await this.signInLink.click();
@@ -63,7 +62,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
   public async navigateToCheckout() {
-    this.navigateToCart();
+    await this.navigateToCart();
     await this.proceedToCheckOut.click();
     const message = this.page.locator(
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
@@ -112,7 +111,6 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
-    await this.page.waitForTimeout(1000);
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -131,7 +129,6 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    await this.page.waitForTimeout(5000);
     let images = await this.page.$$("img");
     const brokenImgs: string[] = [];
     for (const image of images) {
@@ -164,7 +161,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    await this.page.waitForSelector(".products.list.items.product-items");
+    await this.page.locator(".products.list.items.product-items").first().waitFor();
 
     const liElementsCount = await this.page.$$eval(
       ".products.list.items.product-items > li",

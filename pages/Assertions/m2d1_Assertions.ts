@@ -67,6 +67,18 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
+  private async fillCheckoutForm() {
+    await this.email.fill(faker.internet.email());
+    await this.fname.fill(faker.person.firstName());
+    await this.lname.fill(faker.person.lastName());
+    await this.company.fill(faker.company.buzzPhrase());
+    await this.streetAddress.fill(faker.location.streetAddress());
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(faker.location.city());
+    await this.zip.fill(faker.location.zipCode());
+    await this.phone.fill(faker.phone.number());
+  }
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
@@ -75,7 +87,16 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.addToCart.click();
     await this.shoppingCartLink.click();
     await this.page.waitForTimeout(3000);
+    await this.page.waitForTimeout(3000);
     await this.proceedToCheckOut.click();
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city}`);
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
     await this.lname.fill(`${faker.person.lastName()}`);

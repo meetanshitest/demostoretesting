@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
+import { promises as fs } from 'fs';
 
 export class m2d2_Assertions extends m2d2_PageObjects {
   static productName: String;
@@ -19,6 +20,8 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       .fill(`${process.env.PASSWORD}`);
     await this.page.locator(`${process.env.SUBMIT}`).click();
     await expect(this.page).toHaveTitle("Home page");
+    const storageState = await this.page.context().storageState();
+    await fs.writeFile('storageState.json', JSON.stringify(storageState));
   }
   public async verifySignOutLink() {
     await this.switchLink.click();
@@ -162,7 +165,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    await this.page.waitForSelector(".products.list.items.product-items");
+    await this.page.locator(".products.list.items.product-items").first().waitFor();
 
     const liElementsCount = await this.page.$$eval(
       ".products.list.items.product-items > li",
