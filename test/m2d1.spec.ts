@@ -59,7 +59,7 @@ test.describe("m2d1 test cases", () => {
   test("navigate To Checkout page", async () => {
     await m2d1.navigateToCheckout();
   });
-  test.only("Check place order", async () => {
+  test("Check place order", async () => {
     await m2d1.placeOrder();
   });
   test("Check place Order By MiniCart", async () => {
