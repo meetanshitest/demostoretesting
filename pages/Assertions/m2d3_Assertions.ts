@@ -130,8 +130,8 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    //await this.page.waitForTimeout(3000);
-    await expect(this.page).toHaveTitle("Success Page",{ timeout: 10000 });
+    await this.page.waitForURL("**/checkout/onepage/success/")
+    await expect(this.page).toHaveTitle("Success Page",{ timeout: 5000 });
   }
   public async brokenImages() {
     let images = await this.page.$$("img");
