@@ -91,9 +91,7 @@ export class m2d1_PageObjects {
       .locator("#product-item-info_4")
       .getByRole("button", { name: "Add to Cart" });
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
-    this.miniCheckout = page.getByRole("button", {
-      name: "Proceed to Checkout",
-    });
+    this.miniCheckout =page.locator("#top-cart-btn-checkout")
     this.subtotal = page.locator("span .price");
     this.removeCartBtn = page.locator("//a[@class='action action-delete']");
     this.cartEmptyMessage = page.locator(".cart-empty", {

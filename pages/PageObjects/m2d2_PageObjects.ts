@@ -40,10 +40,16 @@ export class m2d2_PageObjects {
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
   readonly switchLink: Locator;
+  readonly signinLink:Locator;
+  readonly password: Locator;
+  readonly loginEmail: Locator;
+  readonly submitBtn: Locator;
+  readonly greetingMsg: Locator;
+  readonly signOutLocator: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.getByText("Custom Order Grid").nth(0);
+    this.getMenuLink = page.getByRole("menuitem",{name:"Custom Order Grid"});
     this.addToCart = page.getByRole("button", { name: "Add to Cart" });
     this.productLink = page.getByText("Men's Aviators");
     this.sucessMessageText = page.locator(
@@ -51,12 +57,12 @@ export class m2d2_PageObjects {
     );
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
-    this.switchLink = page.getByRole('banner').locator('button').filter({ hasText: 'Change' })
+    this.switchLink = page.locator('button.action.switch')
     this.signOutLink = page.getByRole('link', { name: 'Sign Out' })
     this.createAccountLink = page.getByRole("link", {
       name: "Create an Account",
     });
-    this.shoppingCartLink = page.getByRole("link", { name: "Shopping Cart" });
+    this.shoppingCartLink = page.getByRole("link", { name: "shopping Cart" });
     this.proceedToCheckOut = page.getByTitle("Proceed to Checkout")
     this.qtyUpdateTextBox = page.getByRole("spinbutton", { name: "Qty" });
     this.updateCartButton = page.locator(
@@ -94,5 +100,11 @@ export class m2d2_PageObjects {
     this.cartEmptyMessage = page.locator(".cart-empty", {
       hasText: "You have no items in your shopping cart.",
     });
+    this.signinLink=page.locator("//div[@class='panel header']//a[contains(text(),'Sign In')]")
+    this.loginEmail=page.locator("#email")
+    this.password=page.locator("#pass")
+    this.submitBtn=page.getByRole("button",{name:"Sign In"})
+    this.greetingMsg=page.locator("span.logged-in").first()
+    this.signOutLocator=page.getByText('You are signed out');
   }
 }

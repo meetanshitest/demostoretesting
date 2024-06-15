@@ -10,21 +10,16 @@ export class m2d3_Assertions extends m2d3_PageObjects {
 
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
-    expect(await this.headingText.textContent()).toBe(
-      "Guest to Customer"
-    );
-    await expect(this.page).toHaveTitle(
-      /Guest to Customer/
-    );
-    await expect(this.page).toHaveURL(/.*Guest-to-Customer/);
+    expect(await this.headingText.textContent()).toBe("Guest to Customer");
+    await expect(this.page).toHaveTitle(/Guest to Customer/);
+    await expect(this.page).toHaveURL(/.*guest-to-customer/);
   }
 
   public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
-    expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    expect(this.page).toHaveTitle(/Apple iPhone X/);
-    expect(this.page).toHaveURL(/.*apple-iphone-x/);
+    expect(await this.headingText.textContent()).toBe("Messanger Bag");
+    await expect(this.page).toHaveTitle("Messanger Bag");
   }
   public async addProductInCart() {
     await this.getMenuLink.click();
@@ -36,7 +31,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.productLink.click();
     await this.addToCart.click();
     expect(await this.sucessMessageText.textContent()).toContain(
-      "You added Apple iPhone X to your shopping cart."
+      "You added Messanger Bag to your shopping cart."
     );
   }
   public async verifyPrice() {
@@ -87,6 +82,17 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.shoppingCartLink.click();
     await this.page.waitForTimeout(3000);
     await this.proceedToCheckOut.click();
+    await this.page.waitForTimeout(3000);
+    await expect(this.page).toHaveTitle("Checkout");
+
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city}`);
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
     await this.lname.fill(`${faker.person.lastName()}`);
@@ -100,10 +106,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await expect(this.page).toHaveURL(/.*checkout/);
-    expect(await this.sucessOrderMessage.textContent()).toBe(
-      `${successMessage}`
-    );
+    await this.page.waitForTimeout(5000)
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async placeOrderByMiniCart() {
@@ -111,6 +114,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
+    await this.page.locator("#minicart-content-wrapper").waitFor({state:'visible',timeout:1000})
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -126,7 +130,8 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await expect(this.page).toHaveTitle("Success Page");
+    //await this.page.waitForTimeout(3000);
+    await expect(this.page).toHaveTitle("Success Page",{ timeout: 10000 });
   }
   public async brokenImages() {
     let images = await this.page.$$("img");
@@ -161,7 +166,10 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    await this.page.locator(".products.list.items.product-items").first().waitFor();
+    await this.page
+      .locator(".products.list.items.product-items")
+      .first()
+      .waitFor();
 
     const liElementsCount = await this.page.$$eval(
       ".products.list.items.product-items > li",

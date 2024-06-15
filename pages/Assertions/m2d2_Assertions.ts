@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
+import { globalSetup } from "../../config/globalSetup.ts";
 
 export class m2d2_Assertions extends m2d2_PageObjects {
   static productName: String;
@@ -10,9 +11,23 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       m2d2_Assertions.productName = "Men's Aviators";
     }
   }
+  public async verifyGreetingMsg() {
+    await this.signinLink.click();
+    await this.loginEmail.fill(`${process.env.EMAIL}`);
+    await this.password.fill(`${process.env.PASSWORD}`);
+    await this.submitBtn.click();
+    await expect(this.greetingMsg).toHaveText("Welcome, bhushan trivedi!")
+  }
   public async verifySignOutLink() {
-    await this.switchLink.click();
+    await this.signinLink.click();
+    await this.loginEmail.fill(`${process.env.EMAIL}`);
+    await this.password.fill(`${process.env.PASSWORD}`);
+    await this.submitBtn.click();
+    await expect(this.greetingMsg).toHaveText("Welcome, bhushan trivedi!")
+    await this.page.getByRole('banner').locator('button').filter({ hasText: 'Change' }).click();
+    await this.page.waitForTimeout(2000)
     await this.signOutLink.click();
+    await expect(this.signOutLocator).toBeVisible();    
   }
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
@@ -194,3 +209,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     }
   }
 }
+function toBeVisible() {
+  throw new Error("Function not implemented.");
+}
+

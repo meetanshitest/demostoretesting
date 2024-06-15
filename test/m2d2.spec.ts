@@ -27,8 +27,8 @@ test.describe("m2d2 test cases", () => {
     await m2d2.navigateToCart();
   });
 
-  test("Check Sign Out link", async () => {
-    await m2d2.verifySignOutLink();
+  test("Check login greeting message", async () => {
+    await m2d2.verifyGreetingMsg();
   });
   test("Check Create Account link", async () => {
     await m2d2.verifyCreateAccountLink();
@@ -59,5 +59,8 @@ test.describe("m2d2 test cases", () => {
   });
   test("check products should visible for all categories", async () => {
     await m2d2.isProductVisibleForAllMenus();
+  });
+  test("Verify SignOut Link", async () => {
+    await m2d2.verifySignOutLink();
   });
 });
