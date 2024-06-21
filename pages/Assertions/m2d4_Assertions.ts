@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
+import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects.ts";
 import { Page, expect } from "@playwright/test";
-import { url } from "inspector";
 
-export class m2d1_Assertions extends m2d1_PageObjects {
+export class m2d4_Assertions extends m2d3_PageObjects {
+  [x: string]: any;
   constructor(page: Page) {
     super(page);
   }
@@ -11,23 +11,20 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
     expect(await this.headingText.textContent()).toBe(
-      "Minimum Order Amount For Customer Group"
+      "Guest to Customer"
     );
     await expect(this.page).toHaveTitle(
-      "Minimum Order Amount For Customer Group"
+      /Guest to Customer/
     );
-    await expect(this.page).toHaveURL(/.*min-order-amount/);
+    await expect(this.page).toHaveURL(/.*Guest-to-Customer/);
   }
+
   public async navigateToProductPage() {
     await this.getMenuLink.click();
     await this.productLink.click();
     expect(await this.headingText.textContent()).toBe("Apple iPhone X");
-    await expect(this.page).toHaveTitle("Apple iPhone X");
-    await expect(this.page).toHaveURL(/.*apple-iphone-x/);
-  }
-  public async addAndViewCart() {
-    await this.addToCart.click();
-    await this.shoppingCartLink.click();
+    expect(this.page).toHaveTitle(/Apple iPhone X/);
+    expect(this.page).toHaveURL(/.*apple-iphone-x/);
   }
   public async addProductInCart() {
     await this.getMenuLink.click();
@@ -35,7 +32,9 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.addToCart.click();
   }
   public async verifySuccessMsg() {
-    await this.addProductInCart();
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addToCart.click();
     expect(await this.sucessMessageText.textContent()).toContain(
       "You added Apple iPhone X to your shopping cart."
     );
@@ -43,7 +42,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   public async verifyPrice() {
     await this.getMenuLink.click();
     await this.productLink.click();
-    expect(await this.price.textContent()).toBe("$999.00");
+    expect(await this.price.textContent()).toBe("$49.00");
   }
   public async verifySignInLink() {
     await this.signInLink.click();
@@ -56,30 +55,30 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     );
   }
   public async navigateToCart() {
-    await this.addProductInCart();
-    await this.shoppingCartLink.click();
-    await expect(this.page).toHaveTitle("Shopping Cart");
-  }
-  public async navigateToCheckout() {
     await this.getMenuLink.click();
     await this.productLink.click();
     await this.addToCart.click();
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  private async fillCheckoutForm() {
-    await this.email.fill(faker.internet.email());
-    await this.fname.fill(faker.person.firstName());
-    await this.lname.fill(faker.person.lastName());
-    await this.company.fill(faker.company.buzzPhrase());
-    await this.streetAddress.fill(faker.location.streetAddress());
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(faker.location.city());
-    await this.zip.fill(faker.location.zipCode());
-    await this.phone.fill(faker.phone.number());
+  public async navigateToCheckout() {
+    await this.navigateToCart();
+    await this.proceedToCheckOut.click();
+    const message = this.page.locator(
+      '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
+    );
+    if (message) {
+      //await this.page.waitForTimeout(4000);
+      await this.qtyUpdateTextBox.fill("2");
+      await this.updateCartButton.click();
+      await this.proceedToCheckOut.click();
+      await this.page.waitForTimeout(2000);
+      expect(this.page).toHaveTitle("Checkout");
+    } else {
+      console.log("No error...");
+      await this.proceedToCheckOut.click();
+    }
   }
-
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
@@ -87,16 +86,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.addToCart.click();
     await this.shoppingCartLink.click();
     await this.page.waitForTimeout(3000);
-    await this.page.waitForTimeout(3000);
     await this.proceedToCheckOut.click();
-    await this.email.fill(`${faker.internet.email()}`);
-    await this.fname.fill(`${faker.person.firstName()}`);
-    await this.lname.fill(`${faker.person.lastName()}`);
-    await this.company.fill(`${faker.company.buzzPhrase()}`);
-    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(`${faker.location.city}`);
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
     await this.lname.fill(`${faker.person.lastName()}`);
@@ -121,7 +111,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
-    await this.page.waitForTimeout(1000);
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -140,7 +129,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    await this.page.waitForTimeout(5000);
     let images = await this.page.$$("img");
     const brokenImgs: string[] = [];
     for (const image of images) {
@@ -173,6 +161,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
+    await this.page.locator(".products.list.items.product-items").first().waitFor();
+
     const liElementsCount = await this.page.$$eval(
       ".products.list.items.product-items > li",
       (lis) => lis.length
@@ -196,44 +186,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     expect(await this.cartEmptyMessage.textContent()).toContain(
       "You have no items in your shopping cart."
     );
-  }
-  public async categoryCount() {
-    await this.page.waitForSelector("#ui-id-1 li");
-
-    // Get the length of the list items
-    const liElementsLength = await this.page.$$eval(
-      "#ui-id-1 li",
-      (lis) => lis.length
-    );
-
-    if (liElementsLength > 0) {
-      console.log(
-        "List items length is greater than zero.",
-        `${liElementsLength}`
-      );
-    } else {
-      console.log("List items length is not greater than zero.");
-    }
-    expect(liElementsLength).toBeGreaterThan(5);
-    const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
-      lis.map((li) => li.textContent?.trim()).filter(Boolean)
-    );
-    liTextContents.forEach((textContent) => console.log(textContent));
-  }
-  public async createAccount(){
-    await this.createAccountLink.click()
-    await this.firstName.fill(`${faker.person.firstName()}`);
-    await this.lastName.fill(`${faker.person.lastName()}`);
-    await this.dob.fill(`${faker.date.birthdate()}`);
-    await this.gender.selectOption("Male");
-    await this.emailId.fill(`${faker.internet.email()}`);
-    await this.pwd.fill("Admin@123$");
-    await this.confirmPassword.fill("Admin@123$");
-    await this.profileImage.setInputFiles("images/profile.jpg");
-    await this.location.fill(`${faker.location.buildingNumber()}`);
-    await this.bio.fill(`${faker.person.bio()}`);
-    await this.createAccountBtn.click();
-    expect(await this.page.waitForURL("**/customer/account/"));
   }
   public async isProductVisibleForAllMenus() {
     await this.page.locator("#ui-id-1 li").first().waitFor();

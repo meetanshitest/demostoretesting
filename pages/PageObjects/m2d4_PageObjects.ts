@@ -1,6 +1,6 @@
 import { type Page, type Locator } from "@playwright/test";
 
-export class m2d1_PageObjects {
+export class m2d4_PageObjects {
   protected page: Page;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;
@@ -40,17 +40,6 @@ export class m2d1_PageObjects {
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
   readonly warnMessage: Locator;
-  readonly firstName:Locator;
-  readonly lastName:Locator;
-  readonly dob:Locator;
-  readonly gender:Locator;
-  readonly emailId:Locator;
-  readonly pwd:Locator;
-  readonly confirmPassword:Locator;
-  readonly profileImage: Locator;
-  readonly location:Locator;
-  readonly bio: Locator;
-  readonly createAccountBtn: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -102,23 +91,13 @@ export class m2d1_PageObjects {
       .locator("#product-item-info_4")
       .getByRole("button", { name: "Add to Cart" });
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
-    this.miniCheckout =page.locator("#top-cart-btn-checkout")
+    this.miniCheckout = page.getByRole("button", {
+      name: "Proceed to Checkout",
+    });
     this.subtotal = page.locator("span .price");
     this.removeCartBtn = page.locator("//a[@class='action action-delete']");
     this.cartEmptyMessage = page.locator(".cart-empty", {
       hasText: "You have no items in your shopping cart.",
     });
-    this.firstName=page.locator("#firstname")
-    this.lastName=page.locator("#lastname");
-    this.dob=page.locator("#dob");
-    this.gender=page.locator("#gender");
-    this.emailId=page.locator("#email_address");
-    this.pwd=page.locator("#password");
-    this.confirmPassword=page.locator("#password-confirmation");
-    this.profileImage=page.locator("#profileimage");
-    this.location=page.locator("#location");
-    this.bio=page.locator("#biography");
-    this.createAccountBtn=page.getByRole("button",{name:"Create an Account"});
-    
   }
 }

@@ -80,4 +80,7 @@ test.describe("m2d1 test cases", () => {
   test("check products should visible for all categories",async()=>{
     await m2d1.isProductVisibleForAllMenus();
   }) 
+  test("Create Account",async()=>{
+    await m2d1.createAccount();
+  })
 });

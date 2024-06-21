@@ -1,0 +1,33 @@
+
+const webUrls = process.env.WEB_URL?.split(",") ?? [];
+
+export const webUrl = webUrls[0];
+export const webUrl1 = webUrls[1];
+export const webUrl2 = webUrls[2];
+export const webUrl3 = webUrls[3];
+export const webUrl4 = webUrls[4];
+export const webUrl5 = webUrls[5];
+export const webUrl6 = webUrls[6];
+export const webUrl7 = webUrls[7];
+export const webUrl8 = webUrls[8];
+export const webUrl9 = webUrls[9];
+export const webUrl10 = webUrls[10];
+export const webUrl11 = webUrls[11];
+export const webUrl12 = webUrls[12];
+export const webUrl13 = webUrls[13];
+export const webUrl14 = webUrls[14];
+export const webUrl15 = webUrls[15];
+export const webUrl16 = webUrls[16];
+export const webUrl17 = webUrls[17];
+export const webUrl18 = webUrls[18];
+export const webUrl19 = webUrls[19];
+export const webUrl20 = webUrls[20];
+export const webUrl21 = webUrls[21];
+export const webUrl22 = webUrls[22];
+export const webUrl23 = webUrls[23];
+export const webUrl24 = webUrls[24];
+export const webUrl25 = webUrls[25];
+export const webUrl26 = webUrls[26];
+export const webUrl27 = webUrls[27];
+export const webUrl28 = webUrls[28];
+export const webUrl29 = webUrls[29];
