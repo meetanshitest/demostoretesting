@@ -210,4 +210,5 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       await expect(products).toBeVisible();
     }
   }
+    
 }

@@ -220,8 +220,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     );
     liTextContents.forEach((textContent) => console.log(textContent));
   }
-  public async createAccount(){
-    await this.createAccountLink.click()
+  public async createAccount() {
+    await this.createAccountLink.click();
     await this.firstName.fill(`${faker.person.firstName()}`);
     await this.lastName.fill(`${faker.person.lastName()}`);
     await this.dob.fill(`${faker.date.birthdate()}`);
@@ -249,5 +249,46 @@ export class m2d1_Assertions extends m2d1_PageObjects {
       );
       await expect(products).toBeVisible();
     }
+  }
+  public async countNewArrivals() {
+    await this.profileLink.click();
+    await this.newArrivalBtn.click();
+    const divProductCount = await this.page.evaluate(() => {
+      return Array.from(document.querySelectorAll(".divProduct")).filter(
+        (div) => div instanceof HTMLElement && div.offsetParent !== null
+      ).length;
+    });
+    console.log(divProductCount);
+    expect(divProductCount).toBeGreaterThan(0);
+  }
+  public async countGuestOrdersInProfilePage() {
+    await this.profileLink.click();
+    await this.orders.click();
+    const divOrderCount = await this.page.evaluate(() => {
+      return Array.from(document.querySelectorAll(".divOrders")).filter(
+        (div) => div instanceof HTMLElement && div.offsetParent !== null
+      ).length;
+    });
+    console.log(divOrderCount);
+    expect(divOrderCount).toBeGreaterThan(0);
+  }
+  public async checkProfileTitle() {
+    await this.profileLink.click();
+    await expect(this.page).toHaveTitle(/User Profile/);
+  }
+  public async qtyConditionValidation() {
+    await this.getMenuLink.click();
+    await this.newProductLink.click();
+    await this.addAndViewCart();
+    await expect(this.page).toHaveTitle(/Shopping Cart/);
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
+    await this.proceedToCheckOut.click();
+    await expect(
+      this.page.getByText("Make the minimum purchase of")
+    ).toBeVisible();
   }
 }

@@ -51,12 +51,17 @@ export class m2d1_PageObjects {
   readonly location:Locator;
   readonly bio: Locator;
   readonly createAccountBtn: Locator;
+  readonly profileLink: Locator;
+  readonly newArrivalBtn: Locator;
+  readonly orders: Locator;
+  readonly newProductLink:Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.getMenuLink = page.getByText(
       "Minimum Order Amount For Customer Group"
     );
+    this.newProductLink=page.locator("//a[normalize-space()='Raybon Aviators']");
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(
@@ -119,6 +124,8 @@ export class m2d1_PageObjects {
     this.location=page.locator("#location");
     this.bio=page.locator("#biography");
     this.createAccountBtn=page.getByRole("button",{name:"Create an Account"});
-    
+    this.profileLink=page.getByRole("link",{name:"Profile"});
+    this.newArrivalBtn=page.getByRole("button",{name:"New Arrivals"});
+    this.orders=page.getByRole("button",{name:"Orders"});
   }
 }

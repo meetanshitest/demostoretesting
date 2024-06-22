@@ -83,4 +83,16 @@ test.describe("m2d1 test cases", () => {
   test("Create Account",async()=>{
     await m2d1.createAccount();
   })
+  test("count New Arrivals in profile page",async()=>{
+    await m2d1.countNewArrivals();
+  })
+  test("count guestOrders in profile page",async()=>{
+    await m2d1.countGuestOrdersInProfilePage();
+  })
+  test("Check Profile title",async()=>{
+    await m2d1.checkProfileTitle();
+  })
+  test("check Qty Condition validation",async()=>{
+    await m2d1.qtyConditionValidation();
+  })
 });
