@@ -224,7 +224,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.createAccountLink.click();
     await this.firstName.fill(`${faker.person.firstName()}`);
     await this.lastName.fill(`${faker.person.lastName()}`);
-    await this.dob.fill(`${faker.date.birthdate()}`);
+    //await this.dob.fill(`${faker.date.birthdate()}`);
     await this.gender.selectOption("Male");
     await this.emailId.fill(`${faker.internet.email()}`);
     await this.pwd.fill("Admin@123$");
