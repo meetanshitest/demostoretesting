@@ -1,7 +1,20 @@
-import { test, expect } from "../config/storageState.ts";
+import { Page, test as base, expect } from "@playwright/test";
 import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
 import { globalSetup } from "../config/globalSetup.ts";
 
+const test = base.extend<{ page: Page }>({
+  page: async ({ page }, use) => {
+    const webUrl = process.env.WEB_URL?.split(",")[1];
+
+    if (!webUrl) {
+      throw new Error("Please provide the web url");
+    }
+    await page.goto(webUrl);
+    const title = page.title();
+    expect(title).not.toContain("error");
+    await use(page);
+  },
+});
 test.describe("m2d2 test cases", () => {
   let m2d2: m2d2_Assertions;
 
