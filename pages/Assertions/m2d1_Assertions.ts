@@ -180,9 +180,9 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    const liElementsCount = await this.page.$$eval(
+    const liElementsCount = await this.page.evaluate(
       ".products.list.items.product-items > li",
-      (lis) => lis.length
+      (lis: string | any[]) => lis.length
     );
     expect(liElementsCount).toBeGreaterThan(0);
     console.log(liElementsCount);

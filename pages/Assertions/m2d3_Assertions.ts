@@ -26,6 +26,10 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.productLink.click();
     await this.addToCart.click();
   }
+  public async addAndViewCart() {
+    await this.addToCart.click();
+    await this.shoppingCartLink.click();
+  }
   public async verifySuccessMsg() {
     await this.getMenuLink.click();
     await this.productLink.click();
@@ -78,13 +82,13 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
     await this.productLink.click();
-    await this.addToCart.click();
-    await this.shoppingCartLink.click();
-    await this.page.waitForTimeout(3000);
+    await this.addAndViewCart();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
     await this.proceedToCheckOut.click();
-    await this.page.waitForTimeout(3000);
-    await expect(this.page).toHaveTitle("Checkout");
-
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
     await this.lname.fill(`${faker.person.lastName()}`);
@@ -106,7 +110,11 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await this.page.waitForTimeout(5000)
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
+    );
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async placeOrderByMiniCart() {

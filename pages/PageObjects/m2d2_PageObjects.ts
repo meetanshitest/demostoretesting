@@ -63,7 +63,9 @@ export class m2d2_PageObjects {
       name: "Create an Account",
     });
     this.shoppingCartLink = page.getByRole("link", { name: "shopping Cart" });
-    this.proceedToCheckOut = page.getByTitle("Proceed to Checkout")
+    this.proceedToCheckOut = page.getByRole("button", {
+      name: "Proceed to Checkout",
+    });
     this.qtyUpdateTextBox = page.getByRole("spinbutton", { name: "Qty" });
     this.updateCartButton = page.locator(
       "//span[normalize-space()='Update Shopping Cart']"
@@ -87,9 +89,9 @@ export class m2d2_PageObjects {
     this.sucessOrderMessage = page
       .locator('[data-ui-id="page-title-wrapper"]')
       .filter({ hasText: "Thank you for your purchase!" });
-    this.productItemInfo = page.locator("//img[@alt='Apple iPhone X']");
+    this.productItemInfo = page.locator("#product-item-info_9");
     this.categoryAddtoCartBtn = page
-      .locator("#product-item-info_4")
+      .locator("#product-item-info_9")
       .getByRole("button", { name: "Add to Cart" });
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
     this.miniCheckout = page.getByRole("button", {
