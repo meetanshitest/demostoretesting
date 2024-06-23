@@ -1,9 +1,11 @@
 name: Playwright Test
+
 on:
   push:
     branches: [ devtest ]
   pull_request:
     branches: [ devtest ]
+
 jobs:
   test:
     timeout-minutes: 60
@@ -40,3 +42,22 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: playwright-report
+        path: ./playwright-report
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./playwright-report
