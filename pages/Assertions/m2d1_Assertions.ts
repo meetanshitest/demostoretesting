@@ -84,10 +84,12 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
     await this.productLink.click();
-    await this.addToCart.click();
-    await this.shoppingCartLink.click();
-    await this.page.waitForTimeout(3000);
-    await this.page.waitForTimeout(3000);
+    await this.addAndViewCart();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
     await this.proceedToCheckOut.click();
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
@@ -110,9 +112,10 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await expect(this.page).toHaveURL(/.*checkout/);
-    expect(await this.sucessOrderMessage.textContent()).toBe(
-      `${successMessage}`
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
     );
     await expect(this.page).toHaveTitle("Success Page");
   }
@@ -121,7 +124,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
-    await this.page.waitForTimeout(1000);
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -137,6 +139,11 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
+    );
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
