@@ -67,7 +67,6 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
     );
     if (message) {
-      //await this.page.waitForTimeout(4000);
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
       await this.proceedToCheckOut.click();

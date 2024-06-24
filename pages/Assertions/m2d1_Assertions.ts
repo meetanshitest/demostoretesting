@@ -195,10 +195,10 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     );
   }
   public async categoryCount() {
-    await this.page.waitForSelector("#ui-id-1 li");
+    await this.page.locator("#ui-id-1 li").waitFor({timeout:1000});
 
     // Get the length of the list items
-    const liElementsLength = await this.page.$$eval(
+    const liElementsLength = await this.page.evaluate(
       "#ui-id-1 li",
       (lis) => lis.length
     );

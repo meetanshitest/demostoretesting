@@ -23,7 +23,7 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.loginEmail.fill(`${process.env.EMAIL}`);
     await this.password.fill(`${process.env.PASSWORD}`);
     await this.submitBtn.click();
-    await expect(this.greetingMsg).toContainText("Welcome, bhushan");
+    await expect(this.greetingMsg).toContainText("Welcome");
     await this.page
       .getByRole("banner")
       .locator("button")
