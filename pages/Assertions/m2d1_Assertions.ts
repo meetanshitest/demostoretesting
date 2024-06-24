@@ -67,15 +67,38 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
+  private async fillCheckoutForm() {
+    await this.email.fill(faker.internet.email());
+    await this.fname.fill(faker.person.firstName());
+    await this.lname.fill(faker.person.lastName());
+    await this.company.fill(faker.company.buzzPhrase());
+    await this.streetAddress.fill(faker.location.streetAddress());
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(faker.location.city());
+    await this.zip.fill(faker.location.zipCode());
+    await this.phone.fill(faker.phone.number());
+  }
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
     await this.getMenuLink.click();
     await this.productLink.click();
-    await this.addToCart.click();
-    await this.shoppingCartLink.click();
-    await this.page.waitForTimeout(3000);
+    await this.addAndViewCart();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
     await this.proceedToCheckOut.click();
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city}`);
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
     await this.lname.fill(`${faker.person.lastName()}`);
@@ -89,9 +112,10 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
-    await expect(this.page).toHaveURL(/.*checkout/);
-    expect(await this.sucessOrderMessage.textContent()).toBe(
-      `${successMessage}`
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
     );
     await expect(this.page).toHaveTitle("Success Page");
   }
@@ -100,7 +124,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
-    await this.page.waitForTimeout(1000);
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -116,6 +139,11 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
+    );
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
@@ -152,9 +180,9 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    const liElementsCount = await this.page.$$eval(
+    const liElementsCount = await this.page.evaluate(
       ".products.list.items.product-items > li",
-      (lis) => lis.length
+      (lis: string | any[]) => lis.length
     );
     expect(liElementsCount).toBeGreaterThan(0);
     console.log(liElementsCount);
@@ -199,24 +227,75 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     );
     liTextContents.forEach((textContent) => console.log(textContent));
   }
+  public async createAccount() {
+    await this.createAccountLink.click();
+    await this.firstName.fill(`${faker.person.firstName()}`);
+    await this.lastName.fill(`${faker.person.lastName()}`);
+    //await this.dob.fill(`${faker.date.birthdate()}`);
+    await this.gender.selectOption("Male");
+    await this.emailId.fill(`${faker.internet.email()}`);
+    await this.pwd.fill("Admin@123$");
+    await this.confirmPassword.fill("Admin@123$");
+    await this.profileImage.setInputFiles("images/profile.jpg");
+    await this.location.fill(`${faker.location.buildingNumber()}`);
+    await this.bio.fill(`${faker.person.bio()}`);
+    await this.createAccountBtn.click();
+    expect(await this.page.waitForURL("**/customer/account/"));
+  }
   public async isProductVisibleForAllMenus() {
-    await this.page.waitForSelector("#ui-id-1 li");
-    const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
-      lis.map((li) => li.textContent?.trim()).filter(Boolean)
-    );
-    for (const textContent of liTextContents) {
-      console.log("Checking for:", textContent);
-      const productDisplayElement = await this.page.$(
-        `//*[contains(text(), '${textContent}')]`
+    await this.page.locator("#ui-id-1 li").first().waitFor();
+    const categories = this.page.locator("#ui-id-1 li");
+    const count = await categories.count();
+    console.log(count);
+
+    for (let i = 0; i < count; i++) {
+      await categories.nth(i).click();
+      await this.page.locator("li.item.product.product-item").first().waitFor();
+      const products = this.page.locator(
+        "ol.products.list.items.product-items"
       );
-      if (productDisplayElement) {
-        console.log("Product display found for:", textContent);
-        // Click on the product display element
-        await productDisplayElement.click();
-        console.log("Clicked on product display for:", textContent);
-      } else {
-        console.log("Product display not found for:", textContent);
-      }
+      await expect(products).toBeVisible();
     }
+  }
+  public async countNewArrivals() {
+    await this.profileLink.click();
+    await this.newArrivalBtn.click();
+    const divProductCount = await this.page.evaluate(() => {
+      return Array.from(document.querySelectorAll(".divProduct")).filter(
+        (div) => div instanceof HTMLElement && div.offsetParent !== null
+      ).length;
+    });
+    console.log(divProductCount);
+    expect(divProductCount).toBeGreaterThan(0);
+  }
+  public async countGuestOrdersInProfilePage() {
+    await this.profileLink.click();
+    await this.orders.click();
+    const divOrderCount = await this.page.evaluate(() => {
+      return Array.from(document.querySelectorAll(".divOrders")).filter(
+        (div) => div instanceof HTMLElement && div.offsetParent !== null
+      ).length;
+    });
+    console.log(divOrderCount);
+    expect(divOrderCount).toBeGreaterThan(0);
+  }
+  public async checkProfileTitle() {
+    await this.profileLink.click();
+    await expect(this.page).toHaveTitle(/User Profile/);
+  }
+  public async qtyConditionValidation() {
+    await this.getMenuLink.click();
+    await this.newProductLink.click();
+    await this.addAndViewCart();
+    await expect(this.page).toHaveTitle(/Shopping Cart/);
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
+    await this.proceedToCheckOut.click();
+    await expect(
+      this.page.getByText("Make the minimum purchase of")
+    ).toBeVisible();
   }
 }

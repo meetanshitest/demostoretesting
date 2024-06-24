@@ -77,9 +77,22 @@ test.describe("m2d1 test cases", () => {
   test("removeCart",async()=>{
     await m2d1.removeCart();
   })
-  test("check products are visible or not for all categories",async()=>{
+  test("check products should visible for all categories",async()=>{
     await m2d1.isProductVisibleForAllMenus();
+  }) 
+  test("Create Account",async()=>{
+    await m2d1.createAccount();
   })
-  
- 
+  test("count New Arrivals in profile page",async()=>{
+    await m2d1.countNewArrivals();
+  })
+  test("count guestOrders in profile page",async()=>{
+    await m2d1.countGuestOrdersInProfilePage();
+  })
+  test("Check Profile title",async()=>{
+    await m2d1.checkProfileTitle();
+  })
+  test("check Qty Condition validation",async()=>{
+    await m2d1.qtyConditionValidation();
+  })
 });

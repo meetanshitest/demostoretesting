@@ -1,4 +1,4 @@
-import { test as base, expect, Page } from "@playwright/test";
+import { Page, test as base, expect } from "@playwright/test";
 import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
 import { globalSetup } from "../config/globalSetup.ts";
 
@@ -15,25 +15,22 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-
 test.describe("m2d2 test cases", () => {
   let m2d2: m2d2_Assertions;
 
   test.beforeEach(async ({ page }) => {
     m2d2 = new m2d2_Assertions(page);
-    await m2d2.loginPage()
   });
   test.afterEach(async ({ page }) => {
     await page.close();
   });
   test("Verify Category page Heading", async () => {
     await m2d2.navigateToCategoryPage();
-    console.log("hello");
   });
   test("Verify Product page Heading", async () => {
     await m2d2.navigateToProductPage();
   });
-  test("Verify Add To Cart Button", async () => {
+  test("Verify Success Message", async () => {
     await m2d2.verifySuccessMsg();
   });
   test("Check Price is visible or not", async () => {
@@ -43,8 +40,8 @@ test.describe("m2d2 test cases", () => {
     await m2d2.navigateToCart();
   });
 
-  test("Check SignIn link", async () => {
-    await m2d2.verifySignInLink();
+  test("Check login greeting message", async () => {
+    await m2d2.verifyGreetingMsg();
   });
   test("Check Create Account link", async () => {
     await m2d2.verifyCreateAccountLink();
@@ -64,15 +61,19 @@ test.describe("m2d2 test cases", () => {
   test("check broken images", async () => {
     await m2d2.brokenImages();
   });
-  test("Verify product visibility",async()=>{
+  test("Verify product visibility", async () => {
     await m2d2.productCount();
-  })
-  test("update cart",async()=>{
+  });
+  test("update cart", async () => {
     await m2d2.updateCart();
-  })
-  test("removeCart",async()=>{
+  });
+  test("removeCart", async () => {
     await m2d2.removeCart();
-  })
-  
+  });
+  test("check products should visible for all categories", async () => {
+    await m2d2.isProductVisibleForAllMenus();
+  });
+  test("Verify SignOut Link", async () => {
+    await m2d2.verifySignOutLink();
+  });
 });
-  

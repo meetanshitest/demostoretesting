@@ -39,12 +39,29 @@ export class m2d1_PageObjects {
   readonly subtotal: Locator;
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
+  readonly warnMessage: Locator;
+  readonly firstName:Locator;
+  readonly lastName:Locator;
+  readonly dob:Locator;
+  readonly gender:Locator;
+  readonly emailId:Locator;
+  readonly pwd:Locator;
+  readonly confirmPassword:Locator;
+  readonly profileImage: Locator;
+  readonly location:Locator;
+  readonly bio: Locator;
+  readonly createAccountBtn: Locator;
+  readonly profileLink: Locator;
+  readonly newArrivalBtn: Locator;
+  readonly orders: Locator;
+  readonly newProductLink:Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.getMenuLink = page.getByText(
       "Minimum Order Amount For Customer Group"
     );
+    this.newProductLink=page.locator("//a[normalize-space()='Raybon Aviators']");
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(
@@ -68,11 +85,12 @@ export class m2d1_PageObjects {
     this.errorMsg = page.locator(
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
-    this.email = page.locator("//input[@id='customer-email']");
-    this.fname = page.locator('input[name="firstname"]');
-    this.lname = page.locator('input[name="lastname"]');
-    this.company = page.locator('input[name="company"]');
-    this.streetAddress = page.locator('input[name="street[0]"]');
+    this.warnMessage = page.locator(".message info empty");
+    this.email = page.getByRole("textbox", { name: "Email Address*" });
+    this.fname = page.getByLabel("First Name");
+    this.lname = page.getByLabel("Last Name");
+    this.company = page.getByLabel("Company");
+    this.streetAddress = page.getByLabel("Street Address: Line 1");
     this.country = page.getByLabel("Country");
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");
@@ -89,13 +107,25 @@ export class m2d1_PageObjects {
       .locator("#product-item-info_4")
       .getByRole("button", { name: "Add to Cart" });
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
-    this.miniCheckout = page.getByRole("button", {
-      name: "Proceed to Checkout",
-    });
+    this.miniCheckout =page.locator("#top-cart-btn-checkout")
     this.subtotal = page.locator("span .price");
     this.removeCartBtn = page.locator("//a[@class='action action-delete']");
     this.cartEmptyMessage = page.locator(".cart-empty", {
       hasText: "You have no items in your shopping cart.",
     });
+    this.firstName=page.locator("#firstname")
+    this.lastName=page.locator("#lastname");
+    this.dob=page.locator("#dob");
+    this.gender=page.locator("#gender");
+    this.emailId=page.locator("#email_address");
+    this.pwd=page.locator("#password");
+    this.confirmPassword=page.locator("#password-confirmation");
+    this.profileImage=page.locator("#profileimage");
+    this.location=page.locator("#location");
+    this.bio=page.locator("#biography");
+    this.createAccountBtn=page.getByRole("button",{name:"Create an Account"});
+    this.profileLink=page.getByRole("link",{name:"Profile"});
+    this.newArrivalBtn=page.getByRole("button",{name:"New Arrivals"});
+    this.orders=page.getByRole("button",{name:"Orders"});
   }
 }
