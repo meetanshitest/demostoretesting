@@ -188,9 +188,9 @@ export class m2d2_Assertions extends m2d2_PageObjects {
       .first()
       .waitFor();
 
-    const liElementsCount = await this.page.$$eval(
+    const liElementsCount = await this.page.evaluate(
       ".products.list.items.product-items > li",
-      (lis) => lis.length
+      (lis: string | any[]) => lis.length
     );
     expect(liElementsCount).toBeGreaterThan(0);
     console.log(liElementsCount);

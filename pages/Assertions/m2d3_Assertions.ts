@@ -151,7 +151,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
 
     // Retrieve all image elements
     const images: Locator[] = await imagesLocator.all();
-    
+
     const brokenImgs: string[] = [];
 
     for (const image of images) {
@@ -190,9 +190,9 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       .first()
       .waitFor();
 
-    const liElementsCount = await this.page.$$eval(
+    const liElementsCount = await this.page.evaluate(
       ".products.list.items.product-items > li",
-      (lis) => lis.length
+      (lis: string | any[]) => lis.length
     );
     expect(liElementsCount).toBeGreaterThan(0);
     console.log(liElementsCount);

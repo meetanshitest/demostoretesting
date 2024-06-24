@@ -67,30 +67,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  private async fillCheckoutForm() {
-    await this.email.fill(faker.internet.email());
-    await this.fname.fill(faker.person.firstName());
-    await this.lname.fill(faker.person.lastName());
-    await this.company.fill(faker.company.buzzPhrase());
-    await this.streetAddress.fill(faker.location.streetAddress());
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(faker.location.city());
-    await this.zip.fill(faker.location.zipCode());
-    await this.phone.fill(faker.phone.number());
-  }
-
-  public async placeOrder() {
-    const successMessage = "Thank you for your purchase!";
-    await this.getMenuLink.click();
-    await this.productLink.click();
-    await this.addAndViewCart();
-    await this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/totals-information") &&
-        response.status() === 200
-    );
-    await this.proceedToCheckOut.click();
+  public async fillCheckoutForm() {
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
     await this.lname.fill(`${faker.person.lastName()}`);
@@ -109,6 +86,20 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.city.fill(`${faker.location.city()}`);
     await this.zip.fill(`${faker.location.zipCode()}`);
     await this.phone.fill(`${faker.phone.number()}`);
+  }
+
+  public async placeOrder() {
+    const successMessage = "Thank you for your purchase!";
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
+    await this.proceedToCheckOut.click();
+    await this.fillCheckoutForm();
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
@@ -126,16 +117,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.miniCartItem.click();
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
-    await this.email.fill(`${faker.internet.email()}`);
-    await this.fname.fill(`${faker.person.firstName()}`);
-    await this.lname.fill(`${faker.person.lastName()}`);
-    await this.company.fill(`${faker.company.buzzPhrase()}`);
-    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(`${faker.location.city()}`);
-    await this.zip.fill(`${faker.location.zipCode()}`);
-    await this.phone.fill(`${faker.phone.number()}`);
+    await this.fillCheckoutForm();
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
