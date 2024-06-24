@@ -147,7 +147,6 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    await this.page.waitForTimeout(5000);
     let images = await this.page.$$("img");
     const brokenImgs: string[] = [];
     for (const image of images) {
