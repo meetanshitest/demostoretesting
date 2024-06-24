@@ -1,63 +1,42 @@
-name: Playwright Test
+name: Playwright Tests and Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ devtest ]
-  pull_request:
-    branches: [ devtest ]
+    branches:
+      - main  # or the branch you want to trigger the workflow
 
 jobs:
-  test:
-    timeout-minutes: 60
+  build:
     runs-on: ubuntu-latest
-    env:
-      WEB_URL: ${{ secrets.WEB_URL }}
-      EMAIL_LOCATOR: ${{ secrets.EMAIL_LOCATOR }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-      PASSWORD_LOCATOR: ${{ secrets.PASSWORD_LOCATOR }}
-      SUBMIT: ${{ secrets.SUBMIT }}
-      EMAIL: ${{ secrets.EMAIL }}
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        node-version: lts/*
-    
+        node-version: '18'  # specify the Node.js version you need
+
     - name: Install dependencies
       run: npm ci
-    
-    - name: Install Playwright Browsers
+
+    - name: Install Playwright browsers
       run: npx playwright install --with-deps
-    
+
     - name: Run Playwright tests
       run: npx playwright test
-    
-    - name: Upload Playwright report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Download artifact
-      uses: actions/download-artifact@v4
+    - name: Upload Playwright test results
+      if: always()  # Ensure this step runs regardless of previous steps' success
+      uses: actions/upload-artifact@v2
       with:
-        name: playwright-report
-        path: ./playwright-report
+        name: playwright-test-results
+        path: test-results
 
     - name: Deploy to GitHub Pages
+      if: always()  # Ensure this step runs regardless of previous steps' success
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./playwright-report
+        publish_dir: ./test-results  # directory with the HTML report
