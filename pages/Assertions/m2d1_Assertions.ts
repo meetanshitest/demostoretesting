@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
@@ -147,10 +147,19 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    let images = await this.page.$$("img");
+    // Use page.locator() to find all img elements
+    const imagesLocator = this.page.locator("img");
+
+    // Retrieve all image elements
+    const images: Locator[] = await imagesLocator.all();
+
     const brokenImgs: string[] = [];
+
     for (const image of images) {
-      const imageUrl = await image.getAttribute("src");
+      // Get the image source URL using page.evaluate()
+      const imageUrl = await image.evaluate(
+        (img) => (img as HTMLImageElement).src
+      );
 
       // Check if the image URL exists and is not empty
       if (!imageUrl) {

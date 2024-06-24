@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects.ts";
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { globalSetup } from "../../config/globalSetup.ts";
 
 export class m2d2_Assertions extends m2d2_PageObjects {
@@ -16,17 +16,21 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await this.loginEmail.fill(`${process.env.EMAIL}`);
     await this.password.fill(`${process.env.PASSWORD}`);
     await this.submitBtn.click();
-    await expect(this.greetingMsg).toContainText("Welcome, bhushan trivedi")
+    await expect(this.greetingMsg).toContainText("Welcome, bhushan trivedi");
   }
   public async verifySignOutLink() {
     await this.signinLink.click();
     await this.loginEmail.fill(`${process.env.EMAIL}`);
     await this.password.fill(`${process.env.PASSWORD}`);
     await this.submitBtn.click();
-    await expect(this.greetingMsg).toContainText("Welcome, bhushan")
-    await this.page.getByRole('banner').locator('button').filter({ hasText: 'Change' }).click();
+    await expect(this.greetingMsg).toContainText("Welcome, bhushan");
+    await this.page
+      .getByRole("banner")
+      .locator("button")
+      .filter({ hasText: "Change" })
+      .click();
     await this.signOutLink.click();
-    await expect(this.page.getByText('You are signed out')).toBeVisible();   
+    await expect(this.page.getByText("You are signed out")).toBeVisible();
   }
   public async navigateToCategoryPage() {
     await this.getMenuLink.click();
@@ -138,10 +142,19 @@ export class m2d2_Assertions extends m2d2_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    let images = await this.page.$$("img");
+    // Use page.locator() to find all img elements
+    const imagesLocator = this.page.locator("img");
+
+    // Retrieve all image elements
+    const images: Locator[] = await imagesLocator.all();
+
     const brokenImgs: string[] = [];
+
     for (const image of images) {
-      const imageUrl = await image.getAttribute("src");
+      // Get the image source URL using page.evaluate()
+      const imageUrl = await image.evaluate(
+        (img) => (img as HTMLImageElement).src
+      );
 
       // Check if the image URL exists and is not empty
       if (!imageUrl) {
@@ -218,4 +231,3 @@ export class m2d2_Assertions extends m2d2_PageObjects {
 function toBeVisible() {
   throw new Error("Function not implemented.");
 }
-

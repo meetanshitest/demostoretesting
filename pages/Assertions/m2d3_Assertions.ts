@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects.ts";
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class m2d3_Assertions extends m2d3_PageObjects {
   [x: string]: any;
@@ -146,34 +146,41 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    let images = await this.page.$$("img");
+    // Use page.locator() to find all img elements
+    const imagesLocator = this.page.locator('img');
+
+    // Retrieve all image elements
+    const images: Locator[] = await imagesLocator.all();
+    
     const brokenImgs: string[] = [];
+
     for (const image of images) {
-      const imageUrl = await image.getAttribute("src");
+        // Get the image source URL using page.evaluate()
+        const imageUrl = await image.evaluate(img => (img as HTMLImageElement).src);
 
-      // Check if the image URL exists and is not empty
-      if (!imageUrl) {
-        console.warn("Image with no src attribute found:", image);
-        continue; // Skip images without src
-      }
+        // Check if the image URL exists and is not empty
+        if (!imageUrl) {
+            console.warn("Image with no src attribute found:", image);
+            continue; // Skip images without src
+        }
 
-      // Use fetch to perform a HEAD request and check the response status code
-      const response = await this.page.evaluate(async (url) => {
-        const response = await fetch(url, { method: "HEAD" });
-        return response.status;
-      }, imageUrl);
+        // Use fetch to perform a HEAD request and check the response status code
+        const response = await this.page.evaluate(async (url) => {
+            const response = await fetch(url, { method: "HEAD" });
+            return response.status;
+        }, imageUrl);
 
-      if (response !== 200) {
-        brokenImgs.push(imageUrl);
-        console.error(`Broken image found: ${imageUrl}`);
-      }
+        if (response !== 200) {
+            brokenImgs.push(imageUrl);
+            console.error(`Broken image found: ${imageUrl}`);
+        }
     }
 
     if (brokenImgs.length === 0) {
-      console.log("All images loaded successfully!");
+        console.log("All images loaded successfully!");
     } else {
-      console.warn(`Found ${brokenImgs.length} broken images:`);
-      console.warn(brokenImgs.join("\n"));
+        console.warn(`Found ${brokenImgs.length} broken images:`);
+        console.warn(brokenImgs.join("\n"));
     }
   }
   public async productCount() {
