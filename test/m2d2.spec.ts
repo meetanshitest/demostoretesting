@@ -76,4 +76,7 @@ test.describe("m2d2 test cases", () => {
   test("Verify SignOut Link", async () => {
     await m2d2.verifySignOutLink();
   });
+  test("Check CardSave payment method visibility",async()=>{
+        
+  })
 });

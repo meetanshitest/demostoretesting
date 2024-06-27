@@ -198,7 +198,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.page.locator("#ui-id-1 li").waitFor({timeout:1000});
 
     // Get the length of the list items
-    const liElementsLength = await this.page.evaluate(
+    const liElementsLength = await this.page.$$eval(
       "#ui-id-1 li",
       (lis) => lis.length
     );
