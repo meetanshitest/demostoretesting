@@ -47,6 +47,15 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.signInLink.click();
     expect(await this.headingText.textContent()).toBe("Customer Login");
   }
+  public async verifyLogin() {
+    await this.signInLink.click();
+    await this.userEmail.fill("bhushan007@yopmail.com");
+    await this.password.fill("Admin@123");
+    await this.signInBtn.click();
+    await this.greetingMsg.waitFor({ state: "visible" });
+
+    //await expect(this.greetingMsg).toHaveText("Welcome, bhushan bhushan!");
+  }
   public async verifyCreateAccountLink() {
     await this.createAccountLink.click();
     expect(await this.headingText.textContent()).toBe(
@@ -121,7 +130,9 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
-    await this.page.locator("#minicart-content-wrapper").waitFor({state:'visible',timeout:1000})
+    await this.page
+      .locator("#minicart-content-wrapper")
+      .waitFor({ state: "visible", timeout: 1000 });
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -146,7 +157,7 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   }
   public async brokenImages() {
     // Use page.locator() to find all img elements
-    const imagesLocator = this.page.locator('img');
+    const imagesLocator = this.page.locator("img");
 
     // Retrieve all image elements
     const images: Locator[] = await imagesLocator.all();
@@ -154,45 +165,50 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     const brokenImgs: string[] = [];
 
     for (const image of images) {
-        // Get the image source URL using page.evaluate()
-        const imageUrl = await image.evaluate(img => (img as HTMLImageElement).src);
+      // Get the image source URL using page.evaluate()
+      const imageUrl = await image.evaluate(
+        (img) => (img as HTMLImageElement).src
+      );
 
-        // Check if the image URL exists and is not empty
-        if (!imageUrl) {
-            console.warn("Image with no src attribute found:", image);
-            continue; // Skip images without src
-        }
+      // Check if the image URL exists and is not empty
+      if (!imageUrl) {
+        console.warn("Image with no src attribute found:", image);
+        continue; // Skip images without src
+      }
 
-        // Use fetch to perform a HEAD request and check the response status code
-        const response = await this.page.evaluate(async (url) => {
-            const response = await fetch(url, { method: "HEAD" });
-            return response.status;
-        }, imageUrl);
+      // Use fetch to perform a HEAD request and check the response status code
+      const response = await this.page.evaluate(async (url) => {
+        const response = await fetch(url, { method: "HEAD" });
+        return response.status;
+      }, imageUrl);
 
-        if (response !== 200) {
-            brokenImgs.push(imageUrl);
-            console.error(`Broken image found: ${imageUrl}`);
-        }
+      if (response !== 200) {
+        brokenImgs.push(imageUrl);
+        console.error(`Broken image found: ${imageUrl}`);
+      }
     }
 
     if (brokenImgs.length === 0) {
-        console.log("All images loaded successfully!");
+      console.log("All images loaded successfully!");
     } else {
-        console.warn(`Found ${brokenImgs.length} broken images:`);
-        console.warn(brokenImgs.join("\n"));
+      console.warn(`Found ${brokenImgs.length} broken images:`);
+      console.warn(brokenImgs.join("\n"));
     }
   }
   public async productCount() {
     await this.getMenuLink.click();
     await this.page
-      .locator(".products.list.items.product-items")
+      .locator(".products.list.items.product-items li")
       .first()
       .waitFor();
 
-    const liElementsCount = await this.page.evaluate(
-      ".products.list.items.product-items > li",
-      (lis: string | any[]) => lis.length
-    );
+    const liElementsCount = await this.page.evaluate(() => {
+      // Select the `li` elements within the container and return their length
+      const lis = document.querySelectorAll(
+        ".products.list.items.product-items li"
+      );
+      return lis.length;
+    });
     expect(liElementsCount).toBeGreaterThan(0);
     console.log(liElementsCount);
   }
@@ -228,5 +244,4 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       await expect(products).toBeVisible();
     }
   }
-    
 }

@@ -37,6 +37,10 @@ export class m2d3_PageObjects {
   readonly categoryAddtoCartBtn:Locator;
   readonly miniCartItem: Locator;
   readonly miniCheckout: Locator;
+  readonly userEmail: Locator;
+  readonly password:Locator;
+  readonly greetingMsg:Locator;
+  readonly signInBtn:Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -46,6 +50,8 @@ export class m2d3_PageObjects {
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
+    this.greetingMsg=page.locator('span.logged-in').first();
+    this.signInBtn=page.locator('#send2');
     this.headingText = page.locator("//span[@class='base']");
     this.price = page.locator("//span[@class='price']");
     this.ItemLocators = page.locator("li>a>span");
@@ -65,6 +71,8 @@ export class m2d3_PageObjects {
       "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
     );
     this.email = page.locator("#customer-email");
+    this.userEmail=page.locator('#email');
+    this.password=page.locator('#pass')
     this.fname = page.locator('input[name="firstname"]');
     this.lname = page.locator('input[name="lastname"]');
     this.company = page.locator('input[name="company"]');

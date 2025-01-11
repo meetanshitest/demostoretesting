@@ -1,6 +1,5 @@
 import { Page, test as base, expect } from "@playwright/test";
 import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
-import { globalSetup } from "../config/globalSetup.ts";
 
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
@@ -76,7 +75,5 @@ test.describe("m2d2 test cases", () => {
   test("Verify SignOut Link", async () => {
     await m2d2.verifySignOutLink();
   });
-  test("Check CardSave payment method visibility",async()=>{
-        
-  })
+ 
 });

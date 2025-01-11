@@ -39,3 +39,4 @@
 /blob-report/
 /playwright/.cache/
 auth.json
+node_modules/
