@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d3_PageObjects } from "../PageObjects/m2d3_PageObjects.ts";
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class m2d3_Assertions extends m2d3_PageObjects {
   [x: string]: any;
@@ -47,6 +47,15 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.signInLink.click();
     expect(await this.headingText.textContent()).toBe("Customer Login");
   }
+  public async verifyLogin() {
+    await this.signInLink.click();
+    await this.userEmail.fill("bhushan007@yopmail.com");
+    await this.password.fill("Admin@123");
+    await this.signInBtn.click();
+    await this.greetingMsg.waitFor({ state: "visible" });
+
+    //await expect(this.greetingMsg).toHaveText("Welcome, bhushan bhushan!");
+  }
   public async verifyCreateAccountLink() {
     await this.createAccountLink.click();
     expect(await this.headingText.textContent()).toBe(
@@ -67,7 +76,6 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       '//div[@data-bind="html: $parent.prepareMessageForHtml(message.text)"]'
     );
     if (message) {
-      //await this.page.waitForTimeout(4000);
       await this.qtyUpdateTextBox.fill("2");
       await this.updateCartButton.click();
       await this.proceedToCheckOut.click();
@@ -122,7 +130,9 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await this.productItemInfo.hover();
     await this.categoryAddtoCartBtn.click();
     await this.miniCartItem.click();
-    await this.page.locator("#minicart-content-wrapper").waitFor({state:'visible',timeout:1000})
+    await this.page
+      .locator("#minicart-content-wrapper")
+      .waitFor({ state: "visible", timeout: 1000 });
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
     await this.email.fill(`${faker.internet.email()}`);
@@ -146,10 +156,19 @@ export class m2d3_Assertions extends m2d3_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    let images = await this.page.$$("img");
+    // Use page.locator() to find all img elements
+    const imagesLocator = this.page.locator("img");
+
+    // Retrieve all image elements
+    const images: Locator[] = await imagesLocator.all();
+
     const brokenImgs: string[] = [];
+
     for (const image of images) {
-      const imageUrl = await image.getAttribute("src");
+      // Get the image source URL using page.evaluate()
+      const imageUrl = await image.evaluate(
+        (img) => (img as HTMLImageElement).src
+      );
 
       // Check if the image URL exists and is not empty
       if (!imageUrl) {
@@ -179,14 +198,17 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   public async productCount() {
     await this.getMenuLink.click();
     await this.page
-      .locator(".products.list.items.product-items")
+      .locator(".products.list.items.product-items li")
       .first()
       .waitFor();
 
-    const liElementsCount = await this.page.$$eval(
-      ".products.list.items.product-items > li",
-      (lis) => lis.length
-    );
+    const liElementsCount = await this.page.evaluate(() => {
+      // Select the `li` elements within the container and return their length
+      const lis = document.querySelectorAll(
+        ".products.list.items.product-items li"
+      );
+      return lis.length;
+    });
     expect(liElementsCount).toBeGreaterThan(0);
     console.log(liElementsCount);
   }
@@ -222,5 +244,4 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       await expect(products).toBeVisible();
     }
   }
-    
 }

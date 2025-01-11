@@ -1,6 +1,5 @@
 import { test as base, expect, Page } from "@playwright/test";
 import { m2d3_Assertions } from "../pages/Assertions/m2d3_Assertions.ts";
-import { globalSetup } from "../config/globalSetup.ts";
 
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
@@ -77,4 +76,7 @@ test.describe("m2d3 test cases", () => {
   test("check products should visible for all categories", async () => {
     await m2d3.isProductVisibleForAllMenus();
   });
+  test("verify Login",async()=>{
+    await m2d3.verifyLogin();
+  })
 });

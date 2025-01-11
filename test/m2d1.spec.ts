@@ -1,6 +1,5 @@
 import { test as base, expect, Page } from "@playwright/test";
 import { m2d1_Assertions } from "../pages/Assertions/m2d1_Assertions.ts";
-import { globalSetup } from "../config/globalSetup.ts";
 
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
@@ -94,5 +93,8 @@ test.describe("m2d1 test cases", () => {
   })
   test("check Qty Condition validation",async()=>{
     await m2d1.qtyConditionValidation();
+  })
+  test("Check card save payment method visiblity",async()=>{
+    await m2d1.checkPaymenMethodVisibility();
   })
 });

@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
@@ -67,17 +67,17 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.shoppingCartLink.click();
     await expect(this.page).toHaveTitle(/Shopping Cart/);
   }
-  private async fillCheckoutForm() {
-    await this.email.fill(faker.internet.email());
-    await this.fname.fill(faker.person.firstName());
-    await this.lname.fill(faker.person.lastName());
-    await this.company.fill(faker.company.buzzPhrase());
-    await this.streetAddress.fill(faker.location.streetAddress());
+  public async fillCheckoutForm() {
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
     await this.country.selectOption("India");
     await this.state.selectOption("Gujarat");
-    await this.city.fill(faker.location.city());
-    await this.zip.fill(faker.location.zipCode());
-    await this.phone.fill(faker.phone.number());
+    await this.city.fill(`${faker.location.city()}`);
+    await this.zip.fill(`${faker.location.zipCode()}`);
+    await this.phone.fill(`${faker.phone.number()}`);
   }
 
   public async placeOrder() {
@@ -91,24 +91,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
         response.status() === 200
     );
     await this.proceedToCheckOut.click();
-    await this.email.fill(`${faker.internet.email()}`);
-    await this.fname.fill(`${faker.person.firstName()}`);
-    await this.lname.fill(`${faker.person.lastName()}`);
-    await this.company.fill(`${faker.company.buzzPhrase()}`);
-    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(`${faker.location.city}`);
-    await this.email.fill(`${faker.internet.email()}`);
-    await this.fname.fill(`${faker.person.firstName()}`);
-    await this.lname.fill(`${faker.person.lastName()}`);
-    await this.company.fill(`${faker.company.buzzPhrase()}`);
-    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(`${faker.location.city()}`);
-    await this.zip.fill(`${faker.location.zipCode()}`);
-    await this.phone.fill(`${faker.phone.number()}`);
+    await this.fillCheckoutForm();
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
@@ -126,16 +109,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.miniCartItem.click();
     await this.miniCheckout.click();
     await expect(this.page).toHaveTitle("Checkout");
-    await this.email.fill(`${faker.internet.email()}`);
-    await this.fname.fill(`${faker.person.firstName()}`);
-    await this.lname.fill(`${faker.person.lastName()}`);
-    await this.company.fill(`${faker.company.buzzPhrase()}`);
-    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
-    await this.country.selectOption("India");
-    await this.state.selectOption("Gujarat");
-    await this.city.fill(`${faker.location.city()}`);
-    await this.zip.fill(`${faker.location.zipCode()}`);
-    await this.phone.fill(`${faker.phone.number()}`);
+    await this.fillCheckoutForm();
     await this.nextBtn.click();
     await this.paymentMethod.check();
     await this.placeOrderBtn.click();
@@ -147,11 +121,19 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(this.page).toHaveTitle("Success Page");
   }
   public async brokenImages() {
-    await this.page.waitForTimeout(5000);
-    let images = await this.page.$$("img");
+    // Use page.locator() to find all img elements
+    const imagesLocator = this.page.locator("img");
+
+    // Retrieve all image elements
+    const images: Locator[] = await imagesLocator.all();
+
     const brokenImgs: string[] = [];
+
     for (const image of images) {
-      const imageUrl = await image.getAttribute("src");
+      // Get the image source URL using page.evaluate()
+      const imageUrl = await image.evaluate(
+        (img) => (img as HTMLImageElement).src
+      );
 
       // Check if the image URL exists and is not empty
       if (!imageUrl) {
@@ -205,28 +187,27 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     );
   }
   public async categoryCount() {
-    await this.page.waitForSelector("#ui-id-1 li");
-
-    // Get the length of the list items
-    const liElementsLength = await this.page.$$eval(
-      "#ui-id-1 li",
-      (lis) => lis.length
-    );
-
+    // Wait for the list items to be visible
+    await this.page.locator("#ui-id-1 li").first().waitFor({ state: 'attached', timeout: 5000 });
+  
+    // Use the locator to count the elements directly
+    const liElementsLength = await this.page.locator("#ui-id-1 li").count();
+  
     if (liElementsLength > 0) {
-      console.log(
-        "List items length is greater than zero.",
-        `${liElementsLength}`
-      );
+      console.log("List items length is greater than zero.", liElementsLength);
     } else {
       console.log("List items length is not greater than zero.");
     }
+  
+    // Optional: Use Playwright's expect if this is part of a test
     expect(liElementsLength).toBeGreaterThan(5);
-    const liTextContents = await this.page.$$eval("#ui-id-1 li", (lis) =>
-      lis.map((li) => li.textContent?.trim()).filter(Boolean)
-    );
+  
+    // Retrieve text content of the list items using the locator API
+    const liTextContents = await this.page.locator("#ui-id-1 li").allTextContents();
+  
     liTextContents.forEach((textContent) => console.log(textContent));
   }
+  
   public async createAccount() {
     await this.createAccountLink.click();
     await this.firstName.fill(`${faker.person.firstName()}`);
@@ -297,5 +278,22 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await expect(
       this.page.getByText("Make the minimum purchase of")
     ).toBeVisible();
+  }
+  public async checkPaymenMethodVisibility() {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await expect(this.page).toHaveTitle(/Shopping Cart/);
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
+    await this.proceedToCheckOut.click();
+    await this.fillCheckoutForm();
+    await this.nextBtn.click();
+    await expect(this.page.getByText("Cardsave Hosted Payment")).toBeVisible();
+    await expect(this.page.getByText("Cardsave Direct Payments")).toBeVisible();
+    await expect(this.page.getByText("Payeezy Credit Card Payment")).toBeVisible();
   }
 }
