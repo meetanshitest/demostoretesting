@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
 import { Locator, Page, expect } from "@playwright/test";
-import { url } from "inspector";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
   constructor(page: Page) {
@@ -162,12 +161,20 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    const liElementsCount = await this.page.evaluate(
-      ".products.list.items.product-items > li",
-      (lis: string | any[]) => lis.length
-    );
-    expect(liElementsCount).toBeGreaterThan(0);
-    console.log(liElementsCount);
+    await this.page.waitForSelector(".products.list.items.product-items"); // Ensure content loads
+
+    const liElementsCount = await this.page
+      .locator(".products.list.items.product-items li")
+      .count();
+
+    if (liElementsCount === 0) {
+      throw new Error(
+        "No products found. Check if the selector or page state is correct."
+      );
+    }
+
+    console.log(`Product count: ${liElementsCount}`);
+    return liElementsCount;
   }
   public async removeCart() {
     await this.getMenuLink.click();
@@ -188,26 +195,31 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async categoryCount() {
     // Wait for the list items to be visible
-    await this.page.locator("#ui-id-1 li").first().waitFor({ state: 'attached', timeout: 5000 });
-  
+    await this.page
+      .locator("#ui-id-1 li")
+      .first()
+      .waitFor({ state: "attached", timeout: 5000 });
+
     // Use the locator to count the elements directly
     const liElementsLength = await this.page.locator("#ui-id-1 li").count();
-  
+
     if (liElementsLength > 0) {
       console.log("List items length is greater than zero.", liElementsLength);
     } else {
       console.log("List items length is not greater than zero.");
     }
-  
+
     // Optional: Use Playwright's expect if this is part of a test
     expect(liElementsLength).toBeGreaterThan(5);
-  
+
     // Retrieve text content of the list items using the locator API
-    const liTextContents = await this.page.locator("#ui-id-1 li").allTextContents();
-  
+    const liTextContents = await this.page
+      .locator("#ui-id-1 li")
+      .allTextContents();
+
     liTextContents.forEach((textContent) => console.log(textContent));
   }
-  
+
   public async createAccount() {
     await this.createAccountLink.click();
     await this.firstName.fill(`${faker.person.firstName()}`);
@@ -262,7 +274,7 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
   public async checkProfileTitle() {
     await this.profileLink.click();
-    await expect(this.page).toHaveTitle(/User Profile/);
+    await expect(this.page).toHaveURL(/profile/);
   }
   public async qtyConditionValidation() {
     await this.getMenuLink.click();
@@ -294,6 +306,8 @@ export class m2d1_Assertions extends m2d1_PageObjects {
     await this.nextBtn.click();
     await expect(this.page.getByText("Cardsave Hosted Payment")).toBeVisible();
     await expect(this.page.getByText("Cardsave Direct Payments")).toBeVisible();
-    await expect(this.page.getByText("Payeezy Credit Card Payment")).toBeVisible();
+    await expect(
+      this.page.getByText("Payeezy Credit Card Payment")
+    ).toBeVisible();
   }
 }

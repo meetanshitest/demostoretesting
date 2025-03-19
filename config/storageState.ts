@@ -1,5 +1,4 @@
 import { test as base, expect, Page } from "@playwright/test";
-import * as pw from "playwright";
 import path from "path";
 import { promises as fs } from "fs";
 
