@@ -2,9 +2,9 @@ name: Playwright Test
 
 on:
   push:
-    branches: [ devtest ]
+    branches: [ main ]
   pull_request:
-    branches: [ devtest ]
+    branches: [ main ]
 
 jobs:
   test:
