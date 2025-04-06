@@ -1,0 +1,65 @@
+import {test as base,expect,Page} from '@playwright/test';
+import { m2d4_Assertions } from "../pages/Assertions/m2d4_Assertions.ts";
+
+const test = base.extend<{page:Page}>({
+    page:async ({page},use)=>{
+        const webUrl = process.env.WEB_URL?.split(",")[3];
+        if(!webUrl){
+            throw new Error("Please provide the web url");
+        }
+        await page.goto(webUrl);
+        const title = page.title();
+        expect(title).not.toContain("error");
+        await use(page);
+    }
+});
+
+test.describe("m2d4 test cases", () => {    
+   let m2d4: m2d4_Assertions;
+
+    test.beforeEach(async ({page})=>{
+        m2d4 = new m2d4_Assertions(page);
+    });
+    test.afterEach(async ({page})=>{
+        await page.close();
+    });
+    test("Verify Category page Heading", async ()=>{
+        await m2d4.navigateToCategoryPage();
+    });
+    test("Verify Product page Heading", async ()=>{
+        await m2d4.navigateToProductPage();
+    });
+    test("Verify Add To Cart Button", async ()=>{
+        await m2d4.verifySuccessMsg();
+    });
+    test("Check Price is visible or not", async ()=>{
+        await m2d4.verifyPrice();
+    });
+    test("Check Shopping cart Link", async ()=>{
+        await m2d4.navigateToCart();
+    });
+    test("Check SignIn link", async ()=>{
+        await m2d4.verifySignInLink();
+    });
+    test("Check Create Account link", async ()=>{
+        await m2d4.verifyCreateAccountLink();
+    });
+    test("Verify Cart Page Title", async ()=>{
+        await m2d4.navigateToCart();
+    });
+    test("navigate To Checkout page", async ()=>{
+        await m2d4.navigateToCheckout();
+    });
+    test("Check place order", async ()=>{
+        await m2d4.placeOrder();
+    });
+    test("Check place Order By MiniCart", async ()=>{
+        await m2d4.placeOrderByMiniCart();
+    });
+    test("check broken images", async ()=>{
+        await m2d4.brokenImages();
+    });
+    test("check broken links", async ()=>{
+        await m2d4.checkBrokenLinks();
+    });
+});           
