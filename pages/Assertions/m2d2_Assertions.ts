@@ -183,17 +183,14 @@ export class m2d2_Assertions extends m2d2_PageObjects {
   }
   public async productCount() {
     await this.getMenuLink.click();
-    await this.page
-      .locator(".products.list.items.product-items")
-      .first()
-      .waitFor();
+    const productList = this.page.locator(".products.list.items.product-items");
+    await expect(productList.first()).toBeVisible();
 
-    const liElementsCount = await this.page.evaluate(
-      ".products.list.items.product-items > li",
-      (lis: string | any[]) => lis.length
-    );
-    expect(liElementsCount).toBeGreaterThan(0);
-    console.log(liElementsCount);
+    const productCount = await productList.locator("li").count();
+
+    // Assert and log the count
+    expect(productCount).toBeGreaterThan(0);
+    console.log("Product count:", productCount);
   }
   public async removeCart() {
     await this.getMenuLink.click();
