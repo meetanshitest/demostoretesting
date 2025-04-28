@@ -1,14 +1,18 @@
 import { type Page, type Locator } from "@playwright/test";
 
-export class m2d1_PageObjects {
+export class m2d5_PageObjects {
   protected page: Page;
+  readonly cartMessage: Locator;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;
+  readonly getMenuLinkOne: Locator;
+  readonly getMenuLinkTwo: Locator;
+  readonly getMenuLinkThree: Locator;
+  //readonly productLinkTwo: Locator;
   readonly addToCart: Locator;
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
   readonly price: Locator;
-  //readonly menuItem: Locator;
   readonly ItemLocators: Locator;
   readonly signInLink: Locator;
   readonly createAccountLink: Locator;
@@ -30,45 +34,61 @@ export class m2d1_PageObjects {
   readonly nextBtn: Locator;
   readonly paymentMethod: Locator;
   readonly placeOrderBtn: Locator;
-  //readonly sucessOrder: Locator;
   readonly sucessOrderMessage: Locator;
   readonly productItemInfo: Locator;
   readonly categoryAddtoCartBtn: Locator;
-  readonly miniCartItem: Locator;
-  readonly miniCheckout: Locator;
   readonly subtotal: Locator;
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
   readonly warnMessage: Locator;
-  readonly firstName:Locator;
-  readonly lastName:Locator;
-  readonly dob:Locator;
-  readonly gender:Locator;
-  readonly emailId:Locator;
-  readonly pwd:Locator;
-  readonly confirmPassword:Locator;
-  readonly profileImage: Locator;
-  readonly location:Locator;
-  readonly bio: Locator;
-  readonly createAccountBtn: Locator;
-  readonly profileLink: Locator;
-  readonly newArrivalBtn: Locator;
-  readonly orders: Locator;
-  readonly newProductLink:Locator;
-
+  readonly toolbarNumber: Locator;
+  readonly productLinkOne: Locator;
+  readonly productLinkTwo: Locator;
+  readonly trackOrderMenuLink: Locator;
+  readonly trackOrderId: Locator;
+  readonly trackOrderEmail: Locator;
+  readonly trackOrderButton: Locator;
+  readonly welcomeMessage: Locator;
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly loginButton: Locator;
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.getByText(
-      "Minimum Order Amount For Customer Group"
-    );
-    this.newProductLink=page.locator("//a[normalize-space()='Raybon Aviators']");
+    this.emailInput = page.getByLabel("Email");
+    this.passwordInput = page.getByLabel("Password");
+    this.loginButton = page.getByRole("button", { name: "Sign In" });
+    this.welcomeMessage = page.locator("span.logged-in");
+    this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
+    this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
+    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
+    this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
+    this.getMenuLinkTwo = page.getByRole("menuitem", {
+      name: "Custom Order Number",
+    });
+    this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
+    this.productLink = page.locator("a.product-item-link", {
+      hasText: "Boxer Shorts",
+    });
+    this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
+    this.productLinkOne = page.locator("a.product-item-link", {
+      hasText: "Rayban Aviators",
+    });
+    this.productLinkTwo = page.locator("a.product-item-link", {
+      hasText: "Apple iPhone X",
+    });
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
+
+    this.trackOrderMenuLink = page.getByRole("menuitem", {
+      name: "Track Your Order",
+    });
+    this.trackOrderId = page.locator("#order_id");
+    this.trackOrderEmail = page.locator("#email");
+    this.trackOrderButton = page.getByRole("button", { name: "Track Order" });
     this.headingText = page.locator("//span[@class='base']");
-    this.price = page.locator("//span[@class='price']");
+    this.price = page.locator(".price");
     this.ItemLocators = page.locator("li>a>span");
     this.signInLink = page.getByRole("link", { name: "Sign In" });
     this.createAccountLink = page.getByRole("link", {
@@ -106,26 +126,10 @@ export class m2d1_PageObjects {
     this.categoryAddtoCartBtn = page
       .locator("#product-item-info_4")
       .getByRole("button", { name: "Add to Cart" });
-    this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
-    this.miniCheckout =page.locator("#top-cart-btn-checkout")
     this.subtotal = page.locator("span .price");
     this.removeCartBtn = page.locator("//a[@class='action action-delete']");
     this.cartEmptyMessage = page.locator(".cart-empty", {
       hasText: "You have no items in your shopping cart.",
     });
-    this.firstName=page.locator("#firstname")
-    this.lastName=page.locator("#lastname");
-    this.dob=page.locator("#dob");
-    this.gender=page.locator("#gender");
-    this.emailId=page.locator("#email_address");
-    this.pwd=page.locator("#password");
-    this.confirmPassword=page.locator("#password-confirmation");
-    this.profileImage=page.locator("#profileimage");
-    this.location=page.locator("#location");
-    this.bio=page.locator("#biography");
-    this.createAccountBtn=page.getByRole("button",{name:"Create an Account"});
-    this.profileLink=page.getByRole("link",{name:"Profile"});
-    this.newArrivalBtn=page.getByRole("button",{name:"New Arrivals"});
-    this.orders=page.getByRole("button",{name:"Orders"});
   }
 }

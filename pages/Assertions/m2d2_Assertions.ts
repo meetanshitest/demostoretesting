@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects.ts";
+import { m2d2_PageObjects } from "../PageObjects/m2d2_PageObjects";
 import { Locator, Page, expect } from "@playwright/test";
-import { globalSetup } from "../../config/globalSetup.ts";
 
 export class m2d2_Assertions extends m2d2_PageObjects {
   static productName: String;

@@ -8,7 +8,6 @@ export class m2d4_PageObjects {
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
   readonly price: Locator;
-  readonly menuItem: Locator;
   readonly ItemLocators: Locator;
   readonly signInLink: Locator;
   readonly createAccountLink: Locator;
@@ -30,7 +29,6 @@ export class m2d4_PageObjects {
   readonly nextBtn: Locator;
   readonly paymentMethod: Locator;
   readonly placeOrderBtn: Locator;
-  readonly sucessOrder: Locator;
   readonly sucessOrderMessage: Locator;
   readonly productItemInfo: Locator;
   readonly categoryAddtoCartBtn: Locator;
@@ -40,12 +38,19 @@ export class m2d4_PageObjects {
   readonly removeCartBtn: Locator;
   readonly cartEmptyMessage: Locator;
   readonly warnMessage: Locator;
-
+  readonly toolbarNumber: Locator;
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly loginButton: Locator;
+  readonly welcomeMessage: Locator;
   constructor(page: Page) {
     this.page = page;
-    this.getMenuLink = page.getByText(
-      "Minimum Order Amount For Customer Group"
-    );
+    this.emailInput = page.getByLabel("Email");
+    this.passwordInput = page.getByLabel("Password");
+    this.welcomeMessage = page.locator("span.logged-in");
+    this.loginButton = page.getByRole("button", { name: "Sign In" });
+    this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
+    this.getMenuLink = page.getByRole("menuitem", { name: "Payment Methods" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLink = page.locator('//a[normalize-space()="Apple iPhone X"]');
     this.sucessMessageText = page.locator(
@@ -86,9 +91,9 @@ export class m2d4_PageObjects {
     this.sucessOrderMessage = page
       .locator('[data-ui-id="page-title-wrapper"]')
       .filter({ hasText: "Thank you for your purchase!" });
-    this.productItemInfo = page.locator("//img[@alt='Apple iPhone X']");
+    this.productItemInfo = page.locator('img[alt="Apple iPhone X"]');
     this.categoryAddtoCartBtn = page
-      .locator("#product-item-info_4")
+      .locator("#product-item-info_1")
       .getByRole("button", { name: "Add to Cart" });
     this.miniCartItem = page.getByRole("link", { name: " My Cart 1 1 items" });
     this.miniCheckout = page.getByRole("button", {

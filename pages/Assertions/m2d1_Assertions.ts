@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects.ts";
+import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects";
 import { Locator, Page, expect } from "@playwright/test";
 
 export class m2d1_Assertions extends m2d1_PageObjects {

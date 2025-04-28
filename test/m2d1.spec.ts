@@ -1,5 +1,5 @@
 import { test as base, expect, Page } from "@playwright/test";
-import { m2d1_Assertions } from "../pages/Assertions/m2d1_Assertions.ts";
+import { m2d1_Assertions } from "pages/Assertions/m2d1_Assertions";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[0] || DEFAULT_WEB_URL;
