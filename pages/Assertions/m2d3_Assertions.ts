@@ -86,58 +86,104 @@ export class m2d3_Assertions extends m2d3_PageObjects {
       await this.proceedToCheckOut.click();
     }
   }
+  public async fillCheckoutForm() {
+    await this.email.fill(`${faker.internet.email()}`);
+    await this.fname.fill(`${faker.person.firstName()}`);
+    await this.lname.fill(`${faker.person.lastName()}`);
+    await this.company.fill(`${faker.company.buzzPhrase()}`);
+    await this.streetAddress.fill(`${faker.location.streetAddress()}`);
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(`${faker.location.city()}`);
+    await this.zip.fill(`${faker.location.zipCode()}`);
+    await this.phone.fill(`${faker.phone.number()}`);
+  }
   public async placeOrder() {
-    const successMessage = "Thank you for your purchase!";
-  
-    await test.step('Navigate to product page', async () => {
+    let testPassed = false;
+
+    try {
       await this.getMenuLink.click();
       await this.productLink.click();
-    });
-  
-    await test.step('Add product to cart', async () => {
       await this.addAndViewCart();
+
       await this.page.waitForResponse(
         (response) =>
           response.url().includes("/totals-information") &&
           response.status() === 200
       );
-    });
-  
-    await test.step('Proceed to checkout', async () => {
+
       await this.proceedToCheckOut.click();
-    });
-  
-    await test.step('Fill shipping information', async () => {
-      await this.email.fill(faker.internet.email());
-      await this.fname.fill(faker.person.firstName());
-      await this.lname.fill(faker.person.lastName());
-      await this.company.fill(faker.company.buzzPhrase());
-      await this.streetAddress.fill(faker.location.streetAddress());
-      await this.country.selectOption("India");
-      await this.state.selectOption("Gujarat");
-      await this.city.fill(faker.location.city());
-      await this.zip.fill(faker.location.zipCode());
-      await this.phone.fill(faker.phone.number());
-    });
-  
-    await test.step('Select shipping method and continue', async () => {
+      await this.fillCheckoutForm();
       await this.nextBtn.click();
-    });
-  
-    await test.step('Select payment method and place order', async () => {
       await this.paymentMethod.check();
-      await this.placeOrderBtn.click();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/payment-information") &&
-          response.status() === 200
+
+      await Promise.all([
+        this.page.waitForURL("**/checkout/onepage/success/"),
+        this.placeOrderBtn.click(),
+      ]);
+
+      await expect(this.page).toHaveTitle("Success Page");
+
+      testPassed = true;
+    } catch (error: any) {
+      console.error(
+        "❌ Order placement failed:",
+        error.stack || error.message || error
       );
-    });
-  
-    await test.step('Verify order success page', async () => {
-      await expect(this.page).toHaveTitle('Success Page');
-    });
+
+      // Optional: take screenshot on failure
+      await this.page.screenshot({
+        path: `order-failure-${Date.now()}.png`,
+        fullPage: true,
+      });
+
+      throw error;
+    } finally {
+      let browserName = "unknown";
+      try {
+        browserName =
+          this.page?.context()?.browser()?.browserType()?.name() || "unknown";
+      } catch {
+        console.warn("⚠️ Could not detect browser name.");
+      }
+    
+      const now = new Date();
+      const formattedTime = now.toLocaleString("en-US", {
+        dateStyle: "short",
+        timeStyle: "medium",
+      });
+    
+      const message = `🧪 **Test Case:** PlaceOrder of **m2d5_demostore**\n🧭 **Browser:** ${browserName}\n📊 **Result:** ${
+        testPassed ? "✅ Passed" : "❌ Failed"
+      }\n🕒 **Time:** ${formattedTime}`;
+    
+      try {
+        await this.sendDiscordNotification(message);
+      } catch (notifyError) {
+        console.error("❗ Failed to send Discord notification:", notifyError);
+      }
+    }
   }
+
+  private async sendDiscordNotification(message: string) {
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+
+    if (!webhookUrl) {
+      console.error("❗ Discord Webhook URL is missing!");
+      return;
+    }
+
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: message }),
+      });
+    } catch (err) {
+      console.error("❗ Failed to send Discord notification:", err);
+    }
+  }
+
   public async placeOrderByMiniCart() {
     await this.getMenuLink.click();
     await this.productItemInfo.hover();
@@ -211,29 +257,29 @@ export class m2d3_Assertions extends m2d3_PageObjects {
   public async productCount() {
     try {
       const menu = this.page.locator('#ui-id-1[role="menu"]');
-      await menu.waitFor({ state: 'visible', timeout: 10000 });
-      
-      const menuItems = await menu.locator('li.ui-menu-item').all();
-      
+      await menu.waitFor({ state: "visible", timeout: 10000 });
+
+      const menuItems = await menu.locator("li.ui-menu-item").all();
+
       console.log(`Found ${menuItems.length} menu items`);
-      
+
       for (const [index, item] of menuItems.entries()) {
-          const link = item.locator('a.ui-menu-item-wrapper');
-          const title = await item.locator('span').textContent();
-          
-          console.log(`Item ${index + 1}: ${title}`);
-          
-          await link.click();
-          await this.page.waitForNavigation({ timeout: 5000 });
-          await this.page.goBack();
-          await menu.waitFor({ state: 'visible' });
+        const link = item.locator("a.ui-menu-item-wrapper");
+        const title = await item.locator("span").textContent();
+
+        console.log(`Item ${index + 1}: ${title}`);
+
+        await link.click();
+        await this.page.waitForNavigation({ timeout: 5000 });
+        await this.page.goBack();
+        await menu.waitFor({ state: "visible" });
       }
-      
-      console.log('Completed processing all menu items');
-  } catch (error) {
-      console.error('Error processing menu items:', error);
+
+      console.log("Completed processing all menu items");
+    } catch (error) {
+      console.error("Error processing menu items:", error);
       throw error;
-  }
+    }
   }
   public async removeCart() {
     await this.getMenuLink.click();

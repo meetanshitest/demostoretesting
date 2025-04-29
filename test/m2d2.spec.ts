@@ -1,5 +1,5 @@
 import { Page, test as base, expect } from "@playwright/test";
-import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
+import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[1] || DEFAULT_WEB_URL;
@@ -80,7 +80,7 @@ test.describe("m2d2 test cases", () => {
       await m2d2.navigateToCheckout();
     });
 
-    test("Check place order", async () => {
+    test.only("Check place order", async () => {
       await m2d2.placeOrder();
     });
 

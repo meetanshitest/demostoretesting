@@ -70,11 +70,11 @@ test.describe("m2d4 E-commerce Test Suite", () => {
 
   test.describe("Checkout Tests", () => {
     
-    test.only("should complete order placement", async () => {
+    test("should complete order placement", async () => {
       await m2d4.placeOrder();
     });
 
-    test("should place order through mini cart", async () => {
+    test.only("should place order through mini cart", async () => {
       await m2d4.placeOrderByMiniCart();
     });
   });

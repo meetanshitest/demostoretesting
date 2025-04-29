@@ -92,7 +92,7 @@ test.describe("m2d1 test cases", () => {
       await m2d1.navigateToCheckout();
     });
 
-    test("Check place order", async () => {
+    test.only("Check place order", async () => {
       await m2d1.placeOrder();
     });
 

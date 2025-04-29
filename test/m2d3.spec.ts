@@ -1,5 +1,5 @@
 import { test as base, expect, Page } from "@playwright/test";
-import { m2d3_Assertions } from "../pages/Assertions/m2d3_Assertions.ts";
+import { m2d3_Assertions } from "../pages/Assertions/m2d3_Assertions";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[2] || DEFAULT_WEB_URL;
@@ -73,7 +73,7 @@ test.describe("M2D3 E-commerce Test Suite", () => {
       await m2d3.navigateToCheckout();
     });
 
-    test("should complete order placement", async () => {
+    test.only("should complete order placement", async () => {
       await m2d3.placeOrder();
     });
 

@@ -102,11 +102,13 @@ export class m2d4_Assertions extends m2d4_PageObjects {
       await this.getMenuLink.click();
       await this.productLink.click();
       await this.addAndViewCart();
+
       await this.page.waitForResponse(
         (response) =>
           response.url().includes("/totals-information") &&
           response.status() === 200
       );
+
       await this.proceedToCheckOut.click();
       await this.fillCheckoutForm();
       await this.nextBtn.click();
@@ -121,31 +123,45 @@ export class m2d4_Assertions extends m2d4_PageObjects {
 
       testPassed = true;
     } catch (error: any) {
-      console.error("Order placement failed:", error);
+      console.error(
+        "❌ Order placement failed:",
+        error.stack || error.message || error
+      );
+
+      // Optional: take screenshot on failure
+      await this.page.screenshot({
+        path: `order-failure-${Date.now()}.png`,
+        fullPage: true,
+      });
+
       throw error;
     } finally {
       let browserName = "unknown";
       try {
-        if (this.page && this.page.context() && this.page.context().browser()) {
-          browserName =
-            this.page.context().browser()?.browserType().name() || "unknown";
-        }
-      } catch (e) {
-        console.warn("Could not detect browser name.");
+        browserName =
+          this.page?.context()?.browser()?.browserType()?.name() || "unknown";
+      } catch {
+        console.warn("⚠️ Could not detect browser name.");
       }
-
+    
       const now = new Date();
-      const formattedTime = now.toLocaleString("en-US"); // No GMT / no timezone shown
-
-      const message = `Test Case: **${
-        this.constructor.name
-      }**\nBrowser: **${browserName}**\nResult: ${
+      const formattedTime = now.toLocaleString("en-US", {
+        dateStyle: "short",
+        timeStyle: "medium",
+      });
+    
+      const message = `🧪 **Test Case:** PlaceOrder of **m2d5_demostore**\n🧭 **Browser:** ${browserName}\n📊 **Result:** ${
         testPassed ? "✅ Passed" : "❌ Failed"
-      }\nTime: ${formattedTime}`;
-
-      await this.sendDiscordNotification(message);
+      }\n🕒 **Time:** ${formattedTime}`;
+    
+      try {
+        await this.sendDiscordNotification(message);
+      } catch (notifyError) {
+        console.error("❗ Failed to send Discord notification:", notifyError);
+      }
     }
   }
+
   private async sendDiscordNotification(message: string) {
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
 
@@ -155,19 +171,13 @@ export class m2d4_Assertions extends m2d4_PageObjects {
     }
 
     try {
-      const response = await fetch(webhookUrl, {
+      await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: message }),
       });
-
-      if (!response.ok) {
-        console.error(
-          `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
-        );
-      }
-    } catch (error) {
-      console.error("❗ Error sending Discord notification:", error);
+    } catch (err) {
+      console.error("❗ Failed to send Discord notification:", err);
     }
   }
 

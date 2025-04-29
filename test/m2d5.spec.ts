@@ -90,12 +90,12 @@ test.describe("m2d5 E-commerce Test Suite", () => {
     });
   });
 
-  test.describe.only("Checkout Tests", () => {
+  test.describe("Checkout Tests", () => {
     test("should navigate to checkout page", async () => {
       await m2d5.navigateToCheckout();
     });
 
-    test("should complete order placement", async () => {
+    test.only("should complete order placement", async () => {
       await m2d5.placeOrder();
     });
   });
