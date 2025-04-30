@@ -235,15 +235,16 @@ export class m2d5_Assertions extends m2d5_PageObjects {
   //       body: JSON.stringify({ content: message }),
   //     });
 
-  //     if (!response.ok) {
-  //       console.error(
-  //         `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("❗ Error sending Discord notification:", error);
-  //   }
-  // }
+      if (!response.ok) {
+        console.error(
+          `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
+        );
+      }
+    } catch (error) {
+      console.error("❗ Error sending Discord notification:", error);
+    }
+  }
+
   public async brokenImages() {
     const images = this.page.locator("img");
     const brokenImgs: string[] = [];
