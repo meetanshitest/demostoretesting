@@ -176,13 +176,11 @@ export class m2d5_Assertions extends m2d5_PageObjects {
       await this.getMenuLink.click();
       await this.productLink.click();
       await this.addAndViewCart();
-
       await this.page.waitForResponse(
         (response) =>
           response.url().includes("/totals-information") &&
           response.status() === 200
       );
-
       await this.proceedToCheckOut.click();
       await this.fillCheckoutForm();
       await this.nextBtn.click();
@@ -197,64 +195,55 @@ export class m2d5_Assertions extends m2d5_PageObjects {
 
       testPassed = true;
     } catch (error: any) {
-      console.error(
-        "❌ Order placement failed:",
-        error.stack || error.message || error
-      );
-
-      // Optional: take screenshot on failure
-      await this.page.screenshot({
-        path: `order-failure-${Date.now()}.png`,
-        fullPage: true,
-      });
-
+      console.error("Order placement failed:", error);
       throw error;
     } finally {
       let browserName = "unknown";
       try {
-        browserName =
-          this.page?.context()?.browser()?.browserType()?.name() || "unknown";
-      } catch {
-        console.warn("⚠️ Could not detect browser name.");
+        if (this.page && this.page.context() && this.page.context().browser()) {
+          browserName =
+            this.page.context().browser()?.browserType().name() || "unknown";
+        }
+      } catch (e) {
+        console.warn("Could not detect browser name.");
       }
-    
+
       const now = new Date();
-      const formattedTime = now.toLocaleString("en-US", {
-        dateStyle: "short",
-        timeStyle: "medium",
-      });
-    
-      const message = `🧪 **Test Case:** PlaceOrder of **m2d5_demostore**\n🧭 **Browser:** ${browserName}\n📊 **Result:** ${
+      const formattedTime = now.toLocaleString("en-US"); // No GMT / no timezone shown
+
+      const message = `Test Case: **${
+        this.constructor.name
+      }**\nBrowser: **${browserName}**\nResult: ${
         testPassed ? "✅ Passed" : "❌ Failed"
-      }\n🕒 **Time:** ${formattedTime}`;
-    
-      try {
-        await this.sendDiscordNotification(message);
-      } catch (notifyError) {
-        console.error("❗ Failed to send Discord notification:", notifyError);
-      }
+      }\nTime: ${formattedTime}`;
+
+      //await this.sendDiscordNotification(message);
     }
   }
+  // private async sendDiscordNotification(message: string) {
+  //   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
 
-  private async sendDiscordNotification(message: string) {
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  //   if (!webhookUrl) {
+  //     console.error("❗ Discord Webhook URL is missing!");
+  //     return;
+  //   }
 
-    if (!webhookUrl) {
-      console.error("❗ Discord Webhook URL is missing!");
-      return;
-    }
+  //   try {
+  //     const response = await fetch(webhookUrl, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ content: message }),
+  //     });
 
-    try {
-      await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: message }),
-      });
-    } catch (err) {
-      console.error("❗ Failed to send Discord notification:", err);
-    }
-  }
-
+  //     if (!response.ok) {
+  //       console.error(
+  //         `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("❗ Error sending Discord notification:", error);
+  //   }
+  // }
   public async brokenImages() {
     const images = this.page.locator("img");
     const brokenImgs: string[] = [];
