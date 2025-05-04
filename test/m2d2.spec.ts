@@ -1,6 +1,5 @@
-import { BrowserContext, Page, test as base, expect } from "@playwright/test";
-import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions";
-import axios from "axios";
+import { Page, test as base, expect } from "@playwright/test";
+import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[1] || DEFAULT_WEB_URL;
@@ -8,7 +7,6 @@ const WEB_URL = process.env.WEB_URL?.split(",")[1] || DEFAULT_WEB_URL;
 if (!WEB_URL) {
   throw new Error("Please provide the web URL");
 }
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 const test = base.extend<{ page: Page }>({
   page: async ({ page }, use) => {
@@ -26,25 +24,8 @@ test.describe("m2d2 test cases", () => {
     m2d2 = new m2d2_Assertions(page);
   });
 
-  test.afterEach(async ({ browserName }, testInfo) => {
-    if (!DISCORD_WEBHOOK_URL) return;
-
-    const status = testInfo.status;
-    const emoji = status === "passed" ? "✅" : "❌";
-    const color = status === "passed" ? 3066993 : 15158332;
-    const title = `${emoji} ${testInfo.title}`;
-    const duration = (testInfo.duration / 1000).toFixed(2);
-
-    await axios.post(DISCORD_WEBHOOK_URL, {
-      embeds: [
-        {
-          title,
-          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**Duration**: ${duration}s`,
-          color,
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    });
+  test.afterEach(async ({ page }) => {
+    await page.close();
   });
 
   // Group related tests
@@ -99,7 +80,7 @@ test.describe("m2d2 test cases", () => {
       await m2d2.navigateToCheckout();
     });
 
-    test.only("m2d2_demostore should complete order placement", async () => {
+    test("Check place order", async () => {
       await m2d2.placeOrder();
     });
 

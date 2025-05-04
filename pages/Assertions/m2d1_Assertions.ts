@@ -80,81 +80,27 @@ export class m2d1_Assertions extends m2d1_PageObjects {
   }
 
   public async placeOrder() {
-    let testPassed = false;
-
-    try {
-      await this.getMenuLink.click();
-      await this.productLink.click();
-      await this.addAndViewCart();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/totals-information") &&
-          response.status() === 200
-      );
-      await this.proceedToCheckOut.click();
-      await this.fillCheckoutForm();
-      await this.nextBtn.click();
-      await this.paymentMethod.check();
-
-      await Promise.all([
-        this.page.waitForURL("**/checkout/onepage/success/"),
-        this.placeOrderBtn.click(),
-      ]);
-
-      await expect(this.page).toHaveTitle("Success Page");
-
-      testPassed = true;
-    } catch (error: any) {
-      console.error("Order placement failed:", error);
-      throw error;
-    } finally {
-      let browserName = "unknown";
-      try {
-        if (this.page && this.page.context() && this.page.context().browser()) {
-          browserName =
-            this.page.context().browser()?.browserType().name() || "unknown";
-        }
-      } catch (e) {
-        console.warn("Could not detect browser name.");
-      }
-
-      const now = new Date();
-      const formattedTime = now.toLocaleString("en-US"); // No GMT / no timezone shown
-
-      const message = `Test Case: **${
-        this.constructor.name
-      }**\nBrowser: **${browserName}**\nResult: ${
-        testPassed ? "✅ Passed" : "❌ Failed"
-      }\nTime: ${formattedTime}`;
-
-      //await this.sendDiscordNotification(message);
-    }
+    const successMessage = "Thank you for your purchase!";
+    await this.getMenuLink.click();
+    await this.productLink.click();
+    await this.addAndViewCart();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/totals-information") &&
+        response.status() === 200
+    );
+    await this.proceedToCheckOut.click();
+    await this.fillCheckoutForm();
+    await this.nextBtn.click();
+    await this.paymentMethod.check();
+    await this.placeOrderBtn.click();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
+    );
+    await expect(this.page).toHaveTitle("Success Page");
   }
-  // private async sendDiscordNotification(message: string) {
-  //   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-
-  //   if (!webhookUrl) {
-  //     console.error("❗ Discord Webhook URL is missing!");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch(webhookUrl, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ content: message }),
-  //     });
-
-  //     if (!response.ok) {
-  //       console.error(
-  //         `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("❗ Error sending Discord notification:", error);
-  //   }
-  // }
-
   public async placeOrderByMiniCart() {
     await this.getMenuLink.click();
     await this.productItemInfo.hover();

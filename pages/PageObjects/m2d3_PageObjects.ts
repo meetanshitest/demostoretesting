@@ -8,7 +8,7 @@ export class m2d3_PageObjects {
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
   readonly price: Locator;
-  //readonly menuItem: Locator;
+  readonly menuItem: Locator;
   readonly ItemLocators: Locator;
   readonly signInLink: Locator;
   readonly createAccountLink: Locator;

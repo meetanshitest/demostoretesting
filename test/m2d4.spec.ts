@@ -1,10 +1,8 @@
 import { test as base, expect, Page } from "@playwright/test";
 import { m2d4_Assertions } from "../pages/Assertions/m2d4_Assertions";
-import axios from "axios";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[3] || DEFAULT_WEB_URL;
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 if (!WEB_URL) {
   throw new Error("Please provide the web URL in environment variables");
@@ -26,25 +24,8 @@ test.describe("m2d4 E-commerce Test Suite", () => {
     m2d4 = new m2d4_Assertions(page);
   });
 
-  test.afterEach(async ({ browserName }, testInfo) => {
-    if (!DISCORD_WEBHOOK_URL) return;
-
-    const status = testInfo.status;
-    const emoji = status === "passed" ? "✅" : "❌";
-    const color = status === "passed" ? 3066993 : 15158332;
-    const title = `${emoji} ${testInfo.title}`;
-    const duration = (testInfo.duration / 1000).toFixed(2);
-
-    await axios.post(DISCORD_WEBHOOK_URL, {
-      embeds: [
-        {
-          title,
-          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**Duration**: ${duration}s`,
-          color,
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    });
+  test.afterEach(async ({ page }) => {
+    await page.close();
   });
 
   test.describe("Category and Product Tests", () => {
@@ -88,11 +69,12 @@ test.describe("m2d4 E-commerce Test Suite", () => {
   });
 
   test.describe("Checkout Tests", () => {
-    test.only("m2d4_demostore should complete order placement", async () => {
+    
+    test.only("should complete order placement", async () => {
       await m2d4.placeOrder();
     });
 
-    test("place order through mini cart", async () => {
+    test("should place order through mini cart", async () => {
       await m2d4.placeOrderByMiniCart();
     });
   });
@@ -115,5 +97,6 @@ test.describe("m2d4 E-commerce Test Suite", () => {
     test("should not have any broken images", async () => {
       await m2d4.brokenImages();
     });
+    
   });
 });

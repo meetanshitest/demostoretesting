@@ -2,6 +2,8 @@ import { faker } from "@faker-js/faker";
 import { m2d5_PageObjects } from "../PageObjects/m2d5_PageObjects";
 import test, { Page, expect } from "@playwright/test";
 
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || "";
+
 export class m2d5_Assertions extends m2d5_PageObjects {
   [x: string]: any;
   constructor(page: Page) {
@@ -235,15 +237,15 @@ export class m2d5_Assertions extends m2d5_PageObjects {
   //       body: JSON.stringify({ content: message }),
   //     });
 
-      if (!response.ok) {
-        console.error(
-          `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
-        );
-      }
-    } catch (error) {
-      console.error("❗ Error sending Discord notification:", error);
-    }
-  }
+  //     if (!response.ok) {
+  //       console.error(
+  //         `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("❗ Error sending Discord notification:", error);
+  //   }
+  // }
 
   public async brokenImages() {
     const images = this.page.locator("img");

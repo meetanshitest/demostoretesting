@@ -46,16 +46,26 @@ test.describe("m2d5 E-commerce Test Suite", () => {
     m2d5 = new m2d5_Assertions(page);
   });
 
-  test.afterEach(async ({page}, testInfo) => {
-    if (testInfo.status !== testInfo.expectedStatus) {
-      const now = new Date();
-      const formattedTime = now.toLocaleString("en-US");
-      const message = `❌ Test Failed: **${testInfo.title}**\nFile: **${testInfo.file}**\nStatus: **${testInfo.status}**\nTime: ${formattedTime}`;
-
-      await sendDiscordNotification(message);
-    }
-    //await page.close();
-  });
+  test.afterEach(async ({ browserName }, testInfo) => {
+    if (!DISCORD_WEBHOOK_URL) return;
+  
+    const status = testInfo.status;
+    const emoji = status === "passed" ? "✅" : "❌";
+    const color = status === "passed" ? 3066993 : 15158332;
+    const title = `${emoji} ${testInfo.title}`;
+    const duration = (testInfo.duration / 1000).toFixed(2);
+  
+    await axios.post(DISCORD_WEBHOOK_URL, {
+      embeds: [
+        {
+          title,
+          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**Duration**: ${duration}s`,
+          color,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
+  })
   test.describe("Category and Product Tests", () => {
     test("should display correct category page heading", async () => {
       await m2d5.navigateToCategoryPage();
@@ -96,7 +106,7 @@ test.describe("m2d5 E-commerce Test Suite", () => {
       await m2d5.navigateToCheckout();
     });
 
-    test("should complete order placement", async () => {
+    test.only("should complete order placement", async () => {
       await m2d5.placeOrder();
     });
   });
