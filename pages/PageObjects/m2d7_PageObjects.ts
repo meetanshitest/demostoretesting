@@ -3,12 +3,10 @@ import { type Page, type Locator } from "@playwright/test";
 export class m2d7_PageObjects {
   protected page: Page;
   readonly cartMessage: Locator;
+  readonly termsButton: Locator;
+  readonly acceptButton: Locator;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;
-  readonly getMenuLinkOne: Locator;
-  readonly getMenuLinkTwo: Locator;
-  readonly getMenuLinkThree: Locator;
-  //readonly productLinkTwo: Locator;
   readonly addToCart: Locator;
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
@@ -54,18 +52,15 @@ export class m2d7_PageObjects {
   readonly loginButton: Locator;
   constructor(page: Page) {
     this.page = page;
+    this.termsButton = page.locator("#accept-privacy-policy"); 
+    this.acceptButton = page.getByRole('button', { name: 'Accept cookies' });
     this.emailInput = page.getByLabel("Email");
     this.passwordInput = page.getByLabel("Password");
     this.loginButton = page.getByRole("button", { name: "Sign In" });
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
-    this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
-    this.getMenuLinkTwo = page.getByRole("menuitem", {
-      name: "Custom Order Number",
-    });
-    this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "GST India" });
     this.productLink = page.locator("a.product-item-link", {
       hasText: "Boxer Shorts",
     });

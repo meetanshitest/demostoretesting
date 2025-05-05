@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d1_PageObjects } from "../PageObjects/m2d1_PageObjects";
-import { Locator, Page, expect } from "@playwright/test";
+import { Locator, Page, expect,test } from "@playwright/test";
 
 export class m2d1_Assertions extends m2d1_PageObjects {
   constructor(page: Page) {
@@ -81,25 +81,55 @@ export class m2d1_Assertions extends m2d1_PageObjects {
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
-    await this.getMenuLink.click();
-    await this.productLink.click();
-    await this.addAndViewCart();
-    await this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/totals-information") &&
-        response.status() === 200
-    );
-    await this.proceedToCheckOut.click();
-    await this.fillCheckoutForm();
-    await this.nextBtn.click();
-    await this.paymentMethod.check();
-    await this.placeOrderBtn.click();
-    await this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/payment-information") &&
-        response.status() === 200
-    );
-    await expect(this.page).toHaveTitle("Success Page");
+  
+    await test.step('Navigate to product page', async () => {
+      await this.getMenuLink.click();
+      await this.productLink.click();
+    });
+  
+    await test.step('Add product to cart', async () => {
+      await this.addAndViewCart();
+      await this.page.waitForResponse(
+        (response) =>
+          response.url().includes("/totals-information") &&
+          response.status() === 200
+      );
+    });
+  
+    await test.step('Proceed to checkout', async () => {
+      await this.proceedToCheckOut.click();
+    });
+  
+    await test.step('Fill shipping information', async () => {
+      await this.email.fill(faker.internet.email());
+      await this.fname.fill(faker.person.firstName());
+      await this.lname.fill(faker.person.lastName());
+      await this.company.fill(faker.company.buzzPhrase());
+      await this.streetAddress.fill(faker.location.streetAddress());
+      await this.country.selectOption("India");
+      await this.state.selectOption("Gujarat");
+      await this.city.fill(faker.location.city());
+      await this.zip.fill(faker.location.zipCode());
+      await this.phone.fill(faker.phone.number());
+    });
+  
+    await test.step('Select shipping method and continue', async () => {
+      await this.nextBtn.click();
+    });
+  
+    await test.step('Select payment method and place order', async () => {
+      await this.paymentMethod.check();
+      await this.placeOrderBtn.click();
+      await this.page.waitForResponse(
+        (response) =>
+          response.url().includes("/payment-information") &&
+          response.status() === 200
+      );
+    });
+  
+    await test.step('Verify order success page', async () => {
+      await expect(this.page).toHaveTitle('Success Page');
+    });
   }
   public async placeOrderByMiniCart() {
     await this.getMenuLink.click();

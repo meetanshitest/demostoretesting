@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { m2d4_PageObjects } from "../PageObjects/m2d4_PageObjects";
-import { Page, expect } from "@playwright/test";
+import { Page, expect,test } from "@playwright/test";
 
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || "";
 
@@ -96,55 +96,56 @@ export class m2d4_Assertions extends m2d4_PageObjects {
     await this.phone.fill(`${faker.phone.number()}`);
   }
   public async placeOrder() {
-    let testPassed = false;
-
-    try {
+    const successMessage = "Thank you for your purchase!";
+  
+    await test.step('Navigate to product page', async () => {
       await this.getMenuLink.click();
       await this.productLink.click();
+    });
+  
+    await test.step('Add product to cart', async () => {
       await this.addAndViewCart();
       await this.page.waitForResponse(
         (response) =>
           response.url().includes("/totals-information") &&
           response.status() === 200
       );
+    });
+  
+    await test.step('Proceed to checkout', async () => {
       await this.proceedToCheckOut.click();
-      await this.fillCheckoutForm();
+    });
+  
+    await test.step('Fill shipping information', async () => {
+      await this.email.fill(faker.internet.email());
+      await this.fname.fill(faker.person.firstName());
+      await this.lname.fill(faker.person.lastName());
+      await this.company.fill(faker.company.buzzPhrase());
+      await this.streetAddress.fill(faker.location.streetAddress());
+      await this.country.selectOption("India");
+      await this.state.selectOption("Gujarat");
+      await this.city.fill(faker.location.city());
+      await this.zip.fill(faker.location.zipCode());
+      await this.phone.fill(faker.phone.number());
+    });
+  
+    await test.step('Select shipping method and continue', async () => {
       await this.nextBtn.click();
+    });
+  
+    await test.step('Select payment method and place order', async () => {
       await this.paymentMethod.check();
-
-      await Promise.all([
-        this.page.waitForURL("**/checkout/onepage/success/"),
-        this.placeOrderBtn.click(),
-      ]);
-
-      await expect(this.page).toHaveTitle("Success Page");
-
-      testPassed = true;
-    } catch (error: any) {
-      console.error("Order placement failed:", error);
-      throw error;
-    } finally {
-      let browserName = "unknown";
-      try {
-        if (this.page && this.page.context() && this.page.context().browser()) {
-          browserName =
-            this.page.context().browser()?.browserType().name() || "unknown";
-        }
-      } catch (e) {
-        console.warn("Could not detect browser name.");
-      }
-
-      const now = new Date();
-      const formattedTime = now.toLocaleString("en-US"); // No GMT / no timezone shown
-
-      const message = `Test Case: **${
-        this.constructor.name
-      }**\nBrowser: **${browserName}**\nResult: ${
-        testPassed ? "✅ Passed" : "❌ Failed"
-      }\nTime: ${formattedTime}`;
-
-      await this.sendDiscordNotification(message);
-    }
+      await this.placeOrderBtn.click();
+      await this.page.waitForResponse(
+        (response) =>
+          response.url().includes("/payment-information") &&
+          response.status() === 200
+      );
+    });
+  
+    await test.step('Verify order success page', async () => {
+      await expect(this.page).toHaveTitle('Success Page');
+    });
   }
   private async sendDiscordNotification(message: string) {
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;

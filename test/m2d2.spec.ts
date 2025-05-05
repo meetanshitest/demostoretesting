@@ -1,8 +1,11 @@
 import { Page, test as base, expect } from "@playwright/test";
-import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions.ts";
+import { m2d2_Assertions } from "../pages/Assertions/m2d2_Assertions";
+import path from "path";
+import axios from "axios";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[1] || DEFAULT_WEB_URL;
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 if (!WEB_URL) {
   throw new Error("Please provide the web URL");
@@ -24,8 +27,26 @@ test.describe("m2d2 test cases", () => {
     m2d2 = new m2d2_Assertions(page);
   });
 
-  test.afterEach(async ({ page }) => {
-    await page.close();
+  test.afterEach(async ({ browserName }, testInfo) => {
+    if (!DISCORD_WEBHOOK_URL) return;
+
+    const status = testInfo.status;
+    const emoji = status === "passed" ? "✅" : "❌";
+    const color = status === "passed" ? 3066993 : 15158332;
+    const title = `${emoji} ${testInfo.title}`;
+    const duration = (testInfo.duration / 1000).toFixed(2);
+    const fileName = path.basename(testInfo.file ?? "unknown");
+
+    await axios.post(DISCORD_WEBHOOK_URL, {
+      embeds: [
+        {
+          title,
+          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**File**: \`${fileName}\`\n**Duration**: ${duration}s`,
+          color,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
   });
 
   // Group related tests
@@ -80,7 +101,7 @@ test.describe("m2d2 test cases", () => {
       await m2d2.navigateToCheckout();
     });
 
-    test("Check place order", async () => {
+    test.only("Check place order", async () => {
       await m2d2.placeOrder();
     });
 

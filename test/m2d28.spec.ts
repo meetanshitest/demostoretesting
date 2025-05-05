@@ -1,6 +1,7 @@
 import { test as base, expect, Page } from "@playwright/test";
 import { m2d28_Assertions } from "../pages/Assertions/m2d28_Assertions";
 import axios from "axios";
+import path from "path";
 
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[27] || DEFAULT_WEB_URL;
@@ -18,26 +19,6 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-// async function sendDiscordNotification(message: string) {
-//   if (!DISCORD_WEBHOOK_URL) {
-//     console.error("❗ Discord Webhook URL is missing!");
-//     return;
-//   }
-//   try {
-//     const response = await fetch(DISCORD_WEBHOOK_URL.trim(), {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ content: message }),
-//     });
-//     if (!response.ok) {
-//       console.error(
-//         `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
-//       );
-//     }
-//   } catch (error) {
-//     console.error("❗ Error sending Discord notification:", error);
-//   }
-// }
 
 test.describe("m2d28 E-commerce Test Suite", () => {
   let m2d28: m2d28_Assertions;
@@ -54,12 +35,13 @@ test.describe("m2d28 E-commerce Test Suite", () => {
     const color = status === "passed" ? 3066993 : 15158332;
     const title = `${emoji} ${testInfo.title}`;
     const duration = (testInfo.duration / 1000).toFixed(2);
-  
+    const fileName = path.basename(testInfo.file ?? "unknown");
+
     await axios.post(DISCORD_WEBHOOK_URL, {
       embeds: [
         {
           title,
-          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**Duration**: ${duration}s`,
+          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**File**: \`${fileName}\`\n**Duration**: ${duration}s`,
           color,
           timestamp: new Date().toISOString(),
         },
