@@ -83,7 +83,7 @@ test.describe("m2d19 E-commerce Test Suite", () => {
     });
   });
 
-  test.describe.only("Checkout Tests", () => {
+  test.describe("Checkout Tests", () => {
     test("should navigate to checkout page", async () => {
       await m2d19.navigateToCheckout();
     });
