@@ -54,9 +54,9 @@ export class m2d8_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Payment & Shipping by Customer Group" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "Payment Fee" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Apple iPhone X",
+      hasText: "Wayfarer Sunglasses",
     });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.sucessMessageText = page.locator(
@@ -99,7 +99,7 @@ export class m2d8_PageObjects {
     this.zip = page.locator('input[name="postcode"]');
     this.phone = page.getByLabel("Phone Number");
     this.nextBtn = page.getByRole("button", { name: "Next" });
-    this.paymentMethod = page.locator("#checkmo");
+    this.paymentMethod = page.locator("#cashondelivery");
     this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
     this.sucessOrderMessage = page
       .locator('[data-ui-id="page-title-wrapper"]')

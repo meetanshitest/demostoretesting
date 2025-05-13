@@ -176,7 +176,7 @@ export class m2d6_Assertions extends m2d6_PageObjects {
       await this.addAndViewCart();
       await this.page.waitForResponse(
         (response) =>
-          response.url().includes("/totals-information") &&
+          response.url().includes("/estimate-shipping-methods") &&
           response.status() === 200
       );
     });
@@ -193,8 +193,8 @@ export class m2d6_Assertions extends m2d6_PageObjects {
       await this.streetAddress.fill(faker.location.streetAddress());
       await this.country.selectOption("India");
       await this.state.selectOption("Gujarat");
-      await this.city.fill(faker.location.city());
-      await this.zip.fill(faker.location.zipCode());
+      await this.city.fill("Bhavnagar");
+      await this.zip.fill("364003");
       await this.phone.fill(faker.phone.number());
     });
   

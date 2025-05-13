@@ -175,6 +175,9 @@ export class m2d7_Assertions extends m2d7_PageObjects {
     const successMessage = "Thank you for your purchase!";
   
     await test.step('Navigate to product page', async () => {
+      await this.termsButton.click();
+      await this.page.waitForLoadState('domcontentloaded');
+      await this.acceptButton.click();
       await this.getMenuLink.click();
       await this.productLink.click();
     });

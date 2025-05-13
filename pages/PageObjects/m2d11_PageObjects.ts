@@ -60,14 +60,14 @@ export class m2d11_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "Refund Request" });
     this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
     this.getMenuLinkTwo = page.getByRole("menuitem", {
       name: "Custom Order Number",
     });
     this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Boxer Shorts",
+      hasText: "Apple iPhone X",
     });
     this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
@@ -111,13 +111,14 @@ export class m2d11_PageObjects {
     this.lname = page.getByLabel("Last Name");
     this.company = page.getByLabel("Company");
     this.streetAddress = page.getByLabel("Street Address: Line 1");
-    this.country = page.getByLabel("Country");
+    this.country = page.locator("select[name='country_id']");
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");
     this.zip = page.locator('input[name="postcode"]');
-    this.phone = page.getByLabel("Phone Number");
+    this.phone = page.locator('input[placeholder*="81234"]');
+
     this.nextBtn = page.getByRole("button", { name: "Next" });
-    this.paymentMethod = page.locator("#checkmo");
+    this.paymentMethod = page.locator("#cashondelivery");
     this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
     this.sucessOrderMessage = page
       .locator('[data-ui-id="page-title-wrapper"]')

@@ -198,7 +198,7 @@ export class m2d13_Assertions extends m2d13_PageObjects {
       await this.lname.fill(faker.person.lastName());
       await this.company.fill(faker.company.buzzPhrase());
       await this.streetAddress.fill(faker.location.streetAddress());
-      await this.country.selectOption("India");
+      await this.country.getByLabel("Country").selectOption("India");
       await this.state.selectOption("Gujarat");
       await this.city.fill(faker.location.city());
       await this.zip.fill(faker.location.zipCode());

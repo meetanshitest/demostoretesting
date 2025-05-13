@@ -5,9 +5,6 @@ export class m2d12_PageObjects {
   readonly cartMessage: Locator;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;
-  readonly getMenuLinkOne: Locator;
-  readonly getMenuLinkTwo: Locator;
-  readonly getMenuLinkThree: Locator;
   //readonly productLinkTwo: Locator;
   readonly addToCart: Locator;
   readonly sucessMessageText: Locator;
@@ -61,11 +58,6 @@ export class m2d12_PageObjects {
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
     this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
-    this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
-    this.getMenuLinkTwo = page.getByRole("menuitem", {
-      name: "Custom Order Number",
-    });
-    this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
     this.productLink = page.locator("a.product-item-link", {
       hasText: "Boxer Shorts",
     });
@@ -111,7 +103,7 @@ export class m2d12_PageObjects {
     this.lname = page.getByLabel("Last Name");
     this.company = page.getByLabel("Company");
     this.streetAddress = page.getByLabel("Street Address: Line 1");
-    this.country = page.getByLabel("Country");
+    this.country = page.locator('#shipping-new-address-form');
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");
     this.zip = page.locator('input[name="postcode"]');

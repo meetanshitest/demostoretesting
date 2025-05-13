@@ -5,10 +5,6 @@ export class m2d13_PageObjects {
   readonly cartMessage: Locator;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;
-  readonly getMenuLinkOne: Locator;
-  readonly getMenuLinkTwo: Locator;
-  readonly getMenuLinkThree: Locator;
-  //readonly productLinkTwo: Locator;
   readonly addToCart: Locator;
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
@@ -60,14 +56,9 @@ export class m2d13_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
-    this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
-    this.getMenuLinkTwo = page.getByRole("menuitem", {
-      name: "Custom Order Number",
-    });
-    this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "Quantity Dropdown" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Boxer Shorts",
+      hasText: "Apple Ipod",
     });
     this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
