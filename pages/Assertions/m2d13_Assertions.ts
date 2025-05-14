@@ -154,6 +154,9 @@ export class m2d13_Assertions extends m2d13_PageObjects {
   }
 
   public async addAndViewCart() {
+    await this.page.waitForLoadState("networkidle", {
+      timeout: 5000,
+    });
     await this.addToCart.click();
     await this.shoppingCartLink.click();
   }
@@ -164,7 +167,7 @@ export class m2d13_Assertions extends m2d13_PageObjects {
     await this.lname.fill(`${faker.person.lastName()}`);
     await this.company.fill(`${faker.company.buzzPhrase()}`);
     await this.streetAddress.fill(`${faker.location.streetAddress()}`);
-    await this.country.selectOption("India");
+    await this.page.locator('select[name="country_id"]').selectOption('IN');
     await this.state.selectOption("Gujarat");
     await this.city.fill(`${faker.location.city()}`);
     await this.zip.fill(`${faker.location.zipCode()}`);
@@ -198,11 +201,15 @@ export class m2d13_Assertions extends m2d13_PageObjects {
       await this.lname.fill(faker.person.lastName());
       await this.company.fill(faker.company.buzzPhrase());
       await this.streetAddress.fill(faker.location.streetAddress());
-      await this.country.getByLabel("Country").selectOption("India");
-      await this.state.selectOption("Gujarat");
-      await this.city.fill(faker.location.city());
-      await this.zip.fill(faker.location.zipCode());
-      await this.phone.fill(faker.phone.number());
+      const countryDropdown = this.page.locator('#shipping-new-address-form select[name="country_id"]');
+      await countryDropdown.waitFor({ state: 'visible' });
+      await expect(countryDropdown).toBeEnabled();
+      //await this.page.waitForFunction((el) => el.options.length > 1, countryDropdown);
+      await countryDropdown.selectOption({ label: 'United States' });
+      await this.state.selectOption("California");
+      await this.city.fill("California");
+      await this.zip.fill("90209")
+      await this.phone.fill("123567890");
     });
   
     await test.step('Select shipping method and continue', async () => {

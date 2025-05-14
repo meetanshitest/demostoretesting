@@ -22,7 +22,7 @@ export class m2d13_PageObjects {
   readonly lname: Locator;
   readonly company: Locator;
   readonly streetAddress: Locator;
-  readonly country: Locator;
+  //readonly country: Locator;
   readonly state: Locator;
   readonly city: Locator;
   readonly zip: Locator;
@@ -102,7 +102,7 @@ export class m2d13_PageObjects {
     this.lname = page.getByLabel("Last Name");
     this.company = page.getByLabel("Company");
     this.streetAddress = page.getByLabel("Street Address: Line 1");
-    this.country = page.getByLabel("Country");
+    //this.country = page.locator('select[name="country_id"]');
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");
     this.zip = page.locator('input[name="postcode"]');

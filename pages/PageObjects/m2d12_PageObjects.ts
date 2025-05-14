@@ -57,12 +57,12 @@ export class m2d12_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "Product Tabs" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Boxer Shorts",
+      hasText: "Men's Tshirt",
     });
     this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
-    this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
+    this.addToCart = page.getByRole('button', { name: 'Add to Cart' });
     this.productLinkOne = page.locator("a.product-item-link", {
       hasText: "Rayban Aviators",
     });
@@ -103,7 +103,7 @@ export class m2d12_PageObjects {
     this.lname = page.getByLabel("Last Name");
     this.company = page.getByLabel("Company");
     this.streetAddress = page.getByLabel("Street Address: Line 1");
-    this.country = page.locator('#shipping-new-address-form');
+    this.country = page.getByRole('combobox', { name: 'Country*' });
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");
     this.zip = page.locator('input[name="postcode"]');

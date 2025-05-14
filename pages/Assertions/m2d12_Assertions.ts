@@ -155,7 +155,7 @@ export class m2d12_Assertions extends m2d12_PageObjects {
 
   public async addAndViewCart() {
     await this.addToCart.click();
-    await this.shoppingCartLink.click();
+    await this.page.getByRole('link', { name: /My Cart/ }).click();
   }
 
   public async fillCheckoutForm() {
@@ -210,14 +210,15 @@ export class m2d12_Assertions extends m2d12_PageObjects {
     });
   
     await test.step('Select payment method and place order', async () => {
-      await this.paymentMethod.check();
+      // const checkmoRadio = this.page.locator('#checkmo');
+      // await checkmoRadio.waitFor({ state: 'visible', timeout: 10000 }); // Wait for payment method to appear
+      // await checkmoRadio.check();
       await this.placeOrderBtn.click();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/payment-information") &&
-          response.status() === 200
+      await this.page.waitForResponse((res) =>
+        res.url().includes('/payment-information') && res.status() === 200
       );
     });
+    
   
     await test.step('Verify order success page', async () => {
       await expect(this.page).toHaveTitle('Success Page');
