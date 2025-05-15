@@ -106,7 +106,7 @@ export class m2d13_PageObjects {
     this.state = page.locator('select[name="region_id"]');
     this.city = page.getByLabel("City");
     this.zip = page.locator('input[name="postcode"]');
-    this.phone = page.getByLabel("Phone Number");
+    this.phone = page.locator('input[name="telephone"]');
     this.nextBtn = page.getByRole("button", { name: "Next" });
     this.paymentMethod = page.locator("#checkmo");
     this.placeOrderBtn = page.getByRole("button", { name: "Place Order" });
