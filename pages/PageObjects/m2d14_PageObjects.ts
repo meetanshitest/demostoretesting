@@ -5,10 +5,6 @@ export class m2d14_PageObjects {
   readonly cartMessage: Locator;
   readonly getMenuLink: Locator;
   readonly productLink: Locator;
-  readonly getMenuLinkOne: Locator;
-  readonly getMenuLinkTwo: Locator;
-  readonly getMenuLinkThree: Locator;
-  //readonly productLinkTwo: Locator;
   readonly addToCart: Locator;
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
@@ -42,8 +38,6 @@ export class m2d14_PageObjects {
   readonly cartEmptyMessage: Locator;
   readonly warnMessage: Locator;
   readonly toolbarNumber: Locator;
-  readonly productLinkOne: Locator;
-  readonly productLinkTwo: Locator;
   readonly trackOrderMenuLink: Locator;
   readonly trackOrderId: Locator;
   readonly trackOrderEmail: Locator;
@@ -60,23 +54,12 @@ export class m2d14_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
-    this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
-    this.getMenuLinkTwo = page.getByRole("menuitem", {
-      name: "Custom Order Number",
-    });
-    this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "Review Reminder Pro" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Boxer Shorts",
+      hasText: "Men's Tshirt",
     });
-    this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
+    
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLinkOne = page.locator("a.product-item-link", {
-      hasText: "Rayban Aviators",
-    });
-    this.productLinkTwo = page.locator("a.product-item-link", {
-      hasText: "Apple iPhone X",
-    });
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
