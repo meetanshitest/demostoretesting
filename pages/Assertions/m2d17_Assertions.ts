@@ -154,6 +154,7 @@ export class m2d17_Assertions extends m2d17_PageObjects {
   }
 
   public async addAndViewCart() {
+    await this.qty.fill("5")
     await this.addToCart.click();
     await this.shoppingCartLink.click();
   }
@@ -201,7 +202,7 @@ export class m2d17_Assertions extends m2d17_PageObjects {
       await this.country.selectOption("India");
       await this.state.selectOption("Gujarat");
       await this.city.fill(faker.location.city());
-      await this.zip.fill(faker.location.zipCode());
+      await this.zip.fill("364240");
       await this.phone.fill(faker.phone.number());
     });
   

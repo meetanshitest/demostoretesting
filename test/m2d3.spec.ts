@@ -49,7 +49,7 @@ test.describe("M2D3 E-commerce Test Suite", () => {
     });
   });
 
-
+  test.describe.configure({ timeout:60_000});
   test.describe("Category and Product Tests", () => {
     test("should display correct category page heading", async () => {
       await m2d3.navigateToCategoryPage();

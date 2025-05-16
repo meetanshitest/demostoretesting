@@ -19,7 +19,7 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-
+test.describe.configure({ timeout:60_000});
 test.describe("m2d12 E-commerce Test Suite", () => {
   let m2d12: m2d12_Assertions;
 

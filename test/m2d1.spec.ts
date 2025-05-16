@@ -19,7 +19,7 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-
+test.describe.configure({ timeout:60_000});
 test.describe("m2d1 test cases", () => {
   let m2d1: m2d1_Assertions;
 

@@ -211,6 +211,7 @@ export class m2d26_Assertions extends m2d26_PageObjects {
   
     await test.step('Select payment method and place order', async () => {
       await this.paymentMethod.check();
+      await this.termsandConditions.check();
       await this.placeOrderBtn.click();
       await this.page.waitForResponse(
         (response) =>

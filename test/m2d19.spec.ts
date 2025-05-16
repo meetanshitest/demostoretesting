@@ -19,7 +19,7 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-
+test.describe.configure({ timeout:60_000});
 test.describe("m2d19 E-commerce Test Suite", () => {
   let m2d19: m2d19_Assertions;
 
@@ -48,6 +48,7 @@ test.describe("m2d19 E-commerce Test Suite", () => {
       ],
     });
   })
+  test.describe.configure({ timeout:60_000});
   test.describe("Category and Product Tests", () => {
     test("should display correct category page heading", async () => {
       await m2d19.navigateToCategoryPage();

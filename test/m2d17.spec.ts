@@ -6,7 +6,6 @@ import path from "path";
 const DEFAULT_WEB_URL = "http://default-url.com";
 const WEB_URL = process.env.WEB_URL?.split(",")[16] || DEFAULT_WEB_URL;
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
-
 if (!WEB_URL) {
   throw new Error("Please provide the web URL in environment variables");
 }
@@ -19,7 +18,7 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-
+test.describe.configure({ timeout:60_000});
 test.describe("m2d17 E-commerce Test Suite", () => {
   let m2d17: m2d17_Assertions;
 

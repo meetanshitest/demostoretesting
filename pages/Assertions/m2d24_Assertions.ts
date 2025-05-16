@@ -173,13 +173,13 @@ export class m2d24_Assertions extends m2d24_PageObjects {
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
-  
-    await test.step('Navigate to product page', async () => {
+
+    await test.step("Navigate to product page", async () => {
       await this.getMenuLink.click();
       await this.productLink.click();
     });
-  
-    await test.step('Add product to cart', async () => {
+
+    await test.step("Add product to cart", async () => {
       await this.addAndViewCart();
       await this.page.waitForResponse(
         (response) =>
@@ -187,12 +187,12 @@ export class m2d24_Assertions extends m2d24_PageObjects {
           response.status() === 200
       );
     });
-  
-    await test.step('Proceed to checkout', async () => {
+
+    await test.step("Proceed to checkout", async () => {
       await this.proceedToCheckOut.click();
     });
-  
-    await test.step('Fill shipping information', async () => {
+
+    await test.step("Fill shipping information", async () => {
       await this.email.fill(faker.internet.email());
       await this.fname.fill(faker.person.firstName());
       await this.lname.fill(faker.person.lastName());
@@ -203,13 +203,20 @@ export class m2d24_Assertions extends m2d24_PageObjects {
       await this.city.fill(faker.location.city());
       await this.zip.fill(faker.location.zipCode());
       await this.phone.fill(faker.phone.number());
+      const dateInput = this.page.locator('input[name="delivery-date"]');
+      await dateInput.fill("05/23/2031");
+      const timeSlotDropdown = this.page.locator("#time-sloat");
+      await timeSlotDropdown.selectOption(
+        "please be available 9:00 AM - 11:00 AM"
+      );
+      await this.page.locator("#comment").fill("Please deliver on time");
     });
-  
-    await test.step('Select shipping method and continue', async () => {
+
+    await test.step("Select shipping method and continue", async () => {
       await this.nextBtn.click();
     });
-  
-    await test.step('Select payment method and place order', async () => {
+
+    await test.step("Select payment method and place order", async () => {
       await this.paymentMethod.check();
       await this.placeOrderBtn.click();
       await this.page.waitForResponse(
@@ -218,9 +225,9 @@ export class m2d24_Assertions extends m2d24_PageObjects {
           response.status() === 200
       );
     });
-  
-    await test.step('Verify order success page', async () => {
-      await expect(this.page).toHaveTitle('Success Page');
+
+    await test.step("Verify order success page", async () => {
+      await expect(this.page).toHaveTitle("Success Page");
     });
   }
 

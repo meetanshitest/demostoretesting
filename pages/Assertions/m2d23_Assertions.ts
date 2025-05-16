@@ -183,7 +183,7 @@ export class m2d23_Assertions extends m2d23_PageObjects {
       await this.addAndViewCart();
       await this.page.waitForResponse(
         (response) =>
-          response.url().includes("/totals-information") &&
+          response.url().includes("/estimate-shipping-methods") &&
           response.status() === 200
       );
     });
@@ -206,6 +206,7 @@ export class m2d23_Assertions extends m2d23_PageObjects {
     });
   
     await test.step('Select shipping method and continue', async () => {
+      await this.shippingMethod.click();
       await this.nextBtn.click();
     });
   
