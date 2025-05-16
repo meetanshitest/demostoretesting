@@ -154,6 +154,7 @@ export class m2d27_Assertions extends m2d27_PageObjects {
   }
 
   public async addAndViewCart() {
+    await this.customOption.selectOption("Red");
     await this.addToCart.click();
     await this.shoppingCartLink.click();
   }
@@ -183,7 +184,7 @@ export class m2d27_Assertions extends m2d27_PageObjects {
       await this.addAndViewCart();
       await this.page.waitForResponse(
         (response) =>
-          response.url().includes("/totals-information") &&
+          response.url().includes("/estimate-shipping-methods") &&
           response.status() === 200
       );
     });
@@ -206,6 +207,7 @@ export class m2d27_Assertions extends m2d27_PageObjects {
     });
   
     await test.step('Select shipping method and continue', async () => {
+      await this.shippingMethod.check();
       await this.nextBtn.click();
     });
   

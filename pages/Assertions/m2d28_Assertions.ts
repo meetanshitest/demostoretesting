@@ -154,7 +154,7 @@ export class m2d28_Assertions extends m2d28_PageObjects {
   }
 
   public async addAndViewCart() {
-    await this.addToCart.click();
+    await this.page.getByRole('button', { name: 'Add to Cart' }).first().click();
     await this.shoppingCartLink.click();
   }
 

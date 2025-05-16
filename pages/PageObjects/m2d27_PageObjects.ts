@@ -52,6 +52,8 @@ export class m2d27_PageObjects {
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
+  readonly customOption: Locator;
+  readonly shippingMethod: Locator;
   constructor(page: Page) {
     this.page = page;
     this.emailInput = page.getByLabel("Email");
@@ -60,15 +62,18 @@ export class m2d27_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "PayWay" });
     this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
+    this.customOption = page.locator('#attribute93');
     this.getMenuLinkTwo = page.getByRole("menuitem", {
       name: "Custom Order Number",
     });
     this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Boxer Shorts",
+      hasText: "Nike Shoes",
     });
+    this.shippingMethod = page.locator('input[type="radio"][value="freeshipping_freeshipping"]');
+
     this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
     this.productLinkOne = page.locator("a.product-item-link", {
