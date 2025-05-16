@@ -50,16 +50,6 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Notify Discord on Push
-        if: github.event_name == 'push'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          curl -H "Content-Type: application/json" \
-          -X POST \
-          -d "{\"content\": \"🚀 New code push to \`${{ github.ref_name }}\` by \`${{ github.actor }}\`\n🔗 https://github.com/${{ github.repository }}/commit/${{ github.sha }}\"}" \
-          $DISCORD_WEBHOOK
-
   deploy:
     needs: test
     runs-on: ubuntu-latest
