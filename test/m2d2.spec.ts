@@ -48,7 +48,7 @@ test.describe("m2d2 test cases", () => {
       ],
     });
   });
-  test.describe.configure({ timeout:60_000});
+  test.describe.configure({ timeout:50_000});
   // Group related tests
   test.describe("Category Tests", () => {
     test("Verify Category page Heading", async () => {
