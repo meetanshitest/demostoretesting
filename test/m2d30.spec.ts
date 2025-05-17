@@ -88,7 +88,7 @@ test.describe("m2d30 E-commerce Test Suite", () => {
       await m2d30.navigateToCheckout();
     });
 
-    test.only("should complete order placement", async () => {
+    test("should complete order placement", async () => {
       await m2d30.placeOrder();
     });
   });
