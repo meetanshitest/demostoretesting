@@ -8,7 +8,6 @@ export class m2d1_PageObjects {
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
   readonly price: Locator;
-  //readonly menuItem: Locator;
   readonly ItemLocators: Locator;
   readonly signInLink: Locator;
   readonly createAccountLink: Locator;
@@ -30,7 +29,6 @@ export class m2d1_PageObjects {
   readonly nextBtn: Locator;
   readonly paymentMethod: Locator;
   readonly placeOrderBtn: Locator;
-  //readonly sucessOrder: Locator;
   readonly sucessOrderMessage: Locator;
   readonly productItemInfo: Locator;
   readonly categoryAddtoCartBtn: Locator;
