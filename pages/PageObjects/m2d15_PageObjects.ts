@@ -65,9 +65,6 @@ export class m2d15_PageObjects {
     this.productLinkOne = page.locator("a.product-item-link", {
       hasText: "Rayban Aviators",
     });
-    this.productLinkTwo = page.locator("a.product-item-link", {
-      hasText: "Apple iPhone X",
-    });
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );
