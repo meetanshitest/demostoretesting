@@ -173,14 +173,15 @@ export class m2d11_Assertions extends m2d11_PageObjects {
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
-  
+
     await test.step('Navigate to product page', async () => {
-      await this.getMenuLink.click({ timeout: 5000 });
-      await this.productLink.click({ timeout: 5000 });
+      await this.getMenuLink.click();
+      await this.productLink.click();
     });
-  
+
     await test.step('Add product to cart', async () => {
       await this.addAndViewCart();
+      await this.page.waitForLoadState("domcontentloaded", { timeout: 5000 });
       await this.page.waitForResponse(
         (response) =>
           response.url().includes("/totals-information") &&
@@ -188,11 +189,11 @@ export class m2d11_Assertions extends m2d11_PageObjects {
         { timeout: 10000 }
       );
     });
-  
+
     await test.step('Proceed to checkout', async () => {
       await this.proceedToCheckOut.click({ timeout: 5000 });
     });
-  
+
     await test.step('Fill shipping information', async () => {
       await this.email.fill(faker.internet.email(), { timeout: 3000 });
       await this.fname.fill(faker.person.firstName(), { timeout: 3000 });
@@ -205,32 +206,26 @@ export class m2d11_Assertions extends m2d11_PageObjects {
       await this.zip.fill(faker.location.zipCode(), { timeout: 3000 });
       await this.phone.fill("+91 9998285006", { timeout: 3000 });
     });
-  
+
     await test.step('Select shipping method and continue', async () => {
       await this.nextBtn.click({ timeout: 5000 });
     });
-  
+
     await test.step('Select payment method and place order', async () => {
-      await Promise.race([
-        (async () => {
-          await this.paymentMethod.check({ timeout: 5000 });
-          await this.placeOrderBtn.click({ timeout: 5000 });
-          await this.page.waitForResponse(
-            (res) => res.url().includes("/payment-information") && res.status() === 200,
-            { timeout: 15000 }
-          );
-        })(),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("❌ placeOrder step timed out")), 20000)
-        ),
-      ]);
-    });
-  
-    await test.step('Verify order success page', async () => {
-      await expect(this.page).toHaveTitle('Success Page', { timeout: 15000 });
-    });
+       await this.paymentMethod.check({timeout:5000});
+       await this.placeOrderBtn.click({ timeout: 5000 });
+       await this.page.waitForLoadState("domcontentloaded")
+       const otpModal = this.page.locator('.modal-inner-wrap', {
+         hasText: 'OTP Verification'
+       });
+       await expect(otpModal).toBeVisible();    
+     });
+
+    // await test.step('Verify order success page', async () => {
+    //   await expect(this.page).toHaveTitle('Success Page', { timeout: 15000 });
+    // });
   }
-  
+
 
   public async brokenImages() {
     const images = this.page.locator("img");

@@ -154,8 +154,17 @@ export class m2d10_Assertions extends m2d10_PageObjects {
   }
 
   public async addAndViewCart() {
+    await this.page.waitForLoadState('domcontentloaded');
+  
+    // Ensure Add to Cart is interactable
+    await this.addToCart.waitFor({ state: 'visible' });
+    await this.addToCart.scrollIntoViewIfNeeded();
     await this.addToCart.click();
-    await this.shoppingCartLink.click();
+  
+    // Navigate to cart
+    const cartLink = this.page.getByRole('link', { name: "Shopping Cart" });
+    await cartLink.waitFor({ state: 'visible' });
+    await cartLink.click();
   }
 
   public async fillCheckoutForm() {
@@ -210,18 +219,18 @@ export class m2d10_Assertions extends m2d10_PageObjects {
     });
   
     await test.step('Select payment method and place order', async () => {
-      await this.paymentMethod.check();
-      await this.placeOrderBtn.click();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/payment-information") &&
-          response.status() === 200
-      );
+      await this.paymentMethod.check({timeout:5000});
+      await this.placeOrderBtn.click({ timeout: 5000 });
+      await this.page.waitForLoadState("domcontentloaded")
+      const otpModal = this.page.locator('.modal-inner-wrap', {
+        hasText: 'OTP Verification'
+      });
+      await expect(otpModal).toBeVisible();    
     });
-  
-    await test.step('Verify order success page', async () => {
-      await expect(this.page).toHaveTitle('Success Page');
-    });
+
+    // await test.step('Verify order success page', async () => {
+    //   await expect(this.page).toHaveTitle('Success Page');
+    // });
   }
   public async brokenImages() {
     const images = this.page.locator("img");
