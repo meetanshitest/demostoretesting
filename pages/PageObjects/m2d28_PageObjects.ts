@@ -8,7 +8,6 @@ export class m2d28_PageObjects {
   readonly getMenuLinkOne: Locator;
   readonly getMenuLinkTwo: Locator;
   readonly getMenuLinkThree: Locator;
-  //readonly productLinkTwo: Locator;
   readonly addToCart: Locator;
   readonly sucessMessageText: Locator;
   readonly headingText: Locator;
@@ -42,8 +41,7 @@ export class m2d28_PageObjects {
   readonly cartEmptyMessage: Locator;
   readonly warnMessage: Locator;
   readonly toolbarNumber: Locator;
-  readonly productLinkOne: Locator;
-  readonly productLinkTwo: Locator;
+  readonly product_price: Locator;
   readonly trackOrderMenuLink: Locator;
   readonly trackOrderId: Locator;
   readonly trackOrderEmail: Locator;
@@ -67,16 +65,10 @@ export class m2d28_PageObjects {
     });
     this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Antique Drawers", 
+      hasText: "Pink Armchair", 
     });
-    this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
+    this.product_price = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");
-    this.productLinkOne = page.locator("a.product-item-link", {
-      hasText: "Rayban Aviators",
-    });
-    this.productLinkTwo = page.locator("a.product-item-link", {
-      hasText: "Apple iPhone X",
-    });
     this.sucessMessageText = page.locator(
       "//div[@class='message-success success message']"
     );

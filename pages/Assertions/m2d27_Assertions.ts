@@ -174,12 +174,12 @@ export class m2d27_Assertions extends m2d27_PageObjects {
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
-  
+
     await test.step('Navigate to product page', async () => {
       await this.getMenuLink.click();
       await this.productLink.click();
     });
-  
+
     await test.step('Add product to cart', async () => {
       await this.addAndViewCart();
       await this.page.waitForResponse(
@@ -188,11 +188,11 @@ export class m2d27_Assertions extends m2d27_PageObjects {
           response.status() === 200
       );
     });
-  
+
     await test.step('Proceed to checkout', async () => {
       await this.proceedToCheckOut.click();
     });
-  
+
     await test.step('Fill shipping information', async () => {
       await this.email.fill(faker.internet.email());
       await this.fname.fill(faker.person.firstName());
@@ -205,12 +205,12 @@ export class m2d27_Assertions extends m2d27_PageObjects {
       await this.zip.fill(faker.location.zipCode());
       await this.phone.fill(faker.phone.number());
     });
-  
+
     await test.step('Select shipping method and continue', async () => {
       await this.shippingMethod.check();
       await this.nextBtn.click();
     });
-  
+
     await test.step('Select payment method and place order', async () => {
       await this.paymentMethod.check();
       await this.placeOrderBtn.click();
@@ -220,9 +220,9 @@ export class m2d27_Assertions extends m2d27_PageObjects {
           response.status() === 200
       );
     });
-  
+
     await test.step('Verify order success page', async () => {
-      await expect(this.page).toHaveTitle('Success Page');
+      await expect(this.page.getByRole('heading', { name: 'Thank you for your purchase!' })).toBeVisible();
     });
   }
   public async brokenImages() {
