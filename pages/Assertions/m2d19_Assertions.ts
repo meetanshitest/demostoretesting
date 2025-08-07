@@ -177,6 +177,7 @@ export class m2d19_Assertions extends m2d19_PageObjects {
     await test.step('Navigate to product page', async () => {
       await this.getMenuLink.click();
       await this.productLink.click();
+      await this.page.locator("#attribute141").selectOption("6w x 12h +$50.00")
     });
   
     await test.step('Add product to cart', async () => {

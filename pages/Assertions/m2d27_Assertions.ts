@@ -172,59 +172,67 @@ export class m2d27_Assertions extends m2d27_PageObjects {
     await this.phone.fill(`${faker.phone.number()}`);
   }
 
-  public async placeOrder() {
-    const successMessage = "Thank you for your purchase!";
+ public async placeOrder() {
+  const successMessage = "Thank you for your purchase!";
 
-    await test.step('Navigate to product page', async () => {
-      await this.getMenuLink.click();
-      await this.productLink.click();
-    });
+  await test.step('Navigate to product page', async () => {
+    await this.getMenuLink.click();
+    await this.productLink.click();
+  });
 
-    await test.step('Add product to cart', async () => {
-      await this.addAndViewCart();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/estimate-shipping-methods") &&
-          response.status() === 200
-      );
-    });
+  await test.step('Add product to cart', async () => {
+    await this.addAndViewCart();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/estimate-shipping-methods") &&
+        response.status() === 200
+    );
+  });
 
-    await test.step('Proceed to checkout', async () => {
-      await this.proceedToCheckOut.click();
-    });
+  await test.step('Proceed to checkout', async () => {
+    await this.proceedToCheckOut.click();
+  });
 
-    await test.step('Fill shipping information', async () => {
-      await this.email.fill(faker.internet.email());
-      await this.fname.fill(faker.person.firstName());
-      await this.lname.fill(faker.person.lastName());
-      await this.company.fill(faker.company.buzzPhrase());
-      await this.streetAddress.fill(faker.location.streetAddress());
-      await this.country.selectOption("India");
-      await this.state.selectOption("Gujarat");
-      await this.city.fill(faker.location.city());
-      await this.zip.fill(faker.location.zipCode());
-      await this.phone.fill(faker.phone.number());
-    });
+  await test.step('Fill shipping information', async () => {
+    await this.email.fill(faker.internet.email());
+    await this.fname.fill(faker.person.firstName());
+    await this.lname.fill(faker.person.lastName());
+    await this.company.fill(faker.company.buzzPhrase());
+    await this.streetAddress.fill(faker.location.streetAddress());
+    await this.country.selectOption("India");
+    await this.state.selectOption("Gujarat");
+    await this.city.fill(faker.location.city());
+    await this.zip.fill(faker.location.zipCode());
+    await this.phone.fill(faker.phone.number());
+  });
 
-    await test.step('Select shipping method and continue', async () => {
-      await this.shippingMethod.check();
-      await this.nextBtn.click();
-    });
+  await test.step('Select shipping method and continue', async () => {
+    await this.shippingMethod.check();
+    await this.nextBtn.click();
+  });
 
-    await test.step('Select payment method and place order', async () => {
-      await this.paymentMethod.check();
-      await this.placeOrderBtn.click();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/payment-information") &&
-          response.status() === 200
-      );
-    });
+  await test.step('Select payment method and place order', async () => {
+    await this.paymentMethod.check();
+    await this.placeOrderBtn.click();
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/payment-information") &&
+        response.status() === 200
+    );
+  });
 
-    await test.step('Verify order success page', async () => {
-      await expect(this.page.getByRole('heading', { name: 'Thank you for your purchase!' })).toBeVisible();
+  await test.step('Verify order success page', async () => {
+    // Wait for navigation to success page to complete
+    await this.page.waitForURL('**/checkout/onepage/success/**', { 
+      waitUntil: 'networkidle' 
     });
-  }
+    
+    // Alternative: Wait for the success page to load completely
+    // await this.page.waitForLoadState('networkidle');
+    
+    await expect(this.page.getByRole('heading', { name: 'Thank you for your purchase!' })).toBeVisible();
+  });
+}
   public async brokenImages() {
     const images = this.page.locator("img");
     const brokenImgs: string[] = [];

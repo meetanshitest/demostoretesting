@@ -28,25 +28,25 @@ test.describe("m2d20 E-commerce Test Suite", () => {
   });
 
   test.afterEach(async ({ browserName }, testInfo) => {
-    if (!DISCORD_WEBHOOK_URL) return;
+    // if (!DISCORD_WEBHOOK_URL) return;
   
-    const status = testInfo.status;
-    const emoji = status === "passed" ? "✅" : "❌";
-    const color = status === "passed" ? 3066993 : 15158332;
-    const title = `${emoji} ${testInfo.title}`;
-    const duration = (testInfo.duration / 1000).toFixed(2);
-    const fileName = path.basename(testInfo.file ?? "unknown");
+    // const status = testInfo.status;
+    // const emoji = status === "passed" ? "✅" : "❌";
+    // const color = status === "passed" ? 3066993 : 15158332;
+    // const title = `${emoji} ${testInfo.title}`;
+    // const duration = (testInfo.duration / 1000).toFixed(2);
+    // const fileName = path.basename(testInfo.file ?? "unknown");
 
-    await axios.post(DISCORD_WEBHOOK_URL, {
-      embeds: [
-        {
-          title,
-          description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**File**: \`${fileName}\`\n**Duration**: ${duration}s`,
-          color,
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    });
+    // await axios.post(DISCORD_WEBHOOK_URL, {
+    //   embeds: [
+    //     {
+    //       title,
+    //       description: `**Result**: ${status?.toUpperCase()}\n**Browser**: ${browserName}\n**File**: \`${fileName}\`\n**Duration**: ${duration}s`,
+    //       color,
+    //       timestamp: new Date().toISOString(),
+    //     },
+    //   ],
+    // });
   })
   test.describe.configure({ timeout:60_000});
   test.describe("Category and Product Tests", () => {

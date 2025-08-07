@@ -144,34 +144,10 @@ export class m2d4_Assertions extends m2d4_PageObjects {
     });
   
     await test.step('Verify order success page', async () => {
-      await expect(this.page).toHaveTitle('Success Page');
+      await expect(this.page.getByRole('heading', { name: 'Thank you for your purchase!' })).toBeVisible();
+
     });
   }
-  private async sendDiscordNotification(message: string) {
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-
-    if (!webhookUrl) {
-      console.error("❗ Discord Webhook URL is missing!");
-      return;
-    }
-
-    try {
-      const response = await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: message }),
-      });
-
-      if (!response.ok) {
-        console.error(
-          `❗ Failed to send Discord notification: ${response.status} ${response.statusText}`
-        );
-      }
-    } catch (error) {
-      console.error("❗ Error sending Discord notification:", error);
-    }
-  }
-
   public async placeOrderByMiniCart() {
     await this.getMenuLink.click();
     await this.productItemInfo.hover();

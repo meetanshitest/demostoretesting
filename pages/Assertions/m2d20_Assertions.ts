@@ -155,9 +155,10 @@ export class m2d20_Assertions extends m2d20_PageObjects {
 
   public async addAndViewCart() {
     await this.addToCart.click();
-    await this.shoppingCartLink.click();
+    const cartLink = this.page.getByRole('link', { name: "Shopping Cart" }); // updated from 'Shopping Cart'
+    await expect(cartLink).toBeVisible({ timeout: 10000 });
+    await cartLink.click();
   }
-
   public async fillCheckoutForm() {
     await this.email.fill(`${faker.internet.email()}`);
     await this.fname.fill(`${faker.person.firstName()}`);
@@ -173,12 +174,12 @@ export class m2d20_Assertions extends m2d20_PageObjects {
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
-  
+
     await test.step('Navigate to product page', async () => {
       await this.getMenuLink.click();
       await this.productLink.click();
     });
-  
+
     await test.step('Add product to cart', async () => {
       await this.addAndViewCart();
       await this.page.waitForResponse(
@@ -187,11 +188,11 @@ export class m2d20_Assertions extends m2d20_PageObjects {
           response.status() === 200
       );
     });
-  
+
     await test.step('Proceed to checkout', async () => {
       await this.proceedToCheckOut.click();
     });
-  
+
     await test.step('Fill shipping information', async () => {
       await this.email.fill(faker.internet.email());
       await this.fname.fill(faker.person.firstName());
@@ -204,21 +205,16 @@ export class m2d20_Assertions extends m2d20_PageObjects {
       await this.zip.fill(faker.location.zipCode());
       await this.phone.fill(faker.phone.number());
     });
-  
+
     await test.step('Select shipping method and continue', async () => {
       await this.nextBtn.click();
     });
-  
+
     await test.step('Select payment method and place order', async () => {
-      await this.paymentMethod.check();
+      //await this.paymentMethod.scrollIntoViewIfNeeded();
       await this.placeOrderBtn.click();
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/payment-information") &&
-          response.status() === 200
-      );
     });
-  
+
     await test.step('Verify order success page', async () => {
       await expect(this.page).toHaveTitle('Success Page');
     });

@@ -60,7 +60,7 @@ export class m2d29_PageObjects {
     this.welcomeMessage = page.locator("span.logged-in");
     this.cartMessage = page.locator('div[data-bind*="prepareMessageForHtml"]');
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
-    this.getMenuLink = page.getByRole("menuitem", { name: "Order Attachment" });
+    this.getMenuLink = page.getByRole("menuitem", { name: "MeetPuma" });
     this.getMenuLinkOne = page.getByRole("link", { name: "Hide Price" });
     this.getMenuLinkTwo = page.getByRole("menuitem", {
       name: "Custom Order Number",

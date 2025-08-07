@@ -59,7 +59,7 @@ export class m2d12_PageObjects {
     this.toolbarNumber = page.locator("#toolbar-amount .toolbar-number");
     this.getMenuLink = page.getByRole("menuitem", { name: "Product Tabs" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Men's Tshirt",
+      hasText: "Tshirt for Men",
     });
     this.productLinkTwo = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.getByRole('button', { name: 'Add to Cart' });

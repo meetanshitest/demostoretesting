@@ -166,25 +166,25 @@ export class m2d6_Assertions extends m2d6_PageObjects {
 
   public async placeOrder() {
     const successMessage = "Thank you for your purchase!";
-  
+
     await test.step('Navigate to product page', async () => {
       await this.getMenuLink.click();
       await this.productLink.click();
     });
-  
+
     await test.step('Add product to cart', async () => {
       await this.addAndViewCart();
       await this.page.waitForResponse(
         (response) =>
-          response.url().includes("/estimate-shipping-methods") &&
+          response.url().includes("/totals-information") &&
           response.status() === 200
       );
     });
-  
+
     await test.step('Proceed to checkout', async () => {
       await this.proceedToCheckOut.click();
     });
-  
+
     await test.step('Fill shipping information', async () => {
       await this.email.fill(faker.internet.email());
       await this.fname.fill(faker.person.firstName());
@@ -193,17 +193,22 @@ export class m2d6_Assertions extends m2d6_PageObjects {
       await this.streetAddress.fill(faker.location.streetAddress());
       await this.country.selectOption("India");
       await this.state.selectOption("Gujarat");
-      await this.city.fill("Bhavnagar");
-      await this.zip.fill("364003");
+      await this.city.fill(faker.location.city());
+      await this.zip.fill(faker.location.zipCode());
       await this.phone.fill(faker.phone.number());
     });
-  
+
     await test.step('Select shipping method and continue', async () => {
       await this.nextBtn.click();
+      // FIX: Wait for the payment section to become visible
+      await this.page.waitForSelector('.payment-method._active', { state: 'visible' });
+      // Alternatively, wait directly for the payment method checkbox if its always visible after the transition
+      // await this.paymentMethod.waitFor({ state: 'visible' });
     });
-  
+
     await test.step('Select payment method and place order', async () => {
       await this.paymentMethod.check();
+      await this.termsandConditions.check();
       await this.placeOrderBtn.click();
       await this.page.waitForResponse(
         (response) =>
@@ -211,11 +216,13 @@ export class m2d6_Assertions extends m2d6_PageObjects {
           response.status() === 200
       );
     });
-  
+
     await test.step('Verify order success page', async () => {
       await expect(this.page).toHaveTitle('Success Page');
+      // Consider adding a more robust assertion for success, e.g., checking for "Thank you for your purchase!" text
+      await expect(this.page.locator('.checkout-success')).toContainText(successMessage);
     });
-  }
+  } 
 
   public async brokenImages() {
     const images = this.page.locator("img");

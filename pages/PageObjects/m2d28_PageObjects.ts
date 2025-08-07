@@ -65,7 +65,7 @@ export class m2d28_PageObjects {
     });
     this.getMenuLinkThree = page.getByRole("link", { name: "Total Savings" });
     this.productLink = page.locator("a.product-item-link", {
-      hasText: "Pink Armchair", 
+      hasText: "White Bed Clothes", 
     });
     this.product_price = page.locator(".price", { hasText: "$249.00" });
     this.addToCart = page.locator("//span[normalize-space()='Add to Cart']");

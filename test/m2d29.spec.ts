@@ -19,17 +19,16 @@ const test = base.extend<{ page: Page }>({
     await use(page);
   },
 });
-test.describe.configure({ timeout:60_000});
+test.describe.configure({ timeout: 60_000 });
 test.describe("m2d29 E-commerce Test Suite", () => {
   let m2d29: m2d29_Assertions;
 
   test.beforeEach(async ({ page }) => {
     m2d29 = new m2d29_Assertions(page);
   });
-
   test.afterEach(async ({ browserName }, testInfo) => {
     if (!DISCORD_WEBHOOK_URL) return;
-  
+
     const status = testInfo.status;
     const emoji = status === "passed" ? "✅" : "❌";
     const color = status === "passed" ? 3066993 : 15158332;
